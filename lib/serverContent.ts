@@ -33,12 +33,12 @@ export const getContent = cache(async (): Promise<Content> => {
   }
 });
 
-/** Écrit le contenu dans Supabase. Renvoie true si OK. */
-export async function saveContent(content: Content): Promise<boolean> {
+/** Écrit le contenu dans Supabase. Renvoie l'erreur éventuelle. */
+export async function saveContent(content: Content): Promise<{ ok: boolean; error?: string }> {
   const sb = supabaseServer();
-  if (!sb) return false;
+  if (!sb) return { ok: false, error: 'Supabase non configuré' };
   const { error } = await sb
     .from(TABLE)
     .upsert({ id: ROW_ID, data: content, updated_at: new Date().toISOString() });
-  return !error;
+  return error ? { ok: false, error: error.message } : { ok: true };
 }

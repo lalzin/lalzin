@@ -28,9 +28,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'JSON invalide' }, { status: 400 });
   }
 
-  const ok = await saveContent(data);
-  if (!ok) {
-    return NextResponse.json({ ok: false, error: 'Échec de l’écriture Supabase' }, { status: 500 });
+  const result = await saveContent(data);
+  if (!result.ok) {
+    return NextResponse.json(
+      { ok: false, error: `Écriture Supabase : ${result.error ?? 'échec'}` },
+      { status: 500 },
+    );
   }
 
   // Rafraîchit le site public immédiatement
