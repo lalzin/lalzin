@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "set-admin": "node scripts/set-admin.mjs"
+    "set-admin": "node scripts/set-admin.mjs",
+    "hash": "node scripts/hash.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.0",
