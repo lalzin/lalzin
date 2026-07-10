@@ -46,18 +46,24 @@ export default function LinksPage() {
         transition={{ duration: 0.7, ease: groovy }}
         className="relative z-10 flex w-full max-w-md flex-1 flex-col items-center"
       >
-        {/* Avatar logo dans un cadre disco */}
-        <div className="relative mt-6">
+        {/* Avatar logo (cliquable → accueil) */}
+        <Link
+          href="/"
+          aria-label="Retour à l'accueil"
+          className="group relative mt-6 block transition-transform hover:scale-[1.06]"
+        >
           <div className="absolute -inset-3 animate-spin-slow rounded-full bg-gradient-to-br from-magenta via-coral to-gold opacity-80 blur-md" />
           <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-cream/15 bg-night p-5">
             <Image src={artist.logo} alt={artist.name} fill className="object-contain p-5" sizes="112px" />
           </div>
-          <div className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-gold to-coral text-lg shadow-lg">
+          <div className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-gold to-coral text-lg shadow-lg transition-transform group-hover:rotate-12">
             🪩
           </div>
-        </div>
+        </Link>
 
-        <h1 className="retro-title mt-6 text-5xl">{artist.name}</h1>
+        <Link href="/" aria-label="Retour à l'accueil">
+          <h1 className="retro-title mt-6 text-5xl transition-opacity hover:opacity-80">{artist.name}</h1>
+        </Link>
         <p className="mt-3 max-w-xs text-center text-sm text-cream/75">{t(artist.tagline)}</p>
         <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-gold">
           {artist.genres.join(' · ')}
