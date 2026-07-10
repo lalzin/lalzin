@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --night: #1f0e1a;
+  --night-deep: #160912;
+  --magenta: #e8487e;
+  --coral: #ee6c3a;
+  --gold: #e9ae3e;
+  --teal: #1aa293;
+  --cream: #f5e8cf;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--night-deep);
+  color: var(--cream);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Fond nuit chaud animé (jamais de noir pur) ────────────────────── */
+.warm-backdrop {
+  background:
+    radial-gradient(55% 45% at 18% 8%, rgba(232, 72, 126, 0.16), transparent 72%),
+    radial-gradient(50% 42% at 82% 14%, rgba(238, 108, 58, 0.13), transparent 72%),
+    radial-gradient(60% 55% at 50% 102%, rgba(26, 162, 147, 0.12), transparent 72%),
+    radial-gradient(40% 35% at 85% 78%, rgba(233, 174, 62, 0.1), transparent 72%),
+    linear-gradient(180deg, #1f0e1a 0%, #160912 58%, #1f0e1a 100%);
+}
+
+/* ── Lettrage display 70s — propre, une seule couleur ──────────────── */
+.retro-title {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+  color: var(--cream);
+}
+
+/* Mot-clé accent doré (sobre) */
+.accent-gold {
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* Dégradé chaud (réservé aux gros mots-clés, jamais au texte courant) */
+.gradient-warm {
+  background: linear-gradient(95deg, var(--gold), var(--coral) 55%, var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Logo blanc-sur-noir → seules les lettres restent sur fond sombre */
+.logo-screen {
+  mix-blend-mode: screen;
+}
+
+/* Rayons de lumière chauds (flat) derrière la boule */
+.light-rays {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(245, 232, 207, 0.09) 6deg,
+    transparent 12deg,
+    transparent 30deg,
+    rgba(233, 174, 62, 0.08) 36deg,
+    transparent 42deg,
+    transparent 60deg,
+    rgba(245, 232, 207, 0.07) 66deg,
+    transparent 72deg
+  );
+  background-size: 100% 100%;
+}
+
+/* ── Verre chaud (cards) ───────────────────────────────────────────── */
+.glass-warm {
+  background: linear-gradient(150deg, rgba(255, 243, 230, 0.07), rgba(255, 243, 230, 0.02));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 243, 230, 0.1);
+}
+
+/* ── Grain / texture pochette ──────────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Halo lumineux doux réutilisable */
+.halo {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Scrollbar chaude */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--night-deep); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--magenta), var(--coral));
+  border-radius: 9999px;
+}
+
+::selection {
+  background: var(--magenta);
+  color: var(--cream);
+}
+
+/* Réduit les animations si l'utilisateur le demande */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
