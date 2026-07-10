@@ -1,51 +1,54 @@
-# 🚀 Déploiement — GitHub + Vercel
+# 🚀 Déploiement — GitHub + Vercel + Supabase
 
-## 1. Choisis TON mot de passe admin (important)
-Le mot de passe n'est jamais stocké en clair. Génère le hash avec :
-
+## 1. Mot de passe admin
 ```bash
 npm run set-admin
 ```
+Choisis ton mot de passe → écrit `.env.local` et affiche `ADMIN_USERNAME`,
+`ADMIN_PASSWORD_HASH`, `AUTH_SECRET` (le mot de passe en clair n'est jamais stocké).
 
-Il te demande un mot de passe (min. 8 caractères), écrit `.env.local` et affiche
-3 valeurs (`ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, `AUTH_SECRET`) à copier dans Vercel.
-👉 Choisis un mot de passe que **toi seul** connais.
+## 2. Supabase (persistance / CMS live)
+Sans Supabase, le site marche mais l'admin n'est qu'un éditeur local. Avec
+Supabase, **tu modifies dans /admin → c'est live pour tous les visiteurs**.
 
-## 2. Pousser sur GitHub
-Crée un dépôt **vide** sur https://github.com/new (ex. `lalzin-site`, privé ou public), puis :
+1. Crée un projet sur https://supabase.com (gratuit).
+2. **SQL Editor → New query** → colle tout le contenu de
+   [`supabase/setup.sql`](supabase/setup.sql) → **Run**.
+   (Crée la table `site_content`, la verrouille, et insère le contenu actuel.)
+3. **Settings → API** → récupère :
+   - `SUPABASE_URL` = *Project URL*
+   - `SUPABASE_SERVICE_ROLE_KEY` = clé **service_role** (⚠️ secrète)
 
-```bash
-git remote add origin https://github.com/TON-COMPTE/lalzin-site.git
-git push -u origin main
-```
+## 3. Pousser sur GitHub
+Déjà fait (`git push`). Pour la suite : `git add -A && git commit -m "…" && git push`.
 
-> `.env.local` n'est **jamais** poussé (il est dans `.gitignore`). Seuls tes secrets
-> restent sur ta machine et dans Vercel.
+## 4. Vercel — variables d'environnement
+Vercel → **Settings → Environment Variables** → ajoute les **5** clés
+(Production + Preview + Development) :
 
-## 3. Importer sur Vercel
-1. https://vercel.com/new → **Import** ton dépôt GitHub.
-2. Framework détecté automatiquement : **Next.js**. Laisse les réglages par défaut.
-3. Avant de déployer, ouvre **Environment Variables** et ajoute les 3 clés
-   affichées par `npm run set-admin` (Production + Preview) :
-   - `ADMIN_USERNAME`
-   - `ADMIN_PASSWORD_HASH`
-   - `AUTH_SECRET`
-4. **Deploy**.
+| Name | Source |
+|---|---|
+| `ADMIN_USERNAME` | `npm run set-admin` |
+| `ADMIN_PASSWORD_HASH` | `npm run set-admin` |
+| `AUTH_SECRET` | `npm run set-admin` |
+| `SUPABASE_URL` | Supabase → Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API (service_role) |
 
-## 4. Domaine
-Une fois le domaine branché (ex. `lalzin.com`), mets à jour `site.url` dans
-[`lib/content.ts`](lib/content.ts) — tout le SEO (canonical, OG, sitemap, JSON-LD)
-en dépend. Puis Vercel → Settings → **Domains** pour connecter `lalzin.com`.
+⚠️ **Redéploie** après avoir ajouté/modifié des variables
+(Deployments → ⋯ → Redeploy) — sinon elles ne s'appliquent pas.
 
-## Sécurité en résumé
-- Aucun secret dans le code / le dépôt.
-- Mot de passe stocké uniquement en **hash PBKDF2 salé** (irréversible).
-- Session = cookie **httpOnly** signé (HMAC), `Secure` en production.
-- `/admin` protégé par middleware (redirection login) + `noindex`.
-- Refus par défaut si les variables d'environnement manquent (fail-closed).
+## 5. Domaine
+Quand `lalzin.com` est branché (Vercel → Settings → Domains), mets à jour
+`site.url` (via /admin → onglet SEO, ou `lib/content.ts`). Le SEO en dépend.
 
-## Mettre à jour le site plus tard
-```bash
-git add -A && git commit -m "maj contenu" && git push
-```
-Vercel redéploie automatiquement à chaque push sur `main`.
+## Sécurité
+- Aucun secret dans le repo (tout en variables d'env, `.env.local` gitignoré).
+- Mot de passe en hash PBKDF2 salé ; session cookie httpOnly signé (HMAC).
+- Clé Supabase **service_role** utilisée uniquement côté serveur (jamais exposée).
+- `/admin` protégé par middleware + `noindex`. Fail-closed si non configuré.
+
+## Comment ça marche
+- Le site **lit** le contenu depuis Supabase à chaque requête (repli sur les
+  valeurs par défaut de `lib/content.ts` si Supabase indisponible).
+- `/admin` (login requis) **écrit** dans Supabase via `/api/admin/content`,
+  puis rafraîchit le site immédiatement (revalidation).

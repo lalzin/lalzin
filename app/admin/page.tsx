@@ -62,9 +62,27 @@ export default function AdminPage() {
     setTimeout(() => setFlash(''), 2600);
   };
 
-  const save = () => {
-    const ok = update(draft);
-    notify(ok ? 'Modifications enregistrées ✓' : 'Trop volumineux — exporte plutôt en JSON');
+  const [saving, setSaving] = useState(false);
+  const save = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch('/api/admin/content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(draft),
+      });
+      const j = await res.json().catch(() => ({}));
+      if (res.ok) {
+        update(draft); // reflète en mémoire (dirty repasse à false)
+        notify('Publié en ligne ✓');
+      } else {
+        notify(j.error || 'Échec de la sauvegarde');
+      }
+    } catch {
+      notify('Erreur réseau');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const exportDraft = () => {
@@ -91,21 +109,21 @@ export default function AdminPage() {
           <div>
             <h1 className="font-display text-3xl font-extrabold text-cream">Admin LALZIN</h1>
             <p className="text-sm text-cream/50">
-              Édite librement, puis clique sur <span className="font-semibold text-gold">Enregistrer</span> pour sauvegarder.
+              Édite, puis <span className="font-semibold text-gold">Enregistrer</span> → publié en ligne pour tous les visiteurs.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {/* Bouton principal : Enregistrer */}
             <button
               onClick={save}
-              disabled={!dirty}
+              disabled={!dirty || saving}
               className={`rounded-full px-5 py-2 text-sm font-bold transition-all ${
                 dirty
                   ? 'bg-gradient-to-r from-magenta via-coral to-gold text-night shadow-lg shadow-magenta/30 hover:scale-105'
                   : 'cursor-default border border-cream/15 text-cream/40'
               }`}
             >
-              {dirty ? '● Enregistrer' : 'Enregistré ✓'}
+              {saving ? 'Publication…' : dirty ? '● Enregistrer' : 'Enregistré ✓'}
             </button>
             <Link href="/" className="rounded-full border border-cream/15 px-4 py-2 text-sm text-cream/80 hover:text-cream">
               Voir le site ↗
@@ -397,9 +415,10 @@ export default function AdminPage() {
       {dirty && (
         <button
           onClick={save}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-magenta via-coral to-gold px-6 py-3.5 text-sm font-bold text-night shadow-2xl shadow-magenta/40 transition-transform hover:scale-105"
+          disabled={saving}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-magenta via-coral to-gold px-6 py-3.5 text-sm font-bold text-night shadow-2xl shadow-magenta/40 transition-transform hover:scale-105 disabled:opacity-70"
         >
-          💾 Enregistrer les modifications
+          {saving ? '⏳ Publication…' : '💾 Enregistrer & publier'}
         </button>
       )}
     </main>
