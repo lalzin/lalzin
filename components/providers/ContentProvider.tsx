@@ -27,7 +27,7 @@ type Ctx = {
   setLang: (l: Lang) => void;
   t: (l: L | undefined) => string;
   ui: UI;
-  update: (next: Content) => void;
+  update: (next: Content) => boolean;
   reset: () => void;
   exportJSON: () => void;
   importJSON: (json: string) => boolean;
@@ -74,12 +74,14 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const update = useCallback((next: Content) => {
+  const update = useCallback((next: Content): boolean => {
     setContent(next);
     try {
       localStorage.setItem(CONTENT_KEY, JSON.stringify(next));
+      return true;
     } catch {
-      /* ignore */
+      // ex. quota localStorage dépassé (trop d'images en base64)
+      return false;
     }
   }, []);
 

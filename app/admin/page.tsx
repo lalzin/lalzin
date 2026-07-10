@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useContent } from '@/components/providers/ContentProvider';
@@ -22,11 +22,30 @@ const TABS: { id: Tab; label: string }[] = [
 const ACCENTS = ['#FF2E92', '#FF6B35', '#FFC23C', '#15C7B8'];
 
 export default function AdminPage() {
-  const { content, update, reset, exportJSON, importJSON } = useContent();
+  const { content: saved, update, reset, importJSON } = useContent();
   const router = useRouter();
   const [tab, setTab] = useState<Tab>('artist');
   const [flash, setFlash] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Brouillon : on édite ici, on ne sauvegarde qu'au clic sur « Enregistrer ».
+  const [draft, setDraft] = useState<Content>(saved);
+  // Resynchronise le brouillon quand le contenu change de l'extérieur (import, reset).
+  useEffect(() => setDraft(saved), [saved]);
+
+  const content = draft; // le reste du panneau lit/édite le brouillon
+  const dirty = JSON.stringify(draft) !== JSON.stringify(saved);
+
+  // Prévient si on quitte avec des modifications non enregistrées.
+  useEffect(() => {
+    if (!dirty) return;
+    const h = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+    window.addEventListener('beforeunload', h);
+    return () => window.removeEventListener('beforeunload', h);
+  }, [dirty]);
 
   const logout = async () => {
     await fetch('/api/admin/login', { method: 'DELETE' });
@@ -34,12 +53,28 @@ export default function AdminPage() {
     router.refresh();
   };
 
-  const set = (patch: Partial<Content>) => update({ ...content, ...patch });
-  const setArtist = (p: Partial<Content['artist']>) => set({ artist: { ...content.artist, ...p } });
+  const set = (patch: Partial<Content>) => setDraft((d) => ({ ...d, ...patch }));
+  const setArtist = (p: Partial<Content['artist']>) =>
+    setDraft((d) => ({ ...d, artist: { ...d.artist, ...p } }));
 
   const notify = (m: string) => {
     setFlash(m);
-    setTimeout(() => setFlash(''), 2200);
+    setTimeout(() => setFlash(''), 2600);
+  };
+
+  const save = () => {
+    const ok = update(draft);
+    notify(ok ? 'Modifications enregistrées ✓' : 'Trop volumineux — exporte plutôt en JSON');
+  };
+
+  const exportDraft = () => {
+    const blob = new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'lalzin-content.json';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const onImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,14 +91,26 @@ export default function AdminPage() {
           <div>
             <h1 className="font-display text-3xl font-extrabold text-cream">Admin LALZIN</h1>
             <p className="text-sm text-cream/50">
-              Modifications enregistrées dans ce navigateur. Exporte le JSON pour sauvegarder.
+              Édite librement, puis clique sur <span className="font-semibold text-gold">Enregistrer</span> pour sauvegarder.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            {/* Bouton principal : Enregistrer */}
+            <button
+              onClick={save}
+              disabled={!dirty}
+              className={`rounded-full px-5 py-2 text-sm font-bold transition-all ${
+                dirty
+                  ? 'bg-gradient-to-r from-magenta via-coral to-gold text-night shadow-lg shadow-magenta/30 hover:scale-105'
+                  : 'cursor-default border border-cream/15 text-cream/40'
+              }`}
+            >
+              {dirty ? '● Enregistrer' : 'Enregistré ✓'}
+            </button>
             <Link href="/" className="rounded-full border border-cream/15 px-4 py-2 text-sm text-cream/80 hover:text-cream">
               Voir le site ↗
             </Link>
-            <button onClick={exportJSON} className="rounded-full bg-gradient-to-r from-magenta to-coral px-4 py-2 text-sm font-semibold text-night">
+            <button onClick={exportDraft} className="rounded-full border border-cream/15 px-4 py-2 text-sm text-cream/80 hover:text-cream">
               Exporter JSON
             </button>
             <button onClick={() => fileRef.current?.click()} className="rounded-full border border-cream/15 px-4 py-2 text-sm text-cream/80 hover:text-cream">
@@ -345,6 +392,16 @@ export default function AdminPage() {
           Couleurs suggérées : {ACCENTS.join(' · ')}
         </p>
       </div>
+
+      {/* Bouton Enregistrer flottant (visible dès qu'il y a des modifs) */}
+      {dirty && (
+        <button
+          onClick={save}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-magenta via-coral to-gold px-6 py-3.5 text-sm font-bold text-night shadow-2xl shadow-magenta/40 transition-transform hover:scale-105"
+        >
+          💾 Enregistrer les modifications
+        </button>
+      )}
     </main>
   );
 }
