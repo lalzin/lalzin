@@ -1,4 +1,4 @@
-import { cache } from 'react';
+import { unstable_noStore as noStore } from 'next/cache';
 import { defaultContent, type Content } from './content';
 import { supabaseServer } from './supabase';
 
@@ -21,7 +21,8 @@ function merge(saved: Partial<Content>): Content {
  * Repli sur `defaultContent` si Supabase n'est pas configuré ou vide.
  * `cache()` déduplique l'appel au sein d'une même requête.
  */
-export const getContent = cache(async (): Promise<Content> => {
+export async function getContent(): Promise<Content> {
+  noStore(); // jamais de cache : toujours la dernière version publiée
   const sb = supabaseServer();
   if (!sb) return defaultContent;
   try {
@@ -31,7 +32,7 @@ export const getContent = cache(async (): Promise<Content> => {
   } catch {
     return defaultContent;
   }
-});
+}
 
 /** Écrit le contenu dans Supabase. Renvoie l'erreur éventuelle. */
 export async function saveContent(content: Content): Promise<{ ok: boolean; error?: string }> {

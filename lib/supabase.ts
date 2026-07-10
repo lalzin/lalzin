@@ -19,6 +19,11 @@ export function supabaseServer(): SupabaseClient | null {
   if (!cached) {
     cached = createClient(url as string, serviceKey as string, {
       auth: { persistSession: false, autoRefreshToken: false },
+      global: {
+        // Empêche Next.js de mettre en cache les requêtes Supabase
+        // (sinon le site ressert une lecture périmée après une écriture).
+        fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }),
+      },
     });
   }
   return cached;
