@@ -41,6 +41,8 @@ export type Release = {
   cover?: string;
   href: string;
   featured?: boolean;
+  /** Affiche ce morceau en popup d'accueil (« nouveau titre »). */
+  announce?: boolean;
 };
 
 export type LiveDate = {
@@ -128,7 +130,7 @@ export const defaultContent: Content = {
   ],
 
   releases: [
-    { id: 'better-with-you', title: 'Better With You', type: 'Single', accent: ['#E8487E', '#EE6C3A'], cover: '/images/covers/better-with-you.jpg', href: 'https://spotify.link/lr7kzOQYNBb', featured: true },
+    { id: 'better-with-you', title: 'Better With You', type: 'Single', accent: ['#E8487E', '#EE6C3A'], cover: '/images/covers/better-with-you.jpg', href: 'https://spotify.link/lr7kzOQYNBb', featured: true, announce: true },
     { id: 'party-love-and-funk', title: 'Party Love And Funk', type: 'Album', accent: ['#E9AE3E', '#EE6C3A'], cover: '/images/covers/party-love-and-funk.jpg', href: 'https://hypeddit.com/lalzin/partyloveandfunk', featured: true },
     { id: 'party-love-and-funk-remixes', title: 'Party Love And Funk — Remixes', type: 'Album', accent: ['#1AA293', '#E8487E'], cover: '/images/covers/party-love-and-funk-remixes.jpg', href: 'https://hypeddit.com/lalzin/partyloveandfunkremixes' },
     { id: 'chemise', title: 'Chemise', type: 'EP', accent: ['#1AA293', '#E9AE3E'], cover: '/images/covers/chemise.jpg', href: 'https://hypeddit.com/lalzin/chemise' },

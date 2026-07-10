@@ -8,10 +8,12 @@ import Socials from '@/components/sections/Socials';
 import Merch from '@/components/sections/Merch';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/Footer';
+import NewReleasePopup from '@/components/NewReleasePopup';
 
 export default function Home() {
   return (
     <main className="relative">
+      <NewReleasePopup />
       <Navbar />
       <Hero />
       <About />

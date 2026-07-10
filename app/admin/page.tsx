@@ -201,7 +201,22 @@ export default function AdminPage() {
                 <ImageField label="Pochette" value={r.cover} onChange={(v) => updateRelease(content, set, i, { cover: v || undefined })} square />
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <ColorPair value={r.accent} onChange={(accent) => updateRelease(content, set, i, { accent })} />
-                  <Toggle label="À la une" checked={!!r.featured} onChange={(featured) => updateRelease(content, set, i, { featured })} />
+                  <div className="flex flex-col gap-2">
+                    <Toggle label="À la une" checked={!!r.featured} onChange={(featured) => updateRelease(content, set, i, { featured })} />
+                    <Toggle
+                      label="Popup « nouveau titre »"
+                      checked={!!r.announce}
+                      onChange={(announce) =>
+                        // Un seul morceau annoncé à la fois
+                        set({
+                          releases: content.releases.map((rel, j) => ({
+                            ...rel,
+                            announce: j === i ? announce : false,
+                          })),
+                        })
+                      }
+                    />
+                  </div>
                 </div>
               </Card>
             ))}

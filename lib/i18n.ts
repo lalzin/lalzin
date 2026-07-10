@@ -65,6 +65,12 @@ export const ui = {
     },
     footer: { rights: 'Tous droits réservés.' },
     links: { official: 'Site officiel', listen: 'Écouter LALZIN', back: 'Retour au site' },
+    promo: {
+      badge: 'Nouveau titre',
+      out: 'Disponible maintenant',
+      listen: 'Écouter',
+      later: 'Plus tard',
+    },
   },
 
   en: {
@@ -126,6 +132,12 @@ export const ui = {
     },
     footer: { rights: 'All rights reserved.' },
     links: { official: 'Official website', listen: 'Listen to LALZIN', back: 'Back to site' },
+    promo: {
+      badge: 'New track',
+      out: 'Out now',
+      listen: 'Listen',
+      later: 'Later',
+    },
   },
 } as const;
 
