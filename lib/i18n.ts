@@ -18,7 +18,7 @@ export const ui = {
       contact: 'Booking',
       links: 'Liens',
     },
-    hero: { listen: 'Écouter', booking: 'Booking' },
+    hero: { listen: 'Écouter', booking: 'Booking', loading: 'Chargement de la boule disco…' },
     about: { eyebrow: "L'artiste", title: 'Le groove à l’état pur' },
     discography: {
       eyebrow: 'Discographie',
@@ -85,7 +85,7 @@ export const ui = {
       contact: 'Booking',
       links: 'Links',
     },
-    hero: { listen: 'Listen', booking: 'Booking' },
+    hero: { listen: 'Listen', booking: 'Booking', loading: 'Loading the disco ball…' },
     about: { eyebrow: 'The artist', title: 'Pure groove energy' },
     discography: {
       eyebrow: 'Discography',

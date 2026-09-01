@@ -1,11 +1,34 @@
 'use client';
 
 import { useLayoutEffect, useMemo, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
+import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { HDR_ENV } from '@/lib/hdr';
 
 type Props = { bands?: number; lowPower?: boolean };
+
+/**
+ * Environnement HDR équirectangulaire : équivalent exact de <Environment />
+ * de drei pour un simple fichier .hdr (même mapping, même espace colorimétrique),
+ * sans embarquer drei ni ses décodeurs EXR/gainmap inutilisés ici.
+ */
+function HdrEnvironment({ file }: { file: string }) {
+  const texture = useLoader(RGBELoader, file);
+  const scene = useThree((state) => state.scene);
+
+  useLayoutEffect(() => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    texture.colorSpace = THREE.LinearSRGBColorSpace;
+    const previous = scene.environment;
+    scene.environment = texture;
+    return () => {
+      scene.environment = previous;
+    };
+  }, [texture, scene]);
+
+  return null;
+}
 
 export default function DiscoBall({ bands = 22, lowPower = false }: Props) {
   const group = useRef<THREE.Group>(null);
@@ -16,53 +39,61 @@ export default function DiscoBall({ bands = 22, lowPower = false }: Props) {
   const radius = 1.6;
 
   // Grille de miroirs lat/long, avec interstices (joints sombres = look disco)
-  const { matrices, colors } = useMemo(() => {
-    const matrices: THREE.Matrix4[] = [];
-    const colors: THREE.Color[] = [];
+  // Écrit directement dans les buffers d'instances : pas de millier d'objets
+  // Matrix4/Color intermédiaires à allouer puis collecter au montage.
+  const { matrixArray, colorArray, count } = useMemo(() => {
     const dummy = new THREE.Object3D();
-    const silver = new THREE.Color('#eef2f6');
-    const warm = [
-      new THREE.Color('#f7d9a8'),
-      new THREE.Color('#f4b9cf'),
-      new THREE.Color('#bdeee6'),
-    ];
+    const color = new THREE.Color();
+    const silver = '#eef2f6';
+    const warm = ['#f7d9a8', '#f4b9cf', '#bdeee6'];
     const cellH = (Math.PI * radius) / bands;
+
+    // 1ère passe : nombre exact de facettes, pour dimensionner les buffers
+    const counts: number[] = [];
+    let total = 0;
+    for (let b = 0; b < bands; b++) {
+      const lat = ((b + 0.5) / bands) * Math.PI;
+      const ringR = Math.sin(lat) * radius;
+      const c = Math.max(1, Math.round((2 * Math.PI * ringR) / cellH));
+      counts.push(c);
+      total += c;
+    }
+
+    const matrixArray = new Float32Array(total * 16);
+    const colorArray = new Float32Array(total * 3);
     let n = 0;
     for (let b = 0; b < bands; b++) {
       const lat = ((b + 0.5) / bands) * Math.PI;
       const y = Math.cos(lat) * radius;
       const ringR = Math.sin(lat) * radius;
       const circ = 2 * Math.PI * ringR;
-      const count = Math.max(1, Math.round(circ / cellH));
+      const c = counts[b];
       const offset = (b % 2) * 0.5;
-      for (let i = 0; i < count; i++) {
-        const lon = ((i + offset) / count) * Math.PI * 2;
-        const x = Math.cos(lon) * ringR;
-        const z = Math.sin(lon) * ringR;
-        dummy.position.set(x, y, z);
+      const w = (circ / c) * 0.46;
+      const h = cellH * 0.46;
+      for (let i = 0; i < c; i++) {
+        const lon = ((i + offset) / c) * Math.PI * 2;
+        dummy.position.set(Math.cos(lon) * ringR, y, Math.sin(lon) * ringR);
         dummy.lookAt(0, 0, 0);
-        const w = (circ / count) * 0.46;
-        const h = cellH * 0.46;
         dummy.scale.set(w, h, 0.03);
         dummy.updateMatrix();
-        matrices.push(dummy.matrix.clone());
-        colors.push(n % 11 === 0 ? warm[n % warm.length] : silver);
+        dummy.matrix.toArray(matrixArray, n * 16);
+        color.set(n % 11 === 0 ? warm[n % warm.length] : silver);
+        color.toArray(colorArray, n * 3);
         n++;
       }
     }
-    return { matrices, colors };
+    return { matrixArray, colorArray, count: total };
   }, [bands]);
 
   useLayoutEffect(() => {
     const mesh = tiles.current;
     if (!mesh) return;
-    matrices.forEach((m, i) => {
-      mesh.setMatrixAt(i, m);
-      mesh.setColorAt(i, colors[i]);
-    });
+    (mesh.instanceMatrix.array as Float32Array).set(matrixArray);
     mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-  }, [matrices, colors]);
+    mesh.instanceColor = new THREE.InstancedBufferAttribute(colorArray, 3);
+    mesh.instanceColor.needsUpdate = true;
+  }, [matrixArray, colorArray]);
 
   useFrame((state, delta) => {
     if (group.current) {
@@ -80,7 +111,7 @@ export default function DiscoBall({ bands = 22, lowPower = false }: Props) {
 
   return (
     <group ref={group}>
-      <Environment preset="sunset" />
+      <HdrEnvironment file={HDR_ENV} />
 
       <ambientLight intensity={0.7} />
       <hemisphereLight args={['#fff0d6', '#3a1e33', 0.7]} />
@@ -96,7 +127,7 @@ export default function DiscoBall({ bands = 22, lowPower = false }: Props) {
       </mesh>
 
       {/* Miroirs */}
-      <instancedMesh ref={tiles} args={[undefined, undefined, matrices.length]}>
+      <instancedMesh ref={tiles} args={[undefined, undefined, count]}>
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial
           metalness={0.95}

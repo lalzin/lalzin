@@ -62,12 +62,17 @@ const config: Config = {
           '0%, 100%': { transform: 'rotate(-2deg)' },
           '50%': { transform: 'rotate(2deg)' },
         },
+        sweep: {
+          '0%': { transform: 'translateX(-130%)' },
+          '100%': { transform: 'translateX(130%)' },
+        },
       },
       animation: {
         'float-slow': 'float-slow 7s ease-in-out infinite',
         'spin-slow': 'spin-slow 26s linear infinite',
         shimmer: 'shimmer 4s ease-in-out infinite',
         wobble: 'wobble 6s ease-in-out infinite',
+        sweep: 'sweep 1.8s ease-in-out infinite',
       },
     },
   },

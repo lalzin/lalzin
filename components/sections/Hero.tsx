@@ -4,9 +4,14 @@ import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import Confetti from '@/components/Confetti';
+import BallLoader from '@/components/three/BallLoader';
 import { groovy } from '@/components/ui/motion';
 
-const HeroCanvas = dynamic(() => import('@/components/three/HeroCanvas'), { ssr: false });
+const HeroCanvas = dynamic(() => import('@/components/three/HeroCanvas'), {
+  ssr: false,
+  // Même placeholder pendant le téléchargement du bundle 3D
+  loading: () => <BallLoader />,
+});
 
 export default function Hero() {
   const { content, t, ui } = useContent();
@@ -40,7 +45,7 @@ export default function Hero() {
           {/* Rayons + halo derrière la boule */}
           <div className="light-rays absolute inset-[-40%] animate-spin-slow rounded-full opacity-80" />
           <div className="absolute inset-0 -z-0 rounded-full bg-[radial-gradient(circle,rgba(232,72,126,0.28),transparent_62%)] blur-2xl" />
-          <HeroCanvas />
+          <HeroCanvas loadingLabel={ui.hero.loading} />
         </div>
       </div>
 
