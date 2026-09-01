@@ -114,6 +114,20 @@ body {
   border-radius: 9999px;
 }
 
+/* Liste des dates live : scroll interne quand il y en a beaucoup */
+.live-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--coral) transparent;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 2.5rem), transparent 100%);
+}
+.live-scroll::-webkit-scrollbar { width: 6px; }
+.live-scroll::-webkit-scrollbar-track { background: transparent; }
+.live-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--magenta), var(--coral));
+  border-radius: 9999px;
+}
+
 ::selection {
   background: var(--magenta);
   color: var(--cream);

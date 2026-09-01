@@ -10,6 +10,7 @@ export default function Live() {
   const { content, ui } = useContent();
   const dates = content.liveDates;
   const hasDates = dates.length > 0;
+  const isScrollable = dates.length > 4;
 
   return (
     <section id="live" className="relative overflow-hidden py-24 sm:py-32">
@@ -18,39 +19,47 @@ export default function Live() {
         <SectionHeading eyebrow={ui.live.eyebrow} title={ui.live.title} />
 
         {hasDates ? (
-          <motion.ul
-            variants={stagger}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            className="space-y-4"
+          <div
+            className={
+              isScrollable
+                ? 'live-scroll max-h-[26rem] overflow-y-auto overscroll-contain pr-2 sm:max-h-[30rem] sm:pr-3'
+                : undefined
+            }
           >
-            {dates.map((d) => (
-              <motion.li
-                key={d.id}
-                variants={fadeUp}
-                className="glass-warm flex flex-col items-start justify-between gap-3 rounded-3xl p-5 sm:flex-row sm:items-center"
-              >
-                <div className="flex items-center gap-5">
-                  <div className="font-display text-xl font-bold text-gold">{d.date}</div>
-                  <div>
-                    <div className="font-semibold text-cream">{d.venue}</div>
-                    <div className="text-sm text-cream/60">{d.city}</div>
+            <motion.ul
+              variants={stagger}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: isScrollable ? 0 : 0.2 }}
+              className="space-y-4"
+            >
+              {dates.map((d) => (
+                <motion.li
+                  key={d.id}
+                  variants={fadeUp}
+                  className="glass-warm flex flex-col items-start justify-between gap-3 rounded-3xl p-5 sm:flex-row sm:items-center"
+                >
+                  <div className="flex items-center gap-5">
+                    <div className="font-display text-xl font-bold text-gold">{d.date}</div>
+                    <div>
+                      <div className="font-semibold text-cream">{d.venue}</div>
+                      <div className="text-sm text-cream/60">{d.city}</div>
+                    </div>
                   </div>
-                </div>
-                {d.ticketsHref && (
-                  <a
-                    href={d.ticketsHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-gradient-to-r from-magenta to-coral px-5 py-2 text-sm font-semibold text-night"
-                  >
-                    {ui.live.tickets}
-                  </a>
-                )}
-              </motion.li>
-            ))}
-          </motion.ul>
+                  {d.ticketsHref && (
+                    <a
+                      href={d.ticketsHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full bg-gradient-to-r from-magenta to-coral px-5 py-2 text-sm font-semibold text-night"
+                    >
+                      {ui.live.tickets}
+                    </a>
+                  )}
+                </motion.li>
+              ))}
+            </motion.ul>
+          </div>
         ) : (
           <Reveal
             variants={{
