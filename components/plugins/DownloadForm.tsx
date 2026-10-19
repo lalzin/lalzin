@@ -27,18 +27,11 @@ type Props = {
   plugin: Plugin;
   /** Affiche le bandeau « lien expiré » (?expire=1). */
   expired?: boolean;
-  /** Affiche le bandeau « fichier pas encore en ligne » (?indisponible=1). */
-  notYet?: boolean;
   /** Clé publique Turnstile (vide = captcha désactivé). */
   turnstileSiteKey?: string;
 };
 
-export default function DownloadForm({
-  plugin,
-  expired = false,
-  notYet = false,
-  turnstileSiteKey = '',
-}: Props) {
+export default function DownloadForm({ plugin, expired = false, turnstileSiteKey = '' }: Props) {
   const { ui, lang, content } = useContent();
   const router = useRouter();
   const tx = ui.plugins.form;
@@ -113,12 +106,6 @@ export default function DownloadForm({
   return (
     <section id="telecharger" className="scroll-mt-28">
       <div className="glass-warm mx-auto max-w-xl rounded-[2rem] p-6 sm:p-8">
-        {notYet && (
-          <p className="mb-5 rounded-2xl border border-teal/40 bg-teal/10 px-4 py-3 text-sm text-teal-soft">
-            <strong className="font-bold">{ui.plugins.notYet.title}.</strong> {ui.plugins.notYet.text}
-          </p>
-        )}
-
         {expired && (
           <p className="mb-5 rounded-2xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-gold">
             <strong className="font-bold">{ui.plugins.expired.title}.</strong> {ui.plugins.expired.text}

@@ -9,7 +9,7 @@
  *  Clés serveur uniquement (jamais NEXT_PUBLIC).
  * ════════════════════════════════════════════════════════════════════
  */
-import { GetObjectCommand, HeadObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const accountId = process.env.R2_ACCOUNT_ID;
@@ -54,22 +54,6 @@ function client(): S3Client | null {
     });
   }
   return cached;
-}
-
-/**
- * Le fichier est-il réellement dans le bucket ?
- * Présigner une URL ne vérifie rien : sans ce contrôle, un objet absent
- * renvoie une erreur XML de Cloudflare en pleine figure du visiteur.
- */
-export async function objectExists(key: string): Promise<boolean> {
-  const s3 = client();
-  if (!s3) return false;
-  try {
-    await s3.send(new HeadObjectCommand({ Bucket: bucket as string, Key: key }));
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 /**

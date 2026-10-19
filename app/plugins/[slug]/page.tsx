@@ -43,7 +43,7 @@ export function generateMetadata({ params }: Params): Metadata {
 export default function PluginPage({
   params,
   searchParams,
-}: Params & { searchParams: { expire?: string; indisponible?: string } }) {
+}: Params & { searchParams: { expire?: string } }) {
   const plugin = getPlugin(params.slug);
   if (!plugin) notFound();
 
@@ -75,7 +75,6 @@ export default function PluginPage({
       <PluginDetail
         plugin={plugin}
         expired={searchParams?.expire === '1'}
-        notYet={searchParams?.indisponible === '1'}
         turnstileSiteKey={turnstileSiteKey}
       />
     </>

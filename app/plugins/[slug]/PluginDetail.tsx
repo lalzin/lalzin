@@ -19,12 +19,10 @@ import {
 export default function PluginDetail({
   plugin,
   expired,
-  notYet,
   turnstileSiteKey,
 }: {
   plugin: Plugin;
   expired: boolean;
-  notYet: boolean;
   turnstileSiteKey: string;
 }) {
   const { t, ui, lang } = useContent();
@@ -162,12 +160,7 @@ export default function PluginDetail({
 
         {/* ── TÉLÉCHARGEMENT ───────────────────────────────────── */}
         <section className="mt-24">
-          <DownloadForm
-            plugin={plugin}
-            expired={expired}
-            notYet={notYet}
-            turnstileSiteKey={turnstileSiteKey}
-          />
+          <DownloadForm plugin={plugin} expired={expired} turnstileSiteKey={turnstileSiteKey} />
         </section>
 
         {/* ── CONFIGURATION REQUISE ────────────────────────────── */}

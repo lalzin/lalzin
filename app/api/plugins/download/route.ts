@@ -11,7 +11,7 @@ import { NextResponse } from 'next/server';
 import { verifyDownloadToken } from '@/lib/downloadToken';
 import { logDownload } from '@/lib/pluginRequests';
 import { getPlugin, isOSAvailable, r2Key, type OS } from '@/lib/plugins';
-import { objectExists, presignDownload, r2Configured } from '@/lib/r2';
+import { presignDownload, r2Configured } from '@/lib/r2';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -45,16 +45,7 @@ export async function GET(req: Request) {
     );
   }
 
-  // Le build n'est pas encore en ligne : message clair plutôt qu'une erreur XML.
-  const key = r2Key(plugin, os);
-  if (!(await objectExists(key))) {
-    return NextResponse.redirect(
-      new URL(`/plugins/${plugin.slug}?indisponible=1#telecharger`, req.url),
-      302,
-    );
-  }
-
-  const url = await presignDownload(key, plugin.downloads[os].file);
+  const url = await presignDownload(r2Key(plugin, os), plugin.downloads[os].file);
   if (!url) {
     return NextResponse.json({ ok: false, error: 'Fichier indisponible' }, { status: 503 });
   }

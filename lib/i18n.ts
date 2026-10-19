@@ -157,11 +157,6 @@ export const ui = {
         title: 'Ce lien a expiré',
         text: 'Les liens sont valables 7 jours. Redemande-en un, c’est immédiat.',
       },
-      /* Fichier pas encore en ligne */
-      notYet: {
-        title: 'Le fichier arrive',
-        text: 'Le plugin est en cours de validation chez Apple. Laisse ton email ci-dessous, tu seras prévenu dès qu’il est téléchargeable.',
-      },
     },
     privacy: {
       title: 'Politique de confidentialité',
@@ -353,11 +348,6 @@ export const ui = {
       expired: {
         title: 'This link has expired',
         text: 'Links stay valid for 7 days. Ask for a new one, it’s instant.',
-      },
-      /* File not online yet */
-      notYet: {
-        title: 'The file is on its way',
-        text: 'The plugin is going through Apple’s notarisation. Leave your email below and you’ll hear from us as soon as it can be downloaded.',
       },
     },
     privacy: {
