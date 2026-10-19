@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: `Tous les liens de ${artist.name} : Spotify, Instagram, Apple Music, YouTube, SoundCloud, sorties & booking.`,
   alternates: { canonical: '/links' },
   openGraph: {
-    title: `${artist.name} — Liens`,
+    title: `${artist.name} · Liens`,
     description: `Retrouve ${artist.name} sur toutes les plateformes.`,
     url: `${defaultContent.site.url}/links`,
     images: ['/og.jpg'],

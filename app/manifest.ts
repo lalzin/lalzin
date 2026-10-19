@@ -4,7 +4,7 @@ import { defaultContent } from '@/lib/content';
 export default function manifest(): MetadataRoute.Manifest {
   const { artist, site } = defaultContent;
   return {
-    name: `${artist.name} — DJ & Producer`,
+    name: `${artist.name} · DJ & Producer`,
     short_name: artist.name,
     description: site.description,
     start_url: '/',

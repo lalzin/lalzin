@@ -24,7 +24,7 @@ export default function Hero() {
     >
       {/* Titre H1 pour le SEO (le visuel étant le logo en image) */}
       <h1 className="sr-only">
-        {artist.name} — DJ &amp; producteur funky house, disco funk &amp; bass house
+        {artist.name}, DJ &amp; producteur funky house, disco funk &amp; bass house
       </h1>
 
       {/* Filigrane live + voile sombre */}

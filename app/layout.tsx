@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { site, artist } = await getContent();
   return {
     metadataBase: new URL(site.url),
-    title: { default: site.title, template: '%s — LALZIN' },
+    title: { default: site.title, template: '%s · LALZIN' },
     description: site.description,
     applicationName: artist.name,
     category: 'music',
@@ -45,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: artist.name,
       title: site.title,
       description: site.description,
-      images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'LALZIN — DJ & producteur funky house / disco / bass' }],
+      images: [{ url: '/og.jpg', width: 1200, height: 630, alt: 'LALZIN, DJ & producteur funky house / disco / bass' }],
     },
     twitter: {
       card: 'summary_large_image',

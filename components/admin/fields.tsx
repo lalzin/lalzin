@@ -75,7 +75,7 @@ export function ImageField({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt="" className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-cream/30">—</div>
+            <div className="flex h-full w-full items-center justify-center text-xs text-cream/30">Aucune image</div>
           )}
         </div>
         <div className="flex flex-wrap gap-2">

@@ -162,7 +162,7 @@ export const defaultContent: Content = {
 
   site: {
     url: 'https://lalzin.com',
-    title: 'LALZIN — DJ & Producer | Funky House · Disco · Bass',
+    title: 'LALZIN · DJ & Producer | Funky House · Disco · Bass',
     description:
       'Site officiel de LALZIN, DJ & producteur funky house / disco / bass. 80K+ auditeurs mensuels. Sorties, clips, dates live & booking.',
     shopUrl: 'https://1mq7i0-f3.myshopify.com',
