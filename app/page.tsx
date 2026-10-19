@@ -7,6 +7,7 @@ import VideoSection from '@/components/sections/VideoSection';
 import Live from '@/components/sections/Live';
 import Socials from '@/components/sections/Socials';
 import Merch from '@/components/sections/Merch';
+import Plugins from '@/components/sections/Plugins';
 import Contact from '@/components/sections/Contact';
 import Footer from '@/components/Footer';
 import NewReleasePopup from '@/components/NewReleasePopup';
@@ -28,6 +29,7 @@ export default function Home() {
       <Live />
       <Socials />
       <Merch />
+      <Plugins />
       <Contact />
       <Footer />
     </main>

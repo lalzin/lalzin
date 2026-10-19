@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import { useContent } from '@/components/providers/ContentProvider';
 import type { Content, LiveDate, MerchProduct, Release } from '@/lib/content';
 import { Area, Card, ColorPair, ImageField, LocalizedField, Select, Text, Toggle } from '@/components/admin/fields';
+import PluginsPanel from '@/components/admin/PluginsPanel';
 
-type Tab = 'artist' | 'socials' | 'releases' | 'video' | 'live' | 'merch' | 'seo';
+type Tab = 'artist' | 'socials' | 'releases' | 'video' | 'live' | 'merch' | 'plugins' | 'seo';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'artist', label: '🎤 Artiste' },
@@ -16,6 +17,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'video', label: '🎬 Vidéo' },
   { id: 'live', label: '📅 Dates' },
   { id: 'merch', label: '🛍️ Boutique' },
+  { id: 'plugins', label: '🎛️ Plugins' },
   { id: 'seo', label: '⚙️ SEO' },
 ];
 
@@ -321,7 +323,7 @@ export default function AdminPage() {
           <div className="space-y-3">
             {content.liveDates.length === 0 && (
               <p className="rounded-2xl border border-cream/10 bg-cream/[0.03] p-4 text-sm text-cream/50">
-                Aucune date — la section affiche « Dates bientôt annoncées ».
+                Aucune date : la section affiche « Dates bientôt annoncées ».
               </p>
             )}
             {content.liveDates.map((d, i) => (
@@ -357,7 +359,7 @@ export default function AdminPage() {
           <div className="space-y-3">
             <Card>
               <Text
-                label="Lien de la boutique (Shopify) — bouton « Visiter la boutique »"
+                label="Lien de la boutique (Shopify) : bouton « Visiter la boutique »"
                 value={content.site.shopUrl ?? ''}
                 onChange={(v) => set({ site: { ...content.site, shopUrl: v || undefined } })}
                 mono
@@ -398,6 +400,9 @@ export default function AdminPage() {
         )}
 
         {/* SEO */}
+        {/* PLUGINS — lecture seule (demandes & téléchargements) */}
+        {tab === 'plugins' && <PluginsPanel />}
+
         {tab === 'seo' && (
           <Card>
             <Text label="URL du site" value={content.site.url} onChange={(v) => set({ site: { ...content.site, url: v } })} mono />

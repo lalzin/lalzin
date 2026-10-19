@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import LangSwitch from '@/components/ui/LangSwitch';
@@ -56,6 +57,14 @@ export default function Navbar() {
               </button>
             </li>
           ))}
+          <li>
+            <Link
+              href="/plugins"
+              className="rounded-full px-3.5 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold/10"
+            >
+              {ui.nav.plugins}
+            </Link>
+          </li>
         </ul>
 
         <div className="flex items-center gap-2">
@@ -99,6 +108,13 @@ export default function Navbar() {
                 {ui.nav[id]}
               </button>
             ))}
+            <Link
+              href="/plugins"
+              onClick={() => setOpen(false)}
+              className="block w-full rounded-2xl px-4 py-3 text-left text-base font-semibold text-gold transition-colors hover:bg-gold/10"
+            >
+              {ui.nav.plugins}
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

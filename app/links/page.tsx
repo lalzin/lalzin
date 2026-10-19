@@ -103,6 +103,33 @@ export default function LinksPage() {
           </div>
         )}
 
+        {/* Plugins gratuits */}
+        <div className="mt-8 w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: groovy, delay: 0.1 }}
+          >
+            <Link
+              href="/plugins"
+              className="group flex items-center gap-4 rounded-2xl border border-gold/35 bg-gradient-to-r from-gold/20 to-coral/10 px-5 py-4 backdrop-blur-sm transition-colors hover:border-gold"
+            >
+              <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gold/20 text-lg">
+                🎛️
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate font-semibold text-cream">{ui.plugins.teaserTitle}</span>
+                <span className="text-[11px] uppercase tracking-wider text-cream/50">
+                  {ui.plugins.free} · VST3 · AU
+                </span>
+              </span>
+              <span className="ml-auto text-cream/40 transition-transform group-hover:translate-x-1 group-hover:text-cream">
+                →
+              </span>
+            </Link>
+          </motion.div>
+        </div>
+
         {/* Réseaux */}
         <div className="mt-6 w-full space-y-3">
           {items.map((s, i) => {
@@ -148,7 +175,7 @@ export default function LinksPage() {
             whileTap={{ scale: 0.98 }}
             className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-magenta via-coral to-gold px-5 py-4 font-bold text-night shadow-lg shadow-magenta/30"
           >
-            ✉ {ui.nav.contact} — {artist.bookingEmail}
+            ✉ {ui.nav.contact} · {artist.bookingEmail}
           </motion.a>
         </div>
 
