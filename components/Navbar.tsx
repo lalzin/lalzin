@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import LangSwitch from '@/components/ui/LangSwitch';
@@ -10,8 +11,14 @@ const NAV_IDS = ['about', 'discography', 'video', 'live', 'merch', 'contact'] as
 
 export default function Navbar() {
   const { ui } = useContent();
+  const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  // Les entrées du menu sont des ancres de l'accueil : depuis une autre
+  // page (plugins, confidentialité…), il faut y retourner d'abord.
+  const onHome = pathname === '/';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -22,7 +29,11 @@ export default function Navbar() {
 
   const go = (id: string) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    if (onHome) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    router.push(id === 'home' ? '/' : `/#${id}`);
   };
 
   return (

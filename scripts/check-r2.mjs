@@ -47,8 +47,8 @@ const attendus = data.plugins
   .filter((p) => published.includes(p.slug))
   .flatMap((p) =>
     Object.entries(p.downloads)
-      .filter(([, d]) => typeof d.bytes === 'number' && d.bytes > 0)
-      .map(([os, d]) => ({ plugin: p.name, os, key: `${p.version}/${d.file}`, bytes: d.bytes })),
+      .filter(([, d]) => Boolean(d.file))
+      .map(([os, d]) => ({ plugin: p.name, os, key: `${p.slug}/${p.version}/${d.file}`, bytes: d.bytes })),
   );
 
 const s3 = new S3Client({

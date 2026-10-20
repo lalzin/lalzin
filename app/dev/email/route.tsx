@@ -12,7 +12,8 @@ import { NextResponse } from 'next/server';
 import DownloadEmail, { downloadEmailText, type DownloadEmailProps } from '@/components/email/DownloadEmail';
 import { defaultContent } from '@/lib/content';
 import { paypalUrl } from '@/lib/publicConfig';
-import { availableOS, formatBytes, getPlugin, pluginEmailImage } from '@/lib/plugins';
+import { availableOS, formatBytes, pluginEmailImage } from '@/lib/plugins';
+import { getPlugin } from '@/lib/pluginConfig';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -26,7 +27,7 @@ export async function GET(req: Request) {
   const lang = searchParams.get('lang') === 'en' ? 'en' : 'fr';
   const slug = searchParams.get('p') ?? 'french-filter';
 
-  const plugin = getPlugin(slug);
+  const plugin = await getPlugin(slug);
   if (!plugin) return new NextResponse('Plugin inconnu', { status: 404 });
 
   const token = 'APERCU-SANS-JETON-REEL';
@@ -45,6 +46,7 @@ export async function GET(req: Request) {
       },
     ],
     installUrl: `${origin}/plugins/installation`,
+    instagramUrl: defaultContent.socials.find((s) => s.key === 'instagram')?.href ?? null,
     paypalUrl: paypalUrl(),
     bookingEmail: defaultContent.artist.bookingEmail,
   };

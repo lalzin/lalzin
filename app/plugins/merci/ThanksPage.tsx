@@ -5,21 +5,26 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
+import { SocialIcon } from '@/components/ui/icons';
 import Confetti from '@/components/Confetti';
+import Navbar from '@/components/Navbar';
 import { groovy } from '@/components/ui/motion';
-import { getPlugin } from '@/lib/plugins';
+import type { Plugin } from '@/lib/plugins';
 
 const AMOUNTS = [3, 5, 10];
 const RESEND_COOLDOWN_S = 60;
 
-export default function ThanksPage({ paypalMe }: { paypalMe: string }) {
+export default function ThanksPage({ paypalMe, plugins }: { paypalMe: string; plugins: Plugin[] }) {
   const { ui, content } = useContent();
   const tx = ui.plugins.thanks;
+  const instagram = content.socials.find((s) => s.key === 'instagram')?.href;
   const params = useSearchParams();
 
   const slugs = (params.get('p') ?? '').split(',').filter(Boolean);
   const resendToken = params.get('r');
-  const names = slugs.map((s) => getPlugin(s)?.name).filter(Boolean) as string[];
+  const names = slugs
+    .map((s) => plugins.find((p) => p.slug === s)?.name)
+    .filter(Boolean) as string[];
 
   const [left, setLeft] = useState(RESEND_COOLDOWN_S);
   const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
@@ -57,6 +62,7 @@ export default function ThanksPage({ paypalMe }: { paypalMe: string }) {
 
   return (
     <main className="relative flex min-h-[100svh] flex-col items-center overflow-hidden px-6 pb-24 pt-32">
+      <Navbar />
       <div className="halo left-[15%] top-[10%] h-72 w-72 bg-magenta" />
       <div className="halo right-[12%] top-[35%] h-72 w-72 bg-gold" />
       <Confetti count={16} />
@@ -101,6 +107,23 @@ export default function ThanksPage({ paypalMe }: { paypalMe: string }) {
         >
           {tx.installCta} →
         </Link>
+
+        {/* ── Abonnement Instagram (facultatif) ──────────────────── */}
+        {instagram && (
+          <div className="glass-warm mt-12 rounded-[2rem] p-7 text-left">
+            <h2 className="font-display text-2xl font-bold text-cream">{tx.followTitle}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-cream/70">{tx.followText}</p>
+            <a
+              href={instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-magenta to-coral px-6 py-3 text-sm font-bold text-night transition-transform hover:scale-105"
+            >
+              <SocialIcon.instagram className="h-4 w-4" />
+              {tx.followCta}
+            </a>
+          </div>
+        )}
 
         {/* ── Don (jamais une condition du téléchargement) ───────── */}
         {paypalMe && (

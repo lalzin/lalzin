@@ -6,6 +6,7 @@ import { useContent } from '@/components/providers/ContentProvider';
 import DownloadForm from '@/components/plugins/DownloadForm';
 import PluginWindow from '@/components/plugins/PluginWindow';
 import Reveal from '@/components/ui/Reveal';
+import Navbar from '@/components/Navbar';
 import {
   OS_LABEL,
   UI_STATES,
@@ -20,10 +21,12 @@ export default function PluginDetail({
   plugin,
   expired,
   turnstileSiteKey,
+  others = [],
 }: {
   plugin: Plugin;
   expired: boolean;
   turnstileSiteKey: string;
+  others?: Plugin[];
 }) {
   const { t, ui, lang } = useContent();
   const tx = ui.plugins;
@@ -34,6 +37,7 @@ export default function PluginDetail({
 
   return (
     <main className="relative min-h-[100svh] overflow-hidden pb-24 pt-28">
+      <Navbar />
       {/* Halos aux couleurs du plugin, discrets (le fond reste celui du site) */}
       <div
         aria-hidden
@@ -160,7 +164,12 @@ export default function PluginDetail({
 
         {/* ── TÉLÉCHARGEMENT ───────────────────────────────────── */}
         <section className="mt-24">
-          <DownloadForm plugin={plugin} expired={expired} turnstileSiteKey={turnstileSiteKey} />
+          <DownloadForm
+            plugin={plugin}
+            expired={expired}
+            turnstileSiteKey={turnstileSiteKey}
+            others={others}
+          />
         </section>
 
         {/* ── CONFIGURATION REQUISE ────────────────────────────── */}

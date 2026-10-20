@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
+import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
 
 /** Date de dernière mise à jour du texte (à changer si le texte change). */
@@ -19,6 +20,7 @@ export default function PrivacyPage() {
 
   return (
     <main className="relative min-h-[100svh] overflow-hidden pb-24 pt-28">
+      <Navbar />
       <div className="halo left-[12%] top-[12%] h-72 w-72 bg-magenta" />
 
       <div className="relative mx-auto max-w-3xl px-6">

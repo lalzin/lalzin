@@ -5,14 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useContent } from '@/components/providers/ContentProvider';
 import Turnstile from './Turnstile';
-import {
-  OS_LABEL,
-  availableOS,
-  formatBytes,
-  plugins as allPlugins,
-  type OS,
-  type Plugin,
-} from '@/lib/plugins';
+import { OS_LABEL, availableOS, formatBytes, type OS, type Plugin } from '@/lib/plugins';
 
 /** Devine l'OS du visiteur (modifiable ensuite). */
 function guessOS(): OS {
@@ -29,15 +22,22 @@ type Props = {
   expired?: boolean;
   /** Clé publique Turnstile (vide = captcha désactivé). */
   turnstileSiteKey?: string;
+  /** Autres plugins publiés, proposés en cases à cocher. */
+  others?: Plugin[];
 };
 
-export default function DownloadForm({ plugin, expired = false, turnstileSiteKey = '' }: Props) {
+export default function DownloadForm({
+  plugin,
+  expired = false,
+  turnstileSiteKey = '',
+  others: othersProp = [],
+}: Props) {
   const { ui, lang, content } = useContent();
   const router = useRouter();
   const tx = ui.plugins.form;
 
   const oses = useMemo(() => availableOS(plugin), [plugin]);
-  const others = useMemo(() => allPlugins.filter((p) => p.slug !== plugin.slug), [plugin.slug]);
+  const others = useMemo(() => othersProp.filter((p) => p.slug !== plugin.slug), [othersProp, plugin.slug]);
 
   const [email, setEmail] = useState('');
   const [os, setOS] = useState<OS>(oses[0] ?? 'macos');

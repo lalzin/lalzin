@@ -1,14 +1,14 @@
 import type { MetadataRoute } from 'next';
 import { defaultContent } from '@/lib/content';
-import { pluginSlugs } from '@/lib/plugins';
+import { getPublishedSlugs } from '@/lib/pluginConfig';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = defaultContent.site.url;
   const now = new Date();
   return [
     { url: `${base}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
     { url: `${base}/plugins`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    ...pluginSlugs.map((slug) => ({
+    ...(await getPublishedSlugs()).map((slug) => ({
       url: `${base}/plugins/${slug}`,
       lastModified: now,
       changeFrequency: 'weekly' as const,

@@ -5,14 +5,16 @@ import Link from 'next/link';
 import { useContent } from '@/components/providers/ContentProvider';
 import PluginCard from '@/components/plugins/PluginCard';
 import SectionHeading from '@/components/ui/SectionHeading';
+import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
-import { plugins, suite, suiteImage } from '@/lib/plugins';
+import { suite, suiteImage, type Plugin } from '@/lib/plugins';
 
-export default function PluginsIndex() {
+export default function PluginsIndex({ plugins }: { plugins: Plugin[] }) {
   const { t, ui } = useContent();
 
   return (
     <main className="relative min-h-[100svh] overflow-hidden pb-24 pt-28">
+      <Navbar />
       <div className="halo left-[8%] top-[12%] h-72 w-72 bg-magenta" />
       <div className="halo right-[10%] top-[40%] h-72 w-72 bg-teal" />
 

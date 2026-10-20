@@ -6,10 +6,10 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/ui/Reveal';
-import { plugins, pluginImage, suite } from '@/lib/plugins';
+import { pluginImage, suite, type Plugin } from '@/lib/plugins';
 
 /** Teaser sur la home : la suite Groove Knobs, renvoie vers /plugins. */
-export default function Plugins() {
+export default function Plugins({ plugins }: { plugins: Plugin[] }) {
   const { t, ui } = useContent();
   const reduced = useReducedMotion();
   const featured = plugins[0];

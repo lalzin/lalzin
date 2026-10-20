@@ -13,7 +13,7 @@ import { defaultContent } from '@/lib/content';
 import { addToAudience, emailConfigured, sendDownloadEmail } from '@/lib/email';
 import { hashIP, signDownloadToken } from '@/lib/downloadToken';
 import { checkQuotas, createRequest } from '@/lib/pluginRequests';
-import { keepPublished } from '@/lib/plugins';
+import { getPlugins, keepPublished } from '@/lib/pluginConfig';
 import { verifyTurnstile } from '@/lib/turnstile';
 import { buildEmailProps, clientIP, siteOrigin } from '../shared';
 
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   }
 
   // Ne garde que des plugins réellement publiés, et un OS réellement dispo.
-  const slugs = keepPublished(input.plugins);
+  const slugs = await keepPublished(input.plugins);
   if (slugs.length === 0) {
     return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 });
   }
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
   const sent = await sendDownloadEmail(
     input.email,
     defaultContent.artist.bookingEmail,
-    buildEmailProps({ slugs, os: input.os, lang: input.lang, token, origin }),
+    buildEmailProps({ plugins: await getPlugins(), slugs, os: input.os, lang: input.lang, token, origin }),
   );
   if (!sent) {
     return NextResponse.json({ ok: false, error: 'server' }, { status: 502 });

@@ -81,7 +81,7 @@ export const ui = {
       by: 'par',
       discover: 'Voir le plugin',
       soon: 'Bientôt',
-      soonOther: 'Les deux autres plugins de la suite arrivent très vite.',
+      soonOther: 'D’autres plugins arrivent.',
       highlights: 'Points forts',
       presets: 'Presets',
       states: 'En images',
@@ -120,6 +120,10 @@ export const ui = {
         nothing: 'Je n’ai rien reçu',
         resent: 'C’est reparti ! Vérifie ta boîte mail.',
         wait: 'Patiente encore {s} s',
+        followTitle: 'Suis le groove',
+        followText:
+          'Les plugins sont gratuits et le resteront. Si tu veux rendre la pareille, le plus simple c’est de me suivre : c’est là que j’annonce les nouveaux.',
+        followCta: 'Suivre sur Instagram',
         donateTitle: 'Les plugins sont gratuits',
         donateText:
           'Si celui-là te sert, un petit don aide à en sortir d’autres. C’est libre, et ça ne change rien à ton téléchargement.',
@@ -274,7 +278,7 @@ export const ui = {
       by: 'by',
       discover: 'View plugin',
       soon: 'Soon',
-      soonOther: 'The other two plugins of the suite are coming very soon.',
+      soonOther: 'More plugins on the way.',
       highlights: 'Highlights',
       presets: 'Presets',
       states: 'In pictures',
@@ -312,6 +316,10 @@ export const ui = {
         nothing: 'I got nothing',
         resent: 'Sent again! Check your inbox.',
         wait: 'Please wait {s} s',
+        followTitle: 'Follow the groove',
+        followText:
+          'The plugins are free and will stay free. If you want to give something back, the easiest is to follow me: that’s where new ones get announced.',
+        followCta: 'Follow on Instagram',
         donateTitle: 'The plugins are free',
         donateText:
           'If this one earns its place, a small tip helps me make more. Entirely optional, and it changes nothing about your download.',

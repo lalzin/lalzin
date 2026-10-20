@@ -6,13 +6,7 @@ import { defaultContent } from '@/lib/content';
 import { paypalUrl } from '@/lib/publicConfig';
 import type { Lang } from '@/lib/content';
 import type { DownloadEmailProps } from '@/components/email/DownloadEmail';
-import {
-  availableOS,
-  formatBytes,
-  getPlugin,
-  pluginEmailImage,
-  type OS,
-} from '@/lib/plugins';
+import { availableOS, formatBytes, pluginEmailImage, type OS, type Plugin } from '@/lib/plugins';
 
 /** IP du visiteur derrière le proxy Vercel. */
 export function clientIP(req: Request): string | null {
@@ -38,17 +32,18 @@ export function siteOrigin(req: Request): string {
  * poste de travail…).
  */
 export function buildEmailProps(params: {
+  plugins: Plugin[];
   slugs: string[];
   os: OS;
   lang: Lang;
   token: string;
   origin: string;
 }): DownloadEmailProps {
-  const { slugs, os, lang, token, origin } = params;
+  const { plugins, slugs, os, lang, token, origin } = params;
   const donateUrl = paypalUrl();
 
   const items = slugs.flatMap((slug) => {
-    const plugin = getPlugin(slug);
+    const plugin = plugins.find((p) => p.slug === slug);
     if (!plugin) return [];
 
     const oses = availableOS(plugin).sort((a) => (a === os ? -1 : 1));
@@ -66,6 +61,7 @@ export function buildEmailProps(params: {
     siteUrl: origin,
     items,
     installUrl: `${origin}/plugins/installation`,
+    instagramUrl: defaultContent.socials.find((s) => s.key === 'instagram')?.href ?? null,
     paypalUrl: donateUrl,
     bookingEmail: defaultContent.artist.bookingEmail,
   };

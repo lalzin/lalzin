@@ -29,6 +29,8 @@ export type DownloadEmailProps = {
     links: { os: OS; href: string; size: string }[];
   }[];
   installUrl: string;
+  /** Profil Instagram, ou null si absent du contenu du site. */
+  instagramUrl: string | null;
   paypalUrl: string | null;
   bookingEmail: string;
 };
@@ -49,6 +51,9 @@ const T = {
     installTitle: 'Première installation ?',
     installText: 'Deux minutes, et le knob est dans ton DAW :',
     installCta: 'Voir le guide d’installation',
+    followTitle: 'Reste dans la boucle',
+    followText: 'Les nouveaux plugins sont annoncés sur Instagram.',
+    followCta: 'Suivre LALZIN',
     donate: 'Ces plugins sont gratuits. Si tu veux soutenir la suite, c’est par ici, en toute liberté.',
     donateCta: 'Offrir un café',
     reply: 'Un souci, une idée ? Réponds simplement à cet email.',
@@ -63,6 +68,9 @@ const T = {
     installTitle: 'First install?',
     installText: 'Two minutes, and the knob is in your DAW:',
     installCta: 'Read the install guide',
+    followTitle: 'Stay in the loop',
+    followText: 'New plugins get announced on Instagram.',
+    followCta: 'Follow LALZIN',
     donate: 'These plugins are free. If you want to support the next ones, it’s right here, entirely up to you.',
     donateCta: 'Buy me a coffee',
     reply: 'A problem, an idea? Just reply to this email.',
@@ -76,6 +84,7 @@ export default function DownloadEmail({
   siteUrl,
   items,
   installUrl,
+  instagramUrl,
   paypalUrl,
   bookingEmail,
 }: DownloadEmailProps) {
@@ -155,6 +164,21 @@ export default function DownloadEmail({
             </Text>
           </Section>
 
+          {instagramUrl && (
+            <Section style={{ padding: '6px 2px' }}>
+              <Hr style={{ borderColor: `${CREAM}1a`, margin: '18px 0' }} />
+              <Text style={{ color: CREAM, fontSize: '15px', fontWeight: 700, margin: '0 0 4px' }}>
+                {t.followTitle}
+              </Text>
+              <Text style={{ color: `${CREAM}b3`, fontSize: '14px', lineHeight: '22px', margin: '0 0 6px' }}>
+                {t.followText}{' '}
+                <Link href={instagramUrl} style={{ color: GOLD, fontWeight: 700 }}>
+                  {t.followCta} →
+                </Link>
+              </Text>
+            </Section>
+          )}
+
           {paypalUrl && (
             <Section style={{ padding: '6px 2px' }}>
               <Hr style={{ borderColor: `${CREAM}1a`, margin: '18px 0' }} />
@@ -193,7 +217,7 @@ export default function DownloadEmail({
 
 /** Version texte (obligatoire pour la délivrabilité et les clients sans HTML). */
 export function downloadEmailText(props: DownloadEmailProps): string {
-  const { lang, items, installUrl, paypalUrl, bookingEmail, siteUrl } = props;
+  const { lang, items, installUrl, instagramUrl, paypalUrl, bookingEmail, siteUrl } = props;
   const t = T[lang];
   const lines: string[] = [t.hello, '', t.intro, ''];
 
@@ -204,6 +228,7 @@ export function downloadEmailText(props: DownloadEmailProps): string {
   }
 
   lines.push(`${t.installTitle} ${installUrl}`, '');
+  if (instagramUrl) lines.push(`${t.followText} ${instagramUrl}`, '');
   if (paypalUrl) lines.push(t.donate, paypalUrl, '');
   lines.push(`${t.reply} ${bookingEmail}`, '', t.signature, '', `${t.transactional} ${siteUrl}.`);
   return lines.join('\n');

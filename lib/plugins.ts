@@ -55,33 +55,19 @@ export type Suite = {
 
 /* ---------------------------------------------------------- PUBLICATION */
 /**
- * Plugins effectivement en ligne. Les autres restent dans le JSON.
- * En ajoutant un slug ici, génère aussi son visuel d'email :
+ * Plugins publiés par défaut. La liste réellement en ligne est éditable
+ * depuis /admin : voir lib/pluginConfig.ts, qui fait autorité côté serveur.
+ * En ajoutant un slug, génère aussi son visuel d'email :
  *   sips -s format jpeg -s formatOptions 82 \
  *     ../groove-knobs/web-assets/<slug>/og.png \
  *     --out public/images/plugins/<slug>/og-email.jpg
  */
-export const PUBLISHED_SLUGS = ['french-filter'] as const;
+export const DEFAULT_PUBLISHED = ['french-filter'] as const;
 
 export const suite = data.suite as Suite;
 
-const ALL = data.plugins as Plugin[];
-
-/** Plugins publiés, dans l'ordre de PUBLISHED_SLUGS. */
-export const plugins: Plugin[] = PUBLISHED_SLUGS.map(
-  (slug) => ALL.find((p) => p.slug === slug) as Plugin,
-).filter(Boolean);
-
-export const pluginSlugs = plugins.map((p) => p.slug);
-
-export function getPlugin(slug: string): Plugin | undefined {
-  return plugins.find((p) => p.slug === slug);
-}
-
-/** Filtre une liste de slugs reçue du client : ne garde que les publiés, sans doublon. */
-export function keepPublished(slugs: string[]): string[] {
-  return pluginSlugs.filter((slug) => slugs.includes(slug));
-}
+/** Tous les plugins connus, y compris ceux qui ne sont pas publiés. */
+export const ALL_PLUGINS = data.plugins as Plugin[];
 
 /* ------------------------------------------------------------- VISUELS */
 const BASE = '/images/plugins';
@@ -114,9 +100,13 @@ export const UI_STATES: Record<string, { file: string; label: L }[]> = {
 };
 
 /* ------------------------------------------------------- DISPONIBILITÉ */
-/** Un OS n'est proposé que si le fichier d'installation existe (bytes connu). */
+/**
+ * Un OS est proposé dès qu'un fichier d'installation est déclaré.
+ * `bytes` ne sert plus qu'à l'affichage : une taille inconnue n'empêche
+ * pas le téléchargement, elle est simplement masquée.
+ */
 export const isOSAvailable = (plugin: Plugin, os: OS): boolean =>
-  typeof plugin.downloads[os]?.bytes === 'number' && plugin.downloads[os].bytes! > 0;
+  Boolean(plugin.downloads[os]?.file);
 
 export const availableOS = (plugin: Plugin): OS[] =>
   (['macos', 'windows'] as OS[]).filter((os) => isOSAvailable(plugin, os));
@@ -134,6 +124,9 @@ export const OS_LABEL: Record<OS, string> = {
   windows: 'Windows',
 };
 
-/** Clé du fichier dans le bucket R2 : `0.1.0/FrenchFilter-0.1.0-macOS.pkg`. */
+/**
+ * Clé du fichier dans le bucket R2, telle qu'elle est rangée :
+ * `french-filter/0.1.0/FrenchFilter-0.1.0-macOS.pkg`.
+ */
 export const r2Key = (plugin: Plugin, os: OS): string =>
-  `${plugin.version}/${plugin.downloads[os].file}`;
+  `${plugin.slug}/${plugin.version}/${plugin.downloads[os].file}`;

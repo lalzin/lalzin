@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { defaultContent } from '@/lib/content';
-import { availableOS, getPlugin, pluginImage, pluginSlugs, OS_LABEL } from '@/lib/plugins';
+import { availableOS, pluginImage, OS_LABEL } from '@/lib/plugins';
+import { getPlugin, getPlugins, getPublishedSlugs } from '@/lib/pluginConfig';
 import { turnstileSiteKey } from '@/lib/publicConfig';
 import PluginDetail from './PluginDetail';
 
@@ -9,12 +10,12 @@ const { site, artist } = defaultContent;
 
 type Params = { params: { slug: string } };
 
-export function generateStaticParams() {
-  return pluginSlugs.map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  return (await getPublishedSlugs()).map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: Params): Metadata {
-  const plugin = getPlugin(params.slug);
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const plugin = await getPlugin(params.slug);
   if (!plugin) return {};
 
   const og = pluginImage(plugin.slug, 'og.webp');
@@ -40,11 +41,11 @@ export function generateMetadata({ params }: Params): Metadata {
   };
 }
 
-export default function PluginPage({
+export default async function PluginPage({
   params,
   searchParams,
 }: Params & { searchParams: { expire?: string } }) {
-  const plugin = getPlugin(params.slug);
+  const plugin = await getPlugin(params.slug);
   if (!plugin) notFound();
 
   const oses = availableOS(plugin);
@@ -76,6 +77,7 @@ export default function PluginPage({
         plugin={plugin}
         expired={searchParams?.expire === '1'}
         turnstileSiteKey={turnstileSiteKey}
+        others={(await getPlugins()).filter((p) => p.slug !== plugin.slug)}
       />
     </>
   );

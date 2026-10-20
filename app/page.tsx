@@ -12,8 +12,9 @@ import Contact from '@/components/sections/Contact';
 import Footer from '@/components/Footer';
 import NewReleasePopup from '@/components/NewReleasePopup';
 import { HDR_ENV } from '@/lib/hdr';
+import { getPlugins } from '@/lib/pluginConfig';
 
-export default function Home() {
+export default async function Home() {
   // Lance le téléchargement de l'environnement HDR dès le HTML, en parallèle
   // du bundle 3D, au lieu d'attendre que le canvas soit monté.
   ReactDOM.preload(HDR_ENV, { as: 'fetch', crossOrigin: 'anonymous' });
@@ -29,7 +30,7 @@ export default function Home() {
       <Live />
       <Socials />
       <Merch />
-      <Plugins />
+      <Plugins plugins={await getPlugins()} />
       <Contact />
       <Footer />
     </main>

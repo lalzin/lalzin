@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { defaultContent } from '@/lib/content';
 import { suite, suiteImage } from '@/lib/plugins';
+import { getPlugins } from '@/lib/pluginConfig';
 import PluginsIndex from './PluginsIndex';
 
 const { site, artist } = defaultContent;
@@ -24,6 +25,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PluginsPage() {
-  return <PluginsIndex />;
+export default async function PluginsPage() {
+  return <PluginsIndex plugins={await getPlugins()} />;
 }

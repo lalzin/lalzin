@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
+import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
 
 function Steps({ title, steps, badge }: { title: string; steps: readonly string[]; badge: string }) {
@@ -34,6 +35,7 @@ export default function InstallGuide() {
 
   return (
     <main className="relative min-h-[100svh] overflow-hidden pb-24 pt-28">
+      <Navbar />
       <div className="halo left-[10%] top-[15%] h-72 w-72 bg-teal" />
       <div className="halo right-[12%] top-[45%] h-72 w-72 bg-coral" />
 
