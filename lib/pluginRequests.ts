@@ -104,6 +104,17 @@ export async function createRequest(req: NewPluginRequest): Promise<string | nul
   return (data as { id: string }).id;
 }
 
+/**
+ * Supprime une demande. Sert quand l'email n'a finalement pas pu partir :
+ * une panne de notre côté ne doit pas consommer le quota du visiteur, qui
+ * se retrouverait bloqué sans avoir rien reçu.
+ */
+export async function deleteRequest(id: string): Promise<void> {
+  const sb = supabaseServer();
+  if (!sb) return;
+  await sb.from(REQUESTS_TABLE).delete().eq('id', id);
+}
+
 export async function getRequest(id: string): Promise<PluginRequestRow | null> {
   const sb = supabaseServer();
   if (!sb) return null;

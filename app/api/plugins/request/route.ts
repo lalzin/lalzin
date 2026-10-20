@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { defaultContent } from '@/lib/content';
 import { addToAudience, emailConfigured, sendDownloadEmail } from '@/lib/email';
 import { hashIP, signDownloadToken } from '@/lib/downloadToken';
-import { checkQuotas, createRequest } from '@/lib/pluginRequests';
+import { checkQuotas, createRequest, deleteRequest } from '@/lib/pluginRequests';
 import { getPlugins, keepPublished } from '@/lib/pluginConfig';
 import { verifyTurnstile } from '@/lib/turnstile';
 import { buildEmailProps, clientIP, siteOrigin } from '../shared';
@@ -65,25 +65,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'rate' }, { status: 429 });
   }
 
-  const requestId =
-    (await createRequest({
+  const createdId = await createRequest({
       email: input.email,
       plugins: slugs,
       os: input.os,
       lang: input.lang,
       newsletter: input.newsletter,
       ipHash,
-      userAgent: req.headers.get('user-agent')?.slice(0, 300) ?? null,
-    })) ?? crypto.randomUUID(); // sans Supabase, le flux reste fonctionnel
+    userAgent: req.headers.get('user-agent')?.slice(0, 300) ?? null,
+  });
+  // Sans Supabase, le flux reste fonctionnel (rien n'est enregistré).
+  const requestId = createdId ?? crypto.randomUUID();
+
+  /** Annule la demande enregistrée : un échec ne doit pas coûter un quota. */
+  const annuler = async () => {
+    if (createdId) await deleteRequest(createdId);
+  };
 
   const token = await signDownloadToken(requestId, slugs);
   if (!token) {
-    // DOWNLOAD_TOKEN_SECRET manquant
+    await annuler(); // DOWNLOAD_TOKEN_SECRET manquant
     return NextResponse.json({ ok: false, error: 'no-token-secret' }, { status: 503 });
   }
 
   if (!emailConfigured) {
-    // RESEND_API_KEY manquante
+    await annuler(); // RESEND_API_KEY manquante
     return NextResponse.json({ ok: false, error: 'no-mailer' }, { status: 503 });
   }
 
@@ -94,6 +100,7 @@ export async function POST(req: Request) {
     buildEmailProps({ plugins: await getPlugins(), slugs, os: input.os, lang: input.lang, token, origin }),
   );
   if (!sent.ok) {
+    await annuler();
     return NextResponse.json({ ok: false, error: 'mail-rejected' }, { status: 502 });
   }
 

@@ -12,7 +12,7 @@ import { z } from 'zod';
 import { defaultContent } from '@/lib/content';
 import { emailConfigured, sendDownloadEmail } from '@/lib/email';
 import { hashIP, signDownloadToken, verifyDownloadToken } from '@/lib/downloadToken';
-import { checkQuotas, createRequest, getRequest } from '@/lib/pluginRequests';
+import { checkQuotas, createRequest, deleteRequest, getRequest } from '@/lib/pluginRequests';
 import { type OS } from '@/lib/plugins';
 import { getPlugins, keepPublished } from '@/lib/pluginConfig';
 import { buildEmailProps, clientIP, siteOrigin } from '../shared';
@@ -53,19 +53,22 @@ export async function POST(req: Request) {
   if (slugs.length === 0) return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 });
 
   // Un renvoi compte comme une demande (c'est ce qui fait tenir les quotas).
-  const requestId =
-    (await createRequest({
+  const createdId = await createRequest({
       email: original.email,
       plugins: slugs,
       os: original.os as OS,
       lang: original.lang,
       newsletter: false, // jamais de ré-opt-in implicite
       ipHash,
-      userAgent: req.headers.get('user-agent')?.slice(0, 300) ?? null,
-    })) ?? claims.r;
+    userAgent: req.headers.get('user-agent')?.slice(0, 300) ?? null,
+  });
+  const requestId = createdId ?? claims.r;
 
   const token = await signDownloadToken(requestId, slugs);
-  if (!token) return NextResponse.json({ ok: false, error: 'server' }, { status: 503 });
+  if (!token) {
+    if (createdId) await deleteRequest(createdId);
+    return NextResponse.json({ ok: false, error: 'server' }, { status: 503 });
+  }
 
   const sent = await sendDownloadEmail(
     original.email,
@@ -80,7 +83,9 @@ export async function POST(req: Request) {
     }),
   );
 
-  return sent.ok
-    ? NextResponse.json({ ok: true })
-    : NextResponse.json({ ok: false, error: 'mail-rejected' }, { status: 502 });
+  if (!sent.ok) {
+    if (createdId) await deleteRequest(createdId); // un échec ne coûte pas un quota
+    return NextResponse.json({ ok: false, error: 'mail-rejected' }, { status: 502 });
+  }
+  return NextResponse.json({ ok: true });
 }
