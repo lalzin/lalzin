@@ -3,6 +3,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { PluginStats } from '@/lib/pluginRequests';
 import type { PluginConfig } from '@/lib/pluginConfig';
+
+type Services = {
+  resend: boolean;
+  r2: boolean;
+  turnstile: boolean;
+  jetons: boolean;
+  supabase: boolean;
+  dernierEchecEmail: { at: string; reason: string } | null;
+};
 import { ALL_PLUGINS, OS_LABEL, type OS } from '@/lib/plugins';
 
 const OSES: OS[] = ['macos', 'windows'];
@@ -38,6 +47,7 @@ function Field({
 export default function PluginsPanel() {
   const [stats, setStats] = useState<PluginStats | null>(null);
   const [config, setConfig] = useState<PluginConfig | null>(null);
+  const [services, setServices] = useState<Services | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,12 +61,14 @@ export default function PluginsPanel() {
       const data = (await res.json().catch(() => ({}))) as {
         stats?: PluginStats;
         config?: PluginConfig;
+        services?: Services;
         error?: string;
       };
       if (!res.ok) setError(data.error || 'Lecture impossible');
       else {
         setStats(data.stats ?? null);
         setConfig(data.config ?? null);
+        setServices(data.services ?? null);
       }
     } catch {
       setError('Lecture impossible');
@@ -126,6 +138,38 @@ export default function PluginsPanel() {
 
   return (
     <div className="space-y-4">
+      {/* ── État des services ──────────────────────────────────── */}
+      {services && (
+        <div className="rounded-2xl border border-cream/12 bg-cream/[0.04] p-5">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-gold">
+            État des services
+          </p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {(
+              [
+                ['Email (Resend)', services.resend],
+                ['Fichiers (R2)', services.r2],
+                ['Captcha (Turnstile)', services.turnstile],
+                ['Liens signés', services.jetons],
+                ['Base (Supabase)', services.supabase],
+              ] as [string, boolean][]
+            ).map(([label, ok]) => (
+              <li key={label} className="flex items-center gap-2 text-cream/75">
+                <span className={ok ? 'text-teal-soft' : 'text-magenta-soft'}>{ok ? '✓' : '✗'}</span>
+                {label}
+              </li>
+            ))}
+          </ul>
+          {services.dernierEchecEmail && (
+            <p className="mt-4 rounded-xl border border-magenta/40 bg-magenta/10 px-4 py-3 text-sm text-magenta-soft">
+              <strong className="font-bold">Dernier échec d’envoi</strong> (
+              {new Date(services.dernierEchecEmail.at).toLocaleString('fr-FR')}) :{' '}
+              {services.dernierEchecEmail.reason}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* ── Configuration éditable ─────────────────────────────── */}
       {config && (
         <div className="rounded-2xl border border-gold/25 bg-gold/[0.05] p-5">

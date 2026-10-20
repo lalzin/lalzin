@@ -9,6 +9,10 @@ import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { SESSION_COOKIE, verifyToken } from '@/lib/auth';
 import { getOptInEmails, getStats } from '@/lib/pluginRequests';
+import { emailConfigured, lastSendError } from '@/lib/email';
+import { r2Configured } from '@/lib/r2';
+import { turnstileConfigured } from '@/lib/turnstile';
+import { downloadTokenConfigured } from '@/lib/downloadToken';
 import { getPluginConfig, savePluginConfig, type PluginConfig } from '@/lib/pluginConfig';
 import { supabaseConfigured } from '@/lib/supabase';
 
@@ -42,7 +46,20 @@ export async function GET(req: Request) {
   }
 
   const stats = await getStats();
-  return NextResponse.json({ ok: true, stats, config: await getPluginConfig() });
+  return NextResponse.json({
+    ok: true,
+    stats,
+    config: await getPluginConfig(),
+    // État des services : booléens uniquement, aucune valeur de clé.
+    services: {
+      resend: emailConfigured,
+      r2: r2Configured,
+      turnstile: turnstileConfigured,
+      jetons: downloadTokenConfigured,
+      supabase: supabaseConfigured,
+      dernierEchecEmail: lastSendError(),
+    },
+  });
 }
 
 /* ------------------------------------------- Enregistrement de la config */

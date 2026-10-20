@@ -29,14 +29,31 @@ function client(): Resend | null {
   return cached;
 }
 
-/** Envoie l'email de téléchargement. Renvoie false si l'envoi a échoué. */
+export type SendResult = { ok: true } | { ok: false; reason: string };
+
+/** Dernière erreur d'envoi, lisible depuis le diagnostic de l'admin. */
+let lastError: { at: string; reason: string } | null = null;
+export const lastSendError = () => lastError;
+
+/**
+ * Envoie l'email de téléchargement.
+ * La raison d'un échec est journalisée (visible dans les logs Vercel) et
+ * conservée pour le diagnostic de l'admin : sans ça, une erreur Resend
+ * — domaine non vérifié, par exemple — reste totalement invisible.
+ */
 export async function sendDownloadEmail(
   to: string,
   replyTo: string,
   props: DownloadEmailProps,
-): Promise<boolean> {
+): Promise<SendResult> {
   const resend = client();
-  if (!resend) return false;
+  if (!resend) return { ok: false, reason: 'RESEND_API_KEY absente' };
+
+  const fail = (reason: string): SendResult => {
+    lastError = { at: new Date().toISOString(), reason };
+    console.error('[plugins] envoi email échoué :', reason);
+    return { ok: false, reason };
+  };
 
   try {
     const { error } = await resend.emails.send({
@@ -47,9 +64,11 @@ export async function sendDownloadEmail(
       react: DownloadEmail(props),
       text: downloadEmailText(props),
     });
-    return !error;
-  } catch {
-    return false;
+    if (error) return fail(`${error.name ?? 'erreur'} : ${error.message ?? 'inconnue'}`);
+    lastError = null;
+    return { ok: true };
+  } catch (e) {
+    return fail(e instanceof Error ? e.message : 'exception inconnue');
   }
 }
 

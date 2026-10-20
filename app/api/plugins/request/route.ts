@@ -93,8 +93,8 @@ export async function POST(req: Request) {
     defaultContent.artist.bookingEmail,
     buildEmailProps({ plugins: await getPlugins(), slugs, os: input.os, lang: input.lang, token, origin }),
   );
-  if (!sent) {
-    return NextResponse.json({ ok: false, error: 'server' }, { status: 502 });
+  if (!sent.ok) {
+    return NextResponse.json({ ok: false, error: 'mail-rejected' }, { status: 502 });
   }
 
   if (input.newsletter) await addToAudience(input.email);

@@ -80,7 +80,7 @@ export async function POST(req: Request) {
     }),
   );
 
-  return sent
+  return sent.ok
     ? NextResponse.json({ ok: true })
-    : NextResponse.json({ ok: false, error: 'server' }, { status: 502 });
+    : NextResponse.json({ ok: false, error: 'mail-rejected' }, { status: 502 });
 }

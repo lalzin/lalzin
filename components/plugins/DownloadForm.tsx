@@ -87,13 +87,13 @@ export default function DownloadForm({
         router.push(data.redirect);
         return;
       }
-      setError(
-        data.error === 'rate'
-          ? tx.errorRate
-          : data.error === 'captcha'
-            ? tx.errorCaptcha
-            : tx.errorGeneric,
-      );
+      const messages: Record<string, string> = {
+        rate: tx.errorRate,
+        captcha: tx.errorCaptcha,
+        'no-mailer': tx.errorMailer,
+        'mail-rejected': tx.errorMailer,
+      };
+      setError(messages[data.error ?? ''] ?? tx.errorGeneric);
     } catch {
       setError(tx.errorGeneric);
     } finally {
