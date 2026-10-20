@@ -7,6 +7,7 @@
  * ════════════════════════════════════════════════════════════════════
  */
 import { Resend } from 'resend';
+import { render } from '@react-email/components';
 import DownloadEmail, { downloadEmailText, type DownloadEmailProps } from '@/components/email/DownloadEmail';
 import type { Lang } from './content';
 
@@ -56,12 +57,17 @@ export async function sendDownloadEmail(
   };
 
   try {
+    // Le HTML est rendu ici, et non via la prop `react` du SDK : celui-ci
+    // charge @react-email/render par import dynamique, que le bundler ne
+    // résout pas en production (render devient undefined → TypeError).
+    const html = await render(DownloadEmail(props));
+
     const { error } = await resend.emails.send({
       from: FROM,
       to,
       replyTo,
       subject: SUBJECT[props.lang],
-      react: DownloadEmail(props),
+      html,
       text: downloadEmailText(props),
     });
     if (error) return fail(`${error.name ?? 'erreur'} : ${error.message ?? 'inconnue'}`);
