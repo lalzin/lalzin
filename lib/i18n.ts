@@ -182,6 +182,13 @@ export const ui = {
         text: 'Les liens sont valables 7 jours. Redemande-en un, c’est immédiat.',
       },
     },
+    notFound: {
+      title: 'Page introuvable',
+      text: 'Cette page n’existe pas, ou plus. Le groove, lui, est toujours là.',
+      home: 'Retour à l’accueil',
+      plugins: 'Les plugins',
+      links: 'Tous les liens',
+    },
     privacy: {
       title: 'Politique de confidentialité',
       updated: 'Dernière mise à jour',
@@ -401,6 +408,13 @@ export const ui = {
         title: 'This link has expired',
         text: 'Links stay valid for 7 days. Ask for a new one, it’s instant.',
       },
+    },
+    notFound: {
+      title: 'Page not found',
+      text: 'This page does not exist, or no longer does. The groove, however, is still here.',
+      home: 'Back to home',
+      plugins: 'The plugins',
+      links: 'All the links',
     },
     privacy: {
       title: 'Privacy policy',
