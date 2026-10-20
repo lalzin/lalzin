@@ -1,0 +1,24 @@
+{
+  "backwash": [
+    "ui-50.webp",
+    "ui-75.webp"
+  ],
+  "boogie-trio": [
+    "ui-25.webp",
+    "ui-100.webp"
+  ],
+  "french-filter": [
+    "ui-centre.webp",
+    "ui-hp50.webp",
+    "ui-lp50.webp"
+  ],
+  "pew-pew": [
+    "ui-25.webp",
+    "ui-100.webp"
+  ],
+  "sing-it-back": [
+    "ui-25.webp",
+    "ui-100.webp",
+    "ui-gospel.webp"
+  ]
+}

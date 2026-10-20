@@ -56,7 +56,7 @@ export default async function PluginPage({
     '@type': 'SoftwareApplication',
     name: plugin.name,
     applicationCategory: 'MultimediaApplication',
-    applicationSubCategory: 'Audio plug-in',
+    applicationSubCategory: plugin.type === 'instrument' ? 'Instrument' : 'Audio effect',
     operatingSystem: oses.map((os) => OS_LABEL[os]).join(', ') || 'macOS',
     softwareVersion: plugin.version,
     description: plugin.description.en,

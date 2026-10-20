@@ -9,10 +9,10 @@ import Reveal from '@/components/ui/Reveal';
 import Navbar from '@/components/Navbar';
 import {
   OS_LABEL,
-  UI_STATES,
   availableOS,
   formatBytes,
   pluginImage,
+  uiStates,
   type OS,
   type Plugin,
 } from '@/lib/plugins';
@@ -31,7 +31,9 @@ export default function PluginDetail({
   const { t, ui, lang } = useContent();
   const tx = ui.plugins;
   const features = plugin.features[lang] ?? plugin.features.fr;
-  const states = UI_STATES[plugin.slug] ?? [];
+  const states = uiStates(plugin.slug);
+  const estInstrument = plugin.type === 'instrument';
+  const usage = tx.usage[plugin.slug as keyof typeof tx.usage];
   const oses = availableOS(plugin);
   const { accent, accent2 } = plugin.colors;
 
@@ -61,12 +63,33 @@ export default function PluginDetail({
         {/* ── HERO ─────────────────────────────────────────────── */}
         <div className="mt-8 grid items-center gap-14 lg:grid-cols-2">
           <div className="order-2 lg:order-1">
-            <span className="inline-block rounded-full border border-cream/15 bg-cream/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold">
-              {tx.eyebrow} · {tx.free}
-            </span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-block rounded-full border border-cream/15 bg-cream/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold">
+                {tx.eyebrow} · {tx.free}
+              </span>
+              <span
+                className="inline-block rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-night"
+                style={{ background: estInstrument ? accent2 : accent }}
+              >
+                {estInstrument ? tx.instrument : tx.effect}
+              </span>
+            </div>
             <h1 className="retro-title mt-5 text-5xl sm:text-6xl">{plugin.name}</h1>
             <p className="mt-4 text-lg text-cream/80">{t(plugin.tagline)}</p>
             <p className="mt-5 leading-relaxed text-cream/65">{t(plugin.description)}</p>
+
+            {usage && (
+              <p className="mt-4 rounded-2xl border border-cream/12 bg-cream/[0.04] px-4 py-3 text-sm text-cream/75">
+                <span aria-hidden>🎚️ </span>
+                {usage}
+              </p>
+            )}
+
+            {plugin.latency_ms != null && (
+              <p className="mt-2 text-xs text-cream/45">
+                {tx.latency} : {String(plugin.latency_ms).replace('.', ',')} ms
+              </p>
+            )}
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
@@ -120,7 +143,9 @@ export default function PluginDetail({
         {/* ── PRESETS ──────────────────────────────────────────── */}
         <section className="mt-20">
           <Reveal>
-            <h2 className="font-display text-3xl font-bold text-cream">{tx.presets}</h2>
+            <h2 className="font-display text-3xl font-bold text-cream">
+              {plugin.slug === 'sing-it-back' ? tx.styles : tx.presets}
+            </h2>
           </Reveal>
           <Reveal delay={0.05}>
             <ul className="mt-6 flex flex-wrap gap-2.5">
@@ -143,7 +168,7 @@ export default function PluginDetail({
               <h2 className="font-display text-3xl font-bold text-cream">{tx.states}</h2>
             </Reveal>
             <div className="mt-6 grid gap-6 sm:grid-cols-3">
-              {states.map((s, i) => (
+              {states.map((s: { file: string; label: typeof plugin.tagline }, i: number) => (
                 <Reveal key={s.file} delay={i * 0.05}>
                   <figure>
                     <Image
@@ -209,6 +234,12 @@ export default function PluginDetail({
                         <div className="flex gap-2">
                           <dt className="text-cream/45">{tx.size} :</dt>
                           <dd className="text-cream/80">{formatBytes(d.bytes, lang)}</dd>
+                        </div>
+                      )}
+                      {d.signed && (
+                        <div className="flex gap-2">
+                          <dt className="text-cream/45">{tx.signature} :</dt>
+                          <dd className="text-teal-soft">{tx.signedApple}</dd>
                         </div>
                       )}
                     </dl>

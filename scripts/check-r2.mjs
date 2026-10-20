@@ -42,9 +42,11 @@ ok(`Variables présentes — endpoint ${endpoint}, bucket « ${R2_BUCKET} »`);
 
 /* --------------------------------- Fichiers attendus d'après plugins.ts */
 const data = JSON.parse(readFileSync(new URL('../lib/plugins.json', import.meta.url), 'utf8'));
-const published = ['french-filter']; // doit refléter PUBLISHED_SLUGS
+// Par défaut tous les plugins connus ; sinon ceux passés en argument :
+//   npm run check-r2 -- pew-pew sing-it-back
+const demandes = process.argv.slice(2).filter((a) => !a.startsWith('-'));
 const attendus = data.plugins
-  .filter((p) => published.includes(p.slug))
+  .filter((p) => demandes.length === 0 || demandes.includes(p.slug))
   .flatMap((p) =>
     Object.entries(p.downloads)
       .filter(([, d]) => Boolean(d.file))

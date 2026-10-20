@@ -82,6 +82,17 @@ export const ui = {
       discover: 'Voir le plugin',
       soon: 'Bientôt',
       soonOther: 'D’autres plugins arrivent.',
+      instrument: 'Instrument',
+      effect: 'Effet',
+      styles: 'Styles',
+      latency: 'Latence',
+      signature: 'Signature',
+      signedApple: 'Signé et vérifié par Apple',
+      usage: {
+        'pew-pew': 'À charger sur une piste MIDI (instruments).',
+        'sing-it-back':
+          'Sur une piste de voix seule (stem, a cappella), pas un morceau complet. Règle d’abord le ton et la gamme.',
+      },
       highlights: 'Points forts',
       presets: 'Presets',
       states: 'En images',
@@ -138,8 +149,7 @@ export const ui = {
         subtitle: 'Deux minutes, et le knob est dans ton DAW.',
         macTitle: 'macOS',
         macSteps: [
-          'Ouvre le fichier .pkg téléchargé et laisse-toi guider.',
-          'Si macOS bloque l’installation : Réglages Système → Confidentialité et sécurité → descends jusqu’au message sur le plugin → « Ouvrir quand même ».',
+          'Ouvre le fichier .pkg téléchargé et suis l’installation : il est signé et vérifié par Apple, aucun avertissement à contourner.',
         ],
         winTitle: 'Windows',
         winSteps: [
@@ -149,11 +159,20 @@ export const ui = {
         dawTitle: 'Dans ton DAW (exemple Ableton Live)',
         dawSteps: [
           'Réglages → Plug-Ins → Rescan.',
-          'Les plugins apparaissent dans VST3 / Audio Units → LALZIN.',
+          'Les effets apparaissent dans VST3 / Audio Units → LALZIN.',
+          'Pew Pew est un instrument : charge-le sur une piste MIDI, pas sur une piste audio.',
         ],
         noteTitle: 'Bon à savoir',
         notes: [
           'Backwash démarre en mode LIVE (zéro latence) : il écoute la première mesure avant de produire son souffle.',
+          'Sing It Back se pose sur une piste de voix seule (stem, a cappella) : règle d’abord le ton et la gamme, puis monte CROWD.',
+        ],
+        updatesTitle: 'Mises à jour',
+        updatesSteps: [
+          'Le plugin vérifie une fois par jour s’il existe une nouvelle version.',
+          'Si oui, un badge MAJ apparaît à côté de « made by LALZIN » ; un clic ouvre la page du plugin.',
+          'Installe la nouvelle version par-dessus l’ancienne, rien à désinstaller.',
+          'Clic droit sur « made by LALZIN » pour désactiver cette vérification.',
         ],
         problem: 'Un souci ? Écris-moi :',
       },
@@ -180,6 +199,10 @@ export const ui = {
         {
           title: 'Emails',
           body: 'L’email qui contient tes liens est transactionnel : tu le reçois parce que tu l’as demandé. Aucun email promotionnel ne part sans la case newsletter cochée, et chaque newsletter contient un lien de désinscription.',
+        },
+        {
+          title: 'Vérification des mises à jour',
+          body: 'Une fois par jour, le plugin installé demande au site s’il existe une version plus récente. Cette requête transmet ton adresse IP, ainsi que le nom et la version du plugin dans l’en-tête technique du navigateur (User-Agent : GrooveKnobs/<plugin>/<version>). Rien d’autre n’est envoyé, rien n’est associé à ton email, et ces informations restent dans les journaux du serveur. La vérification se désactive dans le plugin, par un clic droit sur « made by LALZIN ».',
         },
         {
           title: 'Durée de conservation',
@@ -280,6 +303,17 @@ export const ui = {
       discover: 'View plugin',
       soon: 'Soon',
       soonOther: 'More plugins on the way.',
+      instrument: 'Instrument',
+      effect: 'Effect',
+      styles: 'Styles',
+      latency: 'Latency',
+      signature: 'Signature',
+      signedApple: 'Signed and verified by Apple',
+      usage: {
+        'pew-pew': 'Load it on a MIDI track (instruments).',
+        'sing-it-back':
+          'On a solo vocal track (stem, a cappella), not a full mix. Set the key and scale first.',
+      },
       highlights: 'Highlights',
       presets: 'Presets',
       states: 'In pictures',
@@ -335,8 +369,7 @@ export const ui = {
         subtitle: 'Two minutes, and the knob is in your DAW.',
         macTitle: 'macOS',
         macSteps: [
-          'Open the downloaded .pkg file and follow the installer.',
-          'If macOS blocks it: System Settings → Privacy & Security → scroll to the message about the plugin → “Open Anyway”.',
+          'Open the downloaded .pkg file and follow the installer: it is signed and verified by Apple, with no warning to bypass.',
         ],
         winTitle: 'Windows',
         winSteps: [
@@ -346,11 +379,20 @@ export const ui = {
         dawTitle: 'In your DAW (Ableton Live example)',
         dawSteps: [
           'Settings → Plug-Ins → Rescan.',
-          'The plugins show up under VST3 / Audio Units → LALZIN.',
+          'The effects show up under VST3 / Audio Units → LALZIN.',
+          'Pew Pew is an instrument: load it on a MIDI track, not an audio track.',
         ],
         noteTitle: 'Good to know',
         notes: [
           'Backwash starts in LIVE mode (zero latency): it listens to the first bar before producing its swell.',
+          'Sing It Back goes on a solo vocal track (stem, a cappella): set the key and scale first, then raise CROWD.',
+        ],
+        updatesTitle: 'Updates',
+        updatesSteps: [
+          'The plugin checks once a day whether a new version exists.',
+          'If so, an update badge appears next to “made by LALZIN”; one click opens the plugin page.',
+          'Install the new version over the old one, nothing to uninstall.',
+          'Right-click “made by LALZIN” to turn this check off.',
         ],
         problem: 'Something wrong? Write to me:',
       },
@@ -376,6 +418,10 @@ export const ui = {
         {
           title: 'Emails',
           body: 'The email with your links is transactional: you get it because you asked for it. No promotional email is ever sent without the newsletter box ticked, and every newsletter carries an unsubscribe link.',
+        },
+        {
+          title: 'Update checks',
+          body: 'Once a day, the installed plugin asks the site whether a newer version exists. That request carries your IP address, plus the plugin name and version in the technical User-Agent header (GrooveKnobs/<plugin>/<version>). Nothing else is sent, nothing is tied to your email, and this stays in the server logs. The check can be turned off inside the plugin, by right-clicking “made by LALZIN”.',
         },
         {
           title: 'How long it is kept',

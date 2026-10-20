@@ -48,7 +48,9 @@ export default function PluginsIndex({ plugins }: { plugins: Plugin[] }) {
           </p>
         </Reveal>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Les cartes restent centrées quelle que soit leur quantité :
+            une 5e carte seule ne laisse pas un trou en bout de ligne. */}
+        <div className="mx-auto grid max-w-md gap-6 sm:max-w-none sm:grid-cols-2 lg:grid-cols-3 [&>*]:h-full">
           {plugins.map((p, i) => (
             <PluginCard key={p.slug} plugin={p} index={i} />
           ))}

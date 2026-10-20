@@ -60,6 +60,10 @@ export default function InstallGuide() {
           <Steps title={tx.dawTitle} steps={tx.dawSteps} badge="🎚️" />
         </div>
 
+        <div className="mt-6">
+          <Steps title={tx.updatesTitle} steps={tx.updatesSteps} badge="🔄" />
+        </div>
+
         <Reveal>
           <div className="mt-6 rounded-[1.75rem] border border-gold/25 bg-gold/[0.07] p-7">
             <h2 className="font-display text-xl font-bold text-gold">{tx.noteTitle}</h2>

@@ -11,6 +11,7 @@
  * ════════════════════════════════════════════════════════════════════
  */
 import data from './plugins.json';
+import states from './pluginStates.json';
 import type { L } from './content';
 
 /* --------------------------------------------------------------- TYPES */
@@ -30,13 +31,24 @@ export type PluginDownload = {
   bytes: number | null;
   requirements: string;
   formats: string[];
+  /** Mention de signature, ex. « Developer ID + notarised by Apple ». */
+  signed?: string;
+  /** Lien public de la release (information ; le téléchargement passe par R2). */
+  url?: string;
 };
+
+/** Un plugin est un effet audio, sauf s'il est déclaré instrument. */
+export type PluginType = 'instrument' | 'effect';
 
 export type Plugin = {
   slug: string;
   name: string;
   version: string;
   mascot: string;
+  /** Absent = effet (compatibilité avec les premiers plugins). */
+  type?: PluginType;
+  /** Latence annoncée en millisecondes, quand elle est significative. */
+  latency_ms?: number;
   colors: PluginColors;
   tagline: L;
   description: L;
@@ -81,23 +93,34 @@ export const pluginImage = (slug: string, file: string) => `${BASE}/${slug}/${fi
 export const pluginEmailImage = (slug: string) => `${BASE}/${slug}/og-email.jpg`;
 export const suiteImage = (file: string) => `${BASE}/${file}`;
 
-/** Visuels d'états du plugin (`ui-*.webp` hors hero), pour la galerie. */
-export const UI_STATES: Record<string, { file: string; label: L }[]> = {
-  'french-filter': [
-    {
-      file: 'ui-lp50.webp',
-      label: { fr: 'Passe-bas à 50 %', en: 'Low-pass at 50 %' },
-    },
-    {
-      file: 'ui-centre.webp',
-      label: { fr: 'Centre, son intact', en: 'Centre, untouched' },
-    },
-    {
-      file: 'ui-hp50.webp',
-      label: { fr: 'Passe-haut à 50 %', en: 'High-pass at 50 %' },
-    },
-  ],
+/**
+ * Visuels d'états (`ui-*.webp` hors hero), recensés au build par
+ * scripts/build-plugin-states.mjs : ajouter une image suffit.
+ */
+const STATE_FILES = states as Record<string, string[]>;
+
+/** Libellés particuliers ; les autres sont dérivés du nom de fichier. */
+const STATE_LABELS: Record<string, L> = {
+  'ui-centre': { fr: 'Centre, son intact', en: 'Centre, untouched' },
+  'ui-lp50': { fr: 'Passe-bas à 50 %', en: 'Low-pass at 50 %' },
+  'ui-hp50': { fr: 'Passe-haut à 50 %', en: 'High-pass at 50 %' },
 };
+
+/** « ui-25 » → « 25 % » ; « ui-gospel » → « Gospel ». */
+function labelFromFile(file: string): L {
+  const key = file.replace(/\.webp$/, '');
+  if (STATE_LABELS[key]) return STATE_LABELS[key];
+  const brut = key.replace(/^ui-/, '');
+  const texte = /^\d+$/.test(brut)
+    ? `${brut} %`
+    : brut.charAt(0).toUpperCase() + brut.slice(1).replace(/-/g, ' ');
+  return { fr: texte, en: texte };
+}
+
+export type UIState = { file: string; label: L };
+
+export const uiStates = (slug: string): UIState[] =>
+  (STATE_FILES[slug] ?? []).map((file) => ({ file, label: labelFromFile(file) }));
 
 /* ------------------------------------------------------- DISPONIBILITÉ */
 /**
