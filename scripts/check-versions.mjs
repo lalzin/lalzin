@@ -1,9 +1,13 @@
 /**
- * Vérifie que public/plugins/versions.json reste cohérent avec lib/plugins.json.
- * Les plugins installés interrogent ce fichier une fois par jour : une version
- * oubliée ou divergente leur annoncerait une mise à jour fantôme, ou aucune.
+ * Contrôle les données qui alimentent /plugins/versions.json.
  *
- * Lancé avant chaque build (prebuild) : échoue avec un code non nul.
+ * Ce fichier n'est plus un fichier statique : il est généré à la volée par
+ * app/plugins/versions.json/route.ts à partir de lib/plugins.json et de la
+ * configuration de /admin. Une divergence entre deux sources est donc
+ * devenue impossible ; ce qui reste à vérifier, c'est que les données de
+ * départ sont exploitables.
+ *
+ * Lancé avant chaque build (prebuild) ; échoue avec un code non nul.
  *   npm run check-versions
  */
 import { readFileSync } from 'node:fs';
@@ -13,39 +17,40 @@ const lire = (rel) =>
   JSON.parse(readFileSync(fileURLToPath(new URL(rel, import.meta.url)), 'utf8'));
 
 const plugins = lire('../lib/plugins.json').plugins;
-const versions = lire('../public/plugins/versions.json');
-
 const erreurs = [];
 
-if (!versions.updated || !/^\d{4}-\d{2}-\d{2}$/.test(versions.updated)) {
-  erreurs.push(`champ « updated » absent ou mal formé : ${versions.updated}`);
+if (!Array.isArray(plugins) || plugins.length === 0) {
+  erreurs.push('lib/plugins.json ne contient aucun plugin');
 }
 
-for (const p of plugins) {
-  const entree = versions.plugins?.[p.slug];
-  if (!entree) {
-    erreurs.push(`${p.slug} : absent de versions.json`);
-    continue;
+const vus = new Set();
+for (const p of plugins ?? []) {
+  const nom = p?.slug ?? '(sans slug)';
+  if (!p?.slug || !/^[a-z0-9-]+$/.test(p.slug)) {
+    erreurs.push(`${nom} : slug absent ou mal formé (minuscules et tirets)`);
   }
-  if (entree.version !== p.version) {
-    erreurs.push(`${p.slug} : version ${entree.version} dans versions.json, ${p.version} dans plugins.json`);
-  }
-  const attendue = `https://www.lalzin.com/plugins/${p.slug}`;
-  if (entree.url !== attendue) {
-    erreurs.push(`${p.slug} : url ${entree.url}, attendue ${attendue}`);
-  }
-}
+  if (vus.has(p?.slug)) erreurs.push(`${nom} : slug en double`);
+  vus.add(p?.slug);
 
-for (const slug of Object.keys(versions.plugins ?? {})) {
-  if (!plugins.some((p) => p.slug === slug)) {
-    erreurs.push(`${slug} : présent dans versions.json mais inconnu de plugins.json`);
+  // La version sert aussi à construire la clé R2 : une version vide ou
+  // fantaisiste rendrait tous les téléchargements du plugin introuvables.
+  if (!p?.version || !/^\d+\.\d+\.\d+$/.test(p.version)) {
+    erreurs.push(`${nom} : version « ${p?.version} » attendue au format X.Y.Z`);
+  }
+
+  for (const os of ['macos', 'windows']) {
+    const d = p?.downloads?.[os];
+    if (!d?.file) erreurs.push(`${nom} : fichier d'installation ${os} manquant`);
+    else if (!d.file.includes(p.version)) {
+      erreurs.push(`${nom} : le fichier ${os} (${d.file}) ne porte pas la version ${p.version}`);
+    }
   }
 }
 
 if (erreurs.length) {
-  console.error('\x1b[31m✗ versions.json incohérent :\x1b[0m');
+  console.error('\x1b[31m✗ données plugins incohérentes :\x1b[0m');
   for (const e of erreurs) console.error(`  • ${e}`);
   process.exit(1);
 }
 
-console.log(`\x1b[32m✓\x1b[0m versions.json cohérent (${plugins.length} plugins, mis à jour le ${versions.updated})`);
+console.log(`\x1b[32m✓\x1b[0m données plugins cohérentes (${plugins.length} plugins)`);
