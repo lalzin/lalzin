@@ -113,7 +113,7 @@ export default function PluginDetail({
             </p>
           </div>
 
-          <div className="order-1 flex justify-center lg:order-2">
+          <div className="order-1 flex min-w-0 justify-center lg:order-2">
             <PluginWindow plugin={plugin} width={400} priority />
           </div>
         </div>

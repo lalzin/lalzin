@@ -22,7 +22,7 @@ export default function PluginWindow({ plugin, width = 420, priority = false, cl
   const height = Math.round((width * 1040) / 840);
 
   return (
-    <div className={`relative ${className}`} style={{ width, maxWidth: '100%' }}>
+    <div className={`relative w-full ${className}`} style={{ maxWidth: width }}>
       {/* Halo aux couleurs du plugin */}
       <div
         aria-hidden
@@ -51,7 +51,7 @@ export default function PluginWindow({ plugin, width = 420, priority = false, cl
 
       {/* Mascotte : dépasse volontairement du cadre */}
       <motion.div
-        className="absolute -bottom-6 -right-10 w-[58%] cursor-pointer sm:-right-14"
+        className="absolute -bottom-6 -right-2 w-[58%] cursor-pointer sm:-right-14"
         initial={reduced ? false : { opacity: 0, scale: 0.9, y: 10 }}
         animate={
           reduced
