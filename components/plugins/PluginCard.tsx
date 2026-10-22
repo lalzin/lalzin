@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
-import { imageSize, pluginImage, type Plugin } from '@/lib/plugins';
+import { heroIsLandscape, imageSize, pluginImage, type Plugin } from '@/lib/plugins';
 
 /** Carte de la page /plugins : fenêtre du plugin + mascotte qui dépasse. */
 export default function PluginCard({ plugin, index = 0 }: { plugin: Plugin; index?: number }) {
@@ -13,6 +13,9 @@ export default function PluginCard({ plugin, index = 0 }: { plugin: Plugin; inde
   const { accent, accent2 } = plugin.colors;
   const [heroW, heroH] = imageSize(plugin.slug, 'ui-hero.webp');
   const [mascotW, mascotH] = imageSize(plugin.slug, 'mascot.webp');
+  // Une fenêtre paysage occupe toute la largeur de la carte, sinon elle ne
+  // fait qu'une bande mince à côté des fenêtres portrait des autres cartes.
+  const paysage = heroIsLandscape(plugin.slug);
 
   return (
     <motion.article
@@ -30,8 +33,13 @@ export default function PluginCard({ plugin, index = 0 }: { plugin: Plugin; inde
       />
 
       <Link href={`/plugins/${plugin.slug}`} className="relative">
-        {/* Fenêtre + mascotte */}
-        <div className="relative mx-auto w-[62%] pb-6">
+        {/* Zone image de hauteur fixe : celle d'une fenêtre portrait à 62 % de
+            la carte (ratio 840 / 645). Une fenêtre paysage y est centrée, si
+            bien que titres et boutons tombent au même niveau sur toutes les
+            cartes d'une rangée. */}
+        <div className="pb-6">
+        <div className="flex w-full items-center justify-center" style={{ aspectRatio: '840 / 645' }}>
+        <div className={`relative ${paysage ? 'w-[94%]' : 'w-[62%]'}`}>
           <Image
             src={pluginImage(plugin.slug, 'ui-hero.webp')}
             alt={`${plugin.name}, interface du plugin`}
@@ -46,8 +54,12 @@ export default function PluginCard({ plugin, index = 0 }: { plugin: Plugin; inde
             width={mascotW}
             height={mascotH}
             sizes="(max-width: 640px) 36vw, 150px"
-            className="absolute -bottom-1 -right-8 w-[62%] drop-shadow-[0_14px_22px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105"
+            className={`absolute drop-shadow-[0_14px_22px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105 ${
+              paysage ? '-bottom-2 -right-3 w-[30%]' : '-bottom-1 -right-8 w-[62%]'
+            }`}
           />
+        </div>
+        </div>
         </div>
 
         <h3 className="mt-2 font-display text-2xl font-bold text-cream">{plugin.name}</h3>

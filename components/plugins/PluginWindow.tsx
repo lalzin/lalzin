@@ -2,11 +2,14 @@
 
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
-import { imageSize, pluginImage, type Plugin } from '@/lib/plugins';
+import { heroIsLandscape, imageSize, pluginImage, type Plugin } from '@/lib/plugins';
 
 type Props = {
   plugin: Plugin;
-  /** Taille du rendu (la fenêtre fait 420×520 à l'écran dans le DAW). */
+  /**
+   * Largeur maximale du rendu. Par défaut : 400 px pour une fenêtre portrait
+   * (420 x 520 dans le DAW), 680 px pour une fenêtre paysage (760 x 480).
+   */
   width?: number;
   priority?: boolean;
   className?: string;
@@ -17,13 +20,15 @@ type Props = {
  * La mascotte flotte doucement et rebondit au survol ; tout est figé si
  * le visiteur a demandé moins d'animations.
  */
-export default function PluginWindow({ plugin, width = 420, priority = false, className = '' }: Props) {
+export default function PluginWindow({ plugin, width, priority = false, className = '' }: Props) {
   const reduced = useReducedMotion();
   const [heroW, heroH] = imageSize(plugin.slug, 'ui-hero.webp');
   const [mascotW, mascotH] = imageSize(plugin.slug, 'mascot.webp');
+  const paysage = heroIsLandscape(plugin.slug);
+  const maxW = width ?? (paysage ? 680 : 400);
 
   return (
-    <div className={`relative w-full ${className}`} style={{ maxWidth: width }}>
+    <div className={`relative w-full ${className}`} style={{ maxWidth: maxW }}>
       {/* Halo aux couleurs du plugin */}
       <div
         aria-hidden
@@ -45,14 +50,18 @@ export default function PluginWindow({ plugin, width = 420, priority = false, cl
           width={heroW}
           height={heroH}
           priority={priority}
-          sizes={`(max-width: 640px) 80vw, ${width}px`}
+          sizes={`(max-width: 640px) 92vw, ${maxW}px`}
           className="h-auto w-full"
         />
       </motion.div>
 
       {/* Mascotte : dépasse volontairement du cadre */}
       <motion.div
-        className="absolute -bottom-6 -right-2 w-[58%] cursor-pointer sm:-right-14"
+        className={`absolute cursor-pointer ${
+          paysage
+            ? '-bottom-10 -right-2 w-[27%] sm:-right-8'
+            : '-bottom-6 -right-2 w-[58%] sm:-right-14'
+        }`}
         initial={reduced ? false : { opacity: 0, scale: 0.9, y: 10 }}
         animate={
           reduced
@@ -76,7 +85,7 @@ export default function PluginWindow({ plugin, width = 420, priority = false, cl
           width={mascotW}
           height={mascotH}
           priority={priority}
-          sizes="(max-width: 640px) 45vw, 260px"
+          sizes={paysage ? '(max-width: 640px) 28vw, 190px' : '(max-width: 640px) 45vw, 260px'}
           className="h-auto w-full drop-shadow-[0_18px_28px_rgba(0,0,0,0.55)]"
         />
       </motion.div>

@@ -128,7 +128,10 @@
     "states": [
       "ui-curve.webp",
       "ui-explain.webp",
-      "ui-send.webp"
+      "ui-live.webp",
+      "ui-mono.webp",
+      "ui-send.webp",
+      "ui-sidechain.webp"
     ],
     "images": {
       "card-square.webp": [
@@ -163,6 +166,14 @@
         2280,
         1440
       ],
+      "ui-live.webp": [
+        1520,
+        960
+      ],
+      "ui-mono.webp": [
+        1520,
+        960
+      ],
       "ui-send.webp": [
         840,
         1040
@@ -170,6 +181,10 @@
       "ui-send@3x.webp": [
         1260,
         1560
+      ],
+      "ui-sidechain.webp": [
+        1520,
+        960
       ]
     }
   },

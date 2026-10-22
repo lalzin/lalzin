@@ -11,6 +11,8 @@ import {
   OS_LABEL,
   availableOS,
   formatBytes,
+  heroIsLandscape,
+  imageSize,
   pluginImage,
   uiStates,
   type OS,
@@ -32,6 +34,10 @@ export default function PluginDetail({
   const tx = ui.plugins;
   const features = plugin.features[lang] ?? plugin.features.fr;
   const states = uiStates(plugin.slug);
+  // Fenêtre paysage (Kick Lock) : la colonne de l'image s'élargit, sinon
+  // elle ne fait qu'un bandeau de 250 px de haut à côté du texte.
+  const paysage = heroIsLandscape(plugin.slug);
+  const [heroW, heroH] = imageSize(plugin.slug, 'ui-hero.webp');
   const estInstrument = plugin.type === 'instrument';
   const usage = tx.usage[plugin.slug as keyof typeof tx.usage];
   const oses = availableOS(plugin);
@@ -61,7 +67,11 @@ export default function PluginDetail({
         </Link>
 
         {/* ── HERO ─────────────────────────────────────────────── */}
-        <div className="mt-8 grid items-center gap-14 lg:grid-cols-2">
+        <div
+          className={`mt-8 grid items-center gap-14 ${
+            paysage ? 'lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.25fr)] lg:gap-12' : 'lg:grid-cols-2'
+          }`}
+        >
           <div className="order-2 lg:order-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-block rounded-full border border-cream/15 bg-cream/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold">
@@ -114,7 +124,7 @@ export default function PluginDetail({
           </div>
 
           <div className="order-1 flex min-w-0 justify-center lg:order-2">
-            <PluginWindow plugin={plugin} width={400} priority />
+            <PluginWindow plugin={plugin} priority />
           </div>
         </div>
 
@@ -167,18 +177,26 @@ export default function PluginDetail({
             <Reveal>
               <h2 className="font-display text-3xl font-bold text-cream">{tx.states}</h2>
             </Reveal>
-            <div className="mt-6 grid gap-6 sm:grid-cols-3">
+            {/* Toutes les cases ont le format de la fenêtre principale : une image
+                d'un autre format (Kick Lock Send, en portrait) y est contenue
+                plutôt que de casser l'alignement des rangées. */}
+            <div className={`mt-6 grid gap-6 ${paysage ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
               {states.map((s, i) => (
                 <Reveal key={s.file} delay={i * 0.05}>
                   <figure>
-                    <Image
-                      src={pluginImage(plugin.slug, s.file)}
-                      alt={`${plugin.name}, ${t(s.label)}`}
-                      width={s.width}
-                      height={s.height}
-                      sizes="(max-width: 640px) 80vw, 320px"
-                      className="h-auto w-full rounded-2xl border border-cream/12"
-                    />
+                    <div
+                      className="flex items-center justify-center overflow-hidden rounded-2xl border border-cream/12 bg-night-deep/50"
+                      style={{ aspectRatio: `${heroW} / ${heroH}` }}
+                    >
+                      <Image
+                        src={pluginImage(plugin.slug, s.file)}
+                        alt={`${plugin.name}, ${t(s.label)}`}
+                        width={s.width}
+                        height={s.height}
+                        sizes={paysage ? '(max-width: 640px) 92vw, 540px' : '(max-width: 640px) 80vw, 320px'}
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
                     <figcaption className="mt-3 text-center text-sm text-cream/60">{t(s.label)}</figcaption>
                   </figure>
                 </Reveal>

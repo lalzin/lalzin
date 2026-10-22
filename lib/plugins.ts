@@ -111,6 +111,15 @@ export function imageSize(slug: string, file: string): [number, number] {
   return taille?.length === 2 ? [taille[0], taille[1]] : [840, 1040];
 }
 
+/**
+ * Fenêtre en paysage (Kick Lock, 760 x 480) ou en portrait (les autres,
+ * 420 x 520) : la mise en page n'est pas la même pour l'une et l'autre.
+ */
+export function heroIsLandscape(slug: string): boolean {
+  const [w, h] = imageSize(slug, 'ui-hero.webp');
+  return w > h;
+}
+
 /** Libellés particuliers ; les autres sont dérivés du nom de fichier. */
 const STATE_LABELS: Record<string, L> = {
   'ui-centre': { fr: 'Centre, son intact', en: 'Centre, untouched' },
@@ -119,6 +128,9 @@ const STATE_LABELS: Record<string, L> = {
   'ui-curve': { fr: 'Courbe de ducking', en: 'Ducking curve' },
   'ui-explain': { fr: 'Chaque réglage expliqué', en: 'Every setting explained' },
   'ui-send': { fr: 'Kick Lock Send, sur le kick', en: 'Kick Lock Send, on the kick' },
+  'ui-live': { fr: 'Mode LIVE', en: 'LIVE mode' },
+  'ui-mono': { fr: 'MONO BELOW', en: 'MONO BELOW' },
+  'ui-sidechain': { fr: 'PHASE éteint : sidechain simple', en: 'PHASE off: plain sidechain' },
 };
 
 /** « ui-25 » → « 25 % » ; « ui-gospel » → « Gospel ». */
