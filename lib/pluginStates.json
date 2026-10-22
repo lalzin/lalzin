@@ -1,24 +1,261 @@
 {
-  "backwash": [
-    "ui-50.webp",
-    "ui-75.webp"
-  ],
-  "boogie-trio": [
-    "ui-25.webp",
-    "ui-100.webp"
-  ],
-  "french-filter": [
-    "ui-centre.webp",
-    "ui-hp50.webp",
-    "ui-lp50.webp"
-  ],
-  "pew-pew": [
-    "ui-25.webp",
-    "ui-100.webp"
-  ],
-  "sing-it-back": [
-    "ui-25.webp",
-    "ui-100.webp",
-    "ui-gospel.webp"
-  ]
+  "backwash": {
+    "states": [
+      "ui-50.webp",
+      "ui-75.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        368,
+        336
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-50.webp": [
+        840,
+        1040
+      ],
+      "ui-75.webp": [
+        840,
+        1040
+      ],
+      "ui-hero.webp": [
+        840,
+        1040
+      ],
+      "ui-hero@3x.webp": [
+        1260,
+        1560
+      ]
+    }
+  },
+  "boogie-trio": {
+    "states": [
+      "ui-25.webp",
+      "ui-100.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        382,
+        336
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-100.webp": [
+        840,
+        1040
+      ],
+      "ui-25.webp": [
+        840,
+        1040
+      ],
+      "ui-hero.webp": [
+        840,
+        1040
+      ],
+      "ui-hero@3x.webp": [
+        1260,
+        1560
+      ]
+    }
+  },
+  "french-filter": {
+    "states": [
+      "ui-centre.webp",
+      "ui-hp50.webp",
+      "ui-lp50.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        648,
+        560
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-centre.webp": [
+        840,
+        1040
+      ],
+      "ui-hero.webp": [
+        840,
+        1040
+      ],
+      "ui-hero@3x.webp": [
+        1260,
+        1560
+      ],
+      "ui-hp50.webp": [
+        840,
+        1040
+      ],
+      "ui-lp50.webp": [
+        840,
+        1040
+      ]
+    }
+  },
+  "kick-lock": {
+    "states": [
+      "ui-curve.webp",
+      "ui-explain.webp",
+      "ui-send.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        508,
+        520
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-curve.webp": [
+        1520,
+        960
+      ],
+      "ui-explain.webp": [
+        1520,
+        960
+      ],
+      "ui-hero.webp": [
+        1520,
+        960
+      ],
+      "ui-hero@3x.webp": [
+        2280,
+        1440
+      ],
+      "ui-send.webp": [
+        840,
+        1040
+      ],
+      "ui-send@3x.webp": [
+        1260,
+        1560
+      ]
+    }
+  },
+  "pew-pew": {
+    "states": [
+      "ui-25.webp",
+      "ui-100.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        342,
+        323
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-100.webp": [
+        840,
+        1040
+      ],
+      "ui-25.webp": [
+        840,
+        1040
+      ],
+      "ui-hero.webp": [
+        840,
+        1040
+      ],
+      "ui-hero@3x.webp": [
+        1260,
+        1560
+      ]
+    }
+  },
+  "sing-it-back": {
+    "states": [
+      "ui-25.webp",
+      "ui-100.webp",
+      "ui-gospel.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        350,
+        310
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-100.webp": [
+        840,
+        1040
+      ],
+      "ui-25.webp": [
+        840,
+        1040
+      ],
+      "ui-gospel.webp": [
+        840,
+        1040
+      ],
+      "ui-hero.webp": [
+        840,
+        1040
+      ],
+      "ui-hero@3x.webp": [
+        1260,
+        1560
+      ]
+    }
+  }
 }

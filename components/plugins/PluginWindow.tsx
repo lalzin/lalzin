@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
-import { pluginImage, type Plugin } from '@/lib/plugins';
+import { imageSize, pluginImage, type Plugin } from '@/lib/plugins';
 
 type Props = {
   plugin: Plugin;
@@ -19,7 +19,8 @@ type Props = {
  */
 export default function PluginWindow({ plugin, width = 420, priority = false, className = '' }: Props) {
   const reduced = useReducedMotion();
-  const height = Math.round((width * 1040) / 840);
+  const [heroW, heroH] = imageSize(plugin.slug, 'ui-hero.webp');
+  const [mascotW, mascotH] = imageSize(plugin.slug, 'mascot.webp');
 
   return (
     <div className={`relative w-full ${className}`} style={{ maxWidth: width }}>
@@ -41,8 +42,8 @@ export default function PluginWindow({ plugin, width = 420, priority = false, cl
         <Image
           src={pluginImage(plugin.slug, 'ui-hero.webp')}
           alt={`${plugin.name}, interface du plugin`}
-          width={840}
-          height={1040}
+          width={heroW}
+          height={heroH}
           priority={priority}
           sizes={`(max-width: 640px) 80vw, ${width}px`}
           className="h-auto w-full"
@@ -72,8 +73,8 @@ export default function PluginWindow({ plugin, width = 420, priority = false, cl
         <Image
           src={pluginImage(plugin.slug, 'mascot.webp')}
           alt={plugin.mascot}
-          width={648}
-          height={560}
+          width={mascotW}
+          height={mascotH}
           priority={priority}
           sizes="(max-width: 640px) 45vw, 260px"
           className="h-auto w-full drop-shadow-[0_18px_28px_rgba(0,0,0,0.55)]"

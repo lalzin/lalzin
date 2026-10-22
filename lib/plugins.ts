@@ -35,6 +35,8 @@ export type PluginDownload = {
   signed?: string;
   /** Lien public de la release (information ; le téléchargement passe par R2). */
   url?: string;
+  /** Plugins contenus dans l'installateur, quand il y en a plusieurs. */
+  includes?: string[];
 };
 
 /** Un plugin est un effet audio, sauf s'il est déclaré instrument. */
@@ -94,16 +96,29 @@ export const pluginEmailImage = (slug: string) => `${BASE}/${slug}/og-email.jpg`
 export const suiteImage = (file: string) => `${BASE}/${file}`;
 
 /**
- * Visuels d'états (`ui-*.webp` hors hero), recensés au build par
- * scripts/build-plugin-states.mjs : ajouter une image suffit.
+ * Visuels recensés au build par scripts/build-plugin-states.mjs :
+ * écrans de galerie et dimensions réelles de chaque image.
  */
-const STATE_FILES = states as Record<string, string[]>;
+type Manifeste = Record<string, { states: string[]; images: Record<string, number[]> }>;
+const VISUELS = states as Manifeste;
+
+/**
+ * Dimensions réelles d'un visuel. Les fenêtres n'ont pas toutes le même
+ * format (Kick Lock est en paysage), une taille en dur les déformerait.
+ */
+export function imageSize(slug: string, file: string): [number, number] {
+  const taille = VISUELS[slug]?.images?.[file];
+  return taille?.length === 2 ? [taille[0], taille[1]] : [840, 1040];
+}
 
 /** Libellés particuliers ; les autres sont dérivés du nom de fichier. */
 const STATE_LABELS: Record<string, L> = {
   'ui-centre': { fr: 'Centre, son intact', en: 'Centre, untouched' },
   'ui-lp50': { fr: 'Passe-bas à 50 %', en: 'Low-pass at 50 %' },
   'ui-hp50': { fr: 'Passe-haut à 50 %', en: 'High-pass at 50 %' },
+  'ui-curve': { fr: 'Courbe de ducking', en: 'Ducking curve' },
+  'ui-explain': { fr: 'Chaque réglage expliqué', en: 'Every setting explained' },
+  'ui-send': { fr: 'Kick Lock Send, sur le kick', en: 'Kick Lock Send, on the kick' },
 };
 
 /** « ui-25 » → « 25 % » ; « ui-gospel » → « Gospel ». */
@@ -117,10 +132,13 @@ function labelFromFile(file: string): L {
   return { fr: texte, en: texte };
 }
 
-export type UIState = { file: string; label: L };
+export type UIState = { file: string; label: L; width: number; height: number };
 
 export const uiStates = (slug: string): UIState[] =>
-  (STATE_FILES[slug] ?? []).map((file) => ({ file, label: labelFromFile(file) }));
+  (VISUELS[slug]?.states ?? []).map((file) => {
+    const [width, height] = imageSize(slug, file);
+    return { file, label: labelFromFile(file), width, height };
+  });
 
 /* ------------------------------------------------------- DISPONIBILITÉ */
 /**

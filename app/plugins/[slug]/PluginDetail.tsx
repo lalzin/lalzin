@@ -168,14 +168,14 @@ export default function PluginDetail({
               <h2 className="font-display text-3xl font-bold text-cream">{tx.states}</h2>
             </Reveal>
             <div className="mt-6 grid gap-6 sm:grid-cols-3">
-              {states.map((s: { file: string; label: typeof plugin.tagline }, i: number) => (
+              {states.map((s, i) => (
                 <Reveal key={s.file} delay={i * 0.05}>
                   <figure>
                     <Image
                       src={pluginImage(plugin.slug, s.file)}
                       alt={`${plugin.name}, ${t(s.label)}`}
-                      width={840}
-                      height={1040}
+                      width={s.width}
+                      height={s.height}
                       sizes="(max-width: 640px) 80vw, 320px"
                       className="h-auto w-full rounded-2xl border border-cream/12"
                     />
@@ -234,6 +234,12 @@ export default function PluginDetail({
                         <div className="flex gap-2">
                           <dt className="text-cream/45">{tx.size} :</dt>
                           <dd className="text-cream/80">{formatBytes(d.bytes, lang)}</dd>
+                        </div>
+                      )}
+                      {d.includes && d.includes.length > 1 && (
+                        <div className="flex gap-2">
+                          <dt className="text-cream/45">{tx.includes} :</dt>
+                          <dd className="text-cream/80">{d.includes.join(' + ')}</dd>
                         </div>
                       )}
                       {d.signed && (

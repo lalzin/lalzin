@@ -87,6 +87,7 @@ export const ui = {
       styles: 'Styles',
       latency: 'Latence',
       signature: 'Signature',
+      includes: 'Contient',
       signedApple: 'Signé et vérifié par Apple',
       usage: {
         'pew-pew': 'À charger sur une piste MIDI (instruments).',
@@ -315,6 +316,7 @@ export const ui = {
       styles: 'Styles',
       latency: 'Latency',
       signature: 'Signature',
+      includes: 'Includes',
       signedApple: 'Signed and verified by Apple',
       usage: {
         'pew-pew': 'Load it on a MIDI track (instruments).',

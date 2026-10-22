@@ -4,13 +4,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
-import { pluginImage, type Plugin } from '@/lib/plugins';
+import { imageSize, pluginImage, type Plugin } from '@/lib/plugins';
 
 /** Carte de la page /plugins : fenêtre du plugin + mascotte qui dépasse. */
 export default function PluginCard({ plugin, index = 0 }: { plugin: Plugin; index?: number }) {
   const { t, ui } = useContent();
   const reduced = useReducedMotion();
   const { accent, accent2 } = plugin.colors;
+  const [heroW, heroH] = imageSize(plugin.slug, 'ui-hero.webp');
+  const [mascotW, mascotH] = imageSize(plugin.slug, 'mascot.webp');
 
   return (
     <motion.article
@@ -33,16 +35,16 @@ export default function PluginCard({ plugin, index = 0 }: { plugin: Plugin; inde
           <Image
             src={pluginImage(plugin.slug, 'ui-hero.webp')}
             alt={`${plugin.name}, interface du plugin`}
-            width={840}
-            height={1040}
+            width={heroW}
+            height={heroH}
             sizes="(max-width: 640px) 55vw, 220px"
             className="h-auto w-full rounded-2xl border border-cream/15 shadow-[0_20px_40px_-16px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:-translate-y-1"
           />
           <Image
             src={pluginImage(plugin.slug, 'mascot.webp')}
             alt={plugin.mascot}
-            width={648}
-            height={560}
+            width={mascotW}
+            height={mascotH}
             sizes="(max-width: 640px) 36vw, 150px"
             className="absolute -bottom-1 -right-8 w-[62%] drop-shadow-[0_14px_22px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-105"
           />

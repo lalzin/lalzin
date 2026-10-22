@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/ui/Reveal';
-import { pluginImage, suite, type Plugin } from '@/lib/plugins';
+import { imageSize, pluginImage, suite, type Plugin } from '@/lib/plugins';
 
 /** Teaser sur la home : la suite Groove Knobs, renvoie vers /plugins. */
 export default function Plugins({ plugins }: { plugins: Plugin[] }) {
@@ -15,6 +15,9 @@ export default function Plugins({ plugins }: { plugins: Plugin[] }) {
   const featured = plugins[0];
 
   if (!featured) return null;
+
+  const [heroW, heroH] = imageSize(featured.slug, 'ui-hero.webp');
+  const [mascotW, mascotH] = imageSize(featured.slug, 'mascot.webp');
 
   return (
     <section id="plugins" className="relative overflow-hidden py-24 sm:py-32">
@@ -40,8 +43,8 @@ export default function Plugins({ plugins }: { plugins: Plugin[] }) {
               <Image
                 src={pluginImage(featured.slug, 'ui-hero.webp')}
                 alt={`${featured.name}, interface du plugin`}
-                width={840}
-                height={1040}
+                width={heroW}
+                height={heroH}
                 sizes="(max-width: 640px) 55vw, 300px"
                 className="h-auto w-full rounded-2xl border border-cream/15 shadow-[0_26px_50px_-18px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:-translate-y-1.5"
               />
@@ -53,8 +56,8 @@ export default function Plugins({ plugins }: { plugins: Plugin[] }) {
                 <Image
                   src={pluginImage(featured.slug, 'mascot.webp')}
                   alt={featured.mascot}
-                  width={648}
-                  height={560}
+                  width={mascotW}
+                  height={mascotH}
                   sizes="(max-width: 640px) 36vw, 180px"
                   className="h-auto w-full drop-shadow-[0_16px_26px_rgba(0,0,0,0.55)]"
                 />
