@@ -213,6 +213,10 @@ export const ui = {
           body: 'Une fois par jour, le plugin installé demande au site s’il existe une version plus récente. Cette requête transmet ton adresse IP, ainsi que le nom et la version du plugin dans l’en-tête technique du navigateur (User-Agent : GrooveKnobs/<plugin>/<version>). Rien d’autre n’est envoyé, rien n’est associé à ton email, et ces informations restent dans les journaux du serveur. La vérification se désactive dans le plugin, par un clic droit sur « made by LALZIN ».',
         },
         {
+          title: 'Mini-jeux',
+          body: 'Le tableau des scores enregistre le pseudo que tu choisis, ton score, ton nombre de niveaux, la durée de ta partie et une empreinte hachée de ton adresse IP (anti-triche). Si tu es dans le Top 10, tu peux laisser ton email : il sert uniquement à te contacter si tu gagnes le cadeau du jour de sortie, n’est jamais affiché ni transmis, et il est supprimé au plus tard 3 mois après la sortie du jeu. Le jeu mémorise dans ton navigateur ta progression, ta langue et le réglage du son.',
+        },
+        {
           title: 'Durée de conservation',
           body: 'Les demandes et les statistiques de téléchargement sont conservées 24 mois, puis supprimées.',
         },
@@ -438,6 +442,10 @@ export const ui = {
         {
           title: 'Update checks',
           body: 'Once a day, the installed plugin asks the site whether a newer version exists. That request carries your IP address, plus the plugin name and version in the technical User-Agent header (GrooveKnobs/<plugin>/<version>). Nothing else is sent, nothing is tied to your email, and this stays in the server logs. The check can be turned off inside the plugin, by right-clicking “made by LALZIN”.',
+        },
+        {
+          title: 'Mini-games',
+          body: 'The leaderboard stores the nickname you choose, your score, the number of levels, how long your run took and a hashed fingerprint of your IP address (anti-cheat). If you make the Top 10, you can leave your email: it is only used to contact you if you win the release-day gift, it is never shown or shared, and it is deleted at the latest 3 months after the game’s release. The game remembers your progress, language and sound setting in your browser.',
         },
         {
           title: 'How long it is kept',

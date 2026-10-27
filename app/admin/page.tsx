@@ -7,8 +7,9 @@ import { useContent } from '@/components/providers/ContentProvider';
 import type { Content, LiveDate, MerchProduct, Release } from '@/lib/content';
 import { Area, Card, ColorPair, ImageField, LocalizedField, Select, Text, Toggle } from '@/components/admin/fields';
 import PluginsPanel from '@/components/admin/PluginsPanel';
+import MinigamePanel from '@/components/admin/MinigamePanel';
 
-type Tab = 'artist' | 'socials' | 'releases' | 'video' | 'live' | 'merch' | 'plugins' | 'seo';
+type Tab = 'artist' | 'socials' | 'releases' | 'video' | 'live' | 'merch' | 'plugins' | 'minigame' | 'seo';
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'artist', label: '🎤 Artiste' },
@@ -18,6 +19,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'live', label: '📅 Dates' },
   { id: 'merch', label: '🛍️ Boutique' },
   { id: 'plugins', label: '🎛️ Plugins' },
+  { id: 'minigame', label: '🎮 Mini-jeu' },
   { id: 'seo', label: '⚙️ SEO' },
 ];
 
@@ -402,6 +404,7 @@ export default function AdminPage() {
         {/* SEO */}
         {/* PLUGINS — lecture seule (demandes & téléchargements) */}
         {tab === 'plugins' && <PluginsPanel />}
+        {tab === 'minigame' && <MinigamePanel />}
 
         {tab === 'seo' && (
           <Card>

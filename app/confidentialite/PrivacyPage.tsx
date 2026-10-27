@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
 
 /** Date de dernière mise à jour du texte (à changer si le texte change). */
-const UPDATED = '2026-10-13';
+const UPDATED = '2026-10-27';
 
 export default function PrivacyPage() {
   const { ui, lang, content } = useContent();

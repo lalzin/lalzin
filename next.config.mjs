@@ -6,6 +6,12 @@ const nextConfig = {
   },
   // react-three-fiber / three transpile safety
   transpilePackages: ['three'],
+  // Stems des mini-jeux (hors public/) embarqués avec la route qui les sert.
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/minigame/media/[slug]/[file]': ['./games/*/media/**'],
+    },
+  },
   async headers() {
     return [
       {
