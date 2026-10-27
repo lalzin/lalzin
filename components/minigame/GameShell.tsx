@@ -188,7 +188,10 @@ export default function GameShell({
     if (!host) return;
     let cancelled = false;
     let engine: Engine | null = null;
-    const dbg = new URLSearchParams(window.location.search).has("debug");
+    // Outils de test (touches W/D/S, ?level=N) : jamais en production (classement).
+    const dbg =
+      process.env.NODE_ENV !== "production" &&
+      new URLSearchParams(window.location.search).has("debug");
     setDebug(dbg);
 
     (async () => {
@@ -344,9 +347,13 @@ export default function GameShell({
       }
     })();
 
+    // Page figée : ni rebond, ni barres de défilement (html ET body, sinon le
+    // navigateur peut garder une barre sur la racine).
     const html = document.documentElement;
     const prev = html.style.overscrollBehavior;
+    const prevOverflow = html.style.overflow;
     html.style.overscrollBehavior = "none";
+    html.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
     return () => {
@@ -354,6 +361,7 @@ export default function GameShell({
       engine?.destroy();
       engineRef.current = null;
       html.style.overscrollBehavior = prev;
+      html.style.overflow = prevOverflow;
       document.body.style.overflow = "";
     };
   }, [game, cfg, slug, displayFont]);
@@ -369,7 +377,10 @@ export default function GameShell({
     setScreen("playing");
     track("start", { slug });
     // ?level=N : démarrer directement au niveau N (tests).
-    const lv = Number(new URLSearchParams(window.location.search).get("level"));
+    const lv =
+      process.env.NODE_ENV !== "production"
+        ? Number(new URLSearchParams(window.location.search).get("level"))
+        : 0;
     void e.start(actx).then(() => {
       e.audio()?.setMuted(mutedRef.current);
       if (lv > 1) e.play(Math.min(lv, cfg.levels.length) - 1);

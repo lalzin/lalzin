@@ -56,12 +56,14 @@ export default function AccessGate({
   };
 
   return (
-    <main className="fixed inset-0 overflow-y-auto bg-[#000d1c] text-[#ffd9a8]">
+    <main className="fixed inset-0 overflow-hidden bg-[#000d1c] text-[#ffd9a8]">
+      {/* Fond flou agrandi : rogné par <main>, jamais de barres de défilement. */}
       <div
         aria-hidden
         className="absolute inset-0 scale-110 bg-cover bg-center opacity-35 blur-2xl"
         style={{ backgroundImage: `url(${cover})` }}
       />
+      <div className="absolute inset-0 overflow-y-auto overflow-x-hidden">
       <div className="relative mx-auto flex min-h-full max-w-sm flex-col items-center justify-center px-6 py-12 text-center">
         <div className="absolute right-4 top-4 flex rounded-full bg-[#001226]/60 p-0.5 font-body text-[11px] font-bold ring-1 ring-[#ffb24a]/30">
           {(['fr', 'en'] as Lang[]).map((l) => (
@@ -109,6 +111,7 @@ export default function AccessGate({
             {busy ? '…' : t.gateSubmit}
           </button>
         </form>
+      </div>
       </div>
     </main>
   );

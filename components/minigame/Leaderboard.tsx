@@ -99,7 +99,7 @@ export default function Leaderboard({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 30 }}
-      className="absolute inset-0 z-20 overflow-y-auto bg-[#000d1c]/95 px-5 backdrop-blur-md"
+      className="absolute inset-0 z-20 overflow-y-auto overflow-x-hidden bg-[#000d1c]/95 px-5 backdrop-blur-md"
       style={{
         paddingTop: "max(env(safe-area-inset-top), 22px)",
         paddingBottom: "max(env(safe-area-inset-bottom), 28px)",
