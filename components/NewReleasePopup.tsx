@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import { isExternal, resolveListenHref } from '@/lib/links';
 import { groovy } from '@/components/ui/motion';
+import { Play, Star, X } from 'lucide-react';
 
 const DISMISS_KEY = 'lalzin:promo-dismissed';
 
@@ -78,7 +79,7 @@ export default function NewReleasePopup() {
                 aria-label="Fermer"
                 className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-night/60 text-cream/80 backdrop-blur-sm transition-colors hover:bg-night hover:text-cream"
               >
-                ✕
+                <X className="h-4 w-4" aria-hidden />
               </button>
 
               {/* Cover */}
@@ -93,8 +94,9 @@ export default function NewReleasePopup() {
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-night-soft via-transparent to-transparent" />
-                <span className="absolute left-4 top-4 rounded-full bg-cream px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-night">
-                  ★ {ui.promo.badge}
+                <span className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-cream px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-night">
+                  <Star className="h-3 w-3 fill-current" strokeWidth={0} aria-hidden />
+                  {ui.promo.badge}
                 </span>
               </div>
 
@@ -112,7 +114,9 @@ export default function NewReleasePopup() {
                   onClick={close}
                   className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-magenta via-coral to-gold py-3.5 text-base font-bold text-night shadow-lg shadow-magenta/30 transition-transform hover:scale-[1.03]"
                 >
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-night/20 text-[10px]">▶</span>
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-night/20">
+                    <Play className="ml-px h-2.5 w-2.5 fill-current" strokeWidth={0} aria-hidden />
+                  </span>
                   {ui.promo.listen}
                 </a>
                 <button

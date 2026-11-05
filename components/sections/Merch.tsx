@@ -5,11 +5,12 @@ import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/ui/Reveal';
 import { stagger, popIn } from '@/components/ui/motion';
+import { ArrowUpRight, Disc3, Gift, Shirt, ShoppingBag, type LucideIcon } from 'lucide-react';
 
-const categoryIcon: Record<string, string> = {
-  'T-shirt': '👕',
-  Vinyle: '💿',
-  Goodies: '🎁',
+const categoryIcon: Record<string, LucideIcon> = {
+  'T-shirt': Shirt,
+  Vinyle: Disc3,
+  Goodies: Gift,
 };
 
 export default function Merch() {
@@ -33,7 +34,7 @@ export default function Merch() {
             }}
           >
             <div className="glass-warm relative mx-auto max-w-2xl overflow-hidden rounded-[2.5rem] px-8 py-16 text-center">
-              <div className="mb-6 animate-float-slow text-6xl">🛍️</div>
+              <ShoppingBag className="mx-auto mb-6 h-14 w-14 animate-float-slow text-gold" strokeWidth={1.5} aria-hidden />
               <p className="font-display text-2xl font-bold text-cream sm:text-3xl">
                 {ui.merch.comingSoon}
               </p>
@@ -46,7 +47,10 @@ export default function Merch() {
                     rel="noopener noreferrer"
                     className="rounded-full bg-gradient-to-r from-magenta to-coral px-7 py-3 text-sm font-bold text-night shadow-lg shadow-magenta/30 transition-transform hover:scale-105"
                   >
-                    {ui.merch.visit} ↗
+                    <span className="inline-flex items-center gap-1.5">
+                      {ui.merch.visit}
+                      <ArrowUpRight className="h-4 w-4" aria-hidden />
+                    </span>
                   </a>
                 )}
                 <a
@@ -85,9 +89,16 @@ export default function Merch() {
                       style={{ background: `radial-gradient(circle at 50% 40%, ${c1}, ${c2} 60%, transparent 100%)` }}
                     />
                     <div className="grain absolute inset-0 opacity-60" />
-                    <span className="relative text-6xl opacity-90 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
-                      {categoryIcon[p.category]}
-                    </span>
+                    {(() => {
+                      const Icone = categoryIcon[p.category] ?? Gift;
+                      return (
+                        <Icone
+                          className="relative h-16 w-16 text-cream/90 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110"
+                          strokeWidth={1.25}
+                          aria-hidden
+                        />
+                      );
+                    })()}
                   </div>
                   <div className="p-4">
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: c1 }}>

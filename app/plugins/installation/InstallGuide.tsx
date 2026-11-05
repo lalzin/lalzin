@@ -5,13 +5,14 @@ import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
+import { ArrowLeft, Download, RefreshCw, SlidersVertical, type LucideIcon } from 'lucide-react';
 
-function Steps({ title, steps, badge }: { title: string; steps: readonly string[]; badge: string }) {
+function Steps({ title, steps, icon: Icone }: { title: string; steps: readonly string[]; icon: LucideIcon }) {
   return (
     <Reveal>
       <div className="h-full rounded-[1.75rem] border border-cream/12 bg-cream/[0.04] p-7">
-        <span className="text-3xl" aria-hidden>
-          {badge}
+        <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gold/15 text-gold">
+          <Icone className="h-5 w-5" aria-hidden />
         </span>
         <h2 className="mt-3 font-display text-2xl font-bold text-cream">{title}</h2>
         <ol className="mt-5 space-y-4">
@@ -42,8 +43,9 @@ export default function InstallGuide() {
       <div className="relative mx-auto max-w-4xl px-6">
         <Link
           href="/plugins"
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-cream"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-cream"
         >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
           {ui.plugins.backToPlugins}
         </Link>
 
@@ -52,16 +54,16 @@ export default function InstallGuide() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2">
-          <Steps title={tx.macTitle} steps={tx.macSteps} badge="🍏" />
-          <Steps title={tx.winTitle} steps={tx.winSteps} badge="🪟" />
+          <Steps title={tx.macTitle} steps={tx.macSteps} icon={Download} />
+          <Steps title={tx.winTitle} steps={tx.winSteps} icon={Download} />
         </div>
 
         <div className="mt-6">
-          <Steps title={tx.dawTitle} steps={tx.dawSteps} badge="🎚️" />
+          <Steps title={tx.dawTitle} steps={tx.dawSteps} icon={SlidersVertical} />
         </div>
 
         <div className="mt-6">
-          <Steps title={tx.updatesTitle} steps={tx.updatesSteps} badge="🔄" />
+          <Steps title={tx.updatesTitle} steps={tx.updatesSteps} icon={RefreshCw} />
         </div>
 
         <Reveal>
@@ -69,8 +71,9 @@ export default function InstallGuide() {
             <h2 className="font-display text-xl font-bold text-gold">{tx.noteTitle}</h2>
             <ul className="mt-4 space-y-2">
               {tx.notes.map((n) => (
-                <li key={n} className="text-sm leading-relaxed text-cream/75">
-                  • {n}
+                <li key={n} className="flex gap-3 text-sm leading-relaxed text-cream/75">
+                  <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-gold" aria-hidden />
+                  {n}
                 </li>
               ))}
             </ul>

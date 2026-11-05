@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { UI } from "@/lib/minigame/i18n";
 import { fetchTop, saveEmail, submitScore, type ScoreRow } from "@/lib/minigame/scores";
 import type { Lang } from "@/lib/minigame/types";
+import { Loader2, X } from 'lucide-react';
 
 const PSEUDO_KEY = "minigame:pseudo";
 
@@ -109,9 +110,10 @@ export default function Leaderboard({
       <div className="flex justify-end">
         <button
           onClick={onClose}
-          className="font-body text-xs uppercase tracking-[0.2em] text-[#ffd9a8]/70"
+          className="inline-flex items-center gap-1 font-body text-xs uppercase tracking-[0.2em] text-[#ffd9a8]/70"
         >
           {t.close}
+          <X className="h-3.5 w-3.5" aria-hidden />
         </button>
       </div>
       <h2
@@ -150,7 +152,7 @@ export default function Leaderboard({
             disabled={busy}
             className="mt-3 w-full rounded-full bg-gradient-to-r from-[#ffb24a] to-[#ff7a1a] py-3.5 text-sm font-bold uppercase tracking-[0.2em] text-[#001c35] disabled:opacity-50"
           >
-            {busy ? "…" : t.save}
+            {busy ? <Loader2 className="mx-auto h-4 w-4 animate-spin" aria-label="…" /> : t.save}
           </button>
         </div>
       )}
@@ -190,7 +192,7 @@ export default function Leaderboard({
                     disabled={emailState === "busy"}
                     className="mt-2.5 w-full rounded-full bg-gradient-to-r from-[#ffb24a] to-[#ff7a1a] py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-[#001c35] disabled:opacity-50"
                   >
-                    {emailState === "busy" ? "…" : t.emailSave}
+                    {emailState === "busy" ? <Loader2 className="mx-auto h-4 w-4 animate-spin" aria-label="…" /> : t.emailSave}
                   </button>
                   <p className="mt-2 text-[10px] leading-snug text-[#ffd9a8]/45">
                     {t.emailPrivacy}{" "}
@@ -231,8 +233,18 @@ export default function Leaderboard({
                     key={`${r.pseudo}-${r.score}-${r.created_at}`}
                     className={`flex items-center gap-3 rounded-xl px-3 py-2 ${me ? "bg-[#ff8a2a]/20 ring-1 ring-[#ffb24a]" : "bg-white/[0.04]"}`}
                   >
-                    <span className="w-7 text-center text-lg">
-                      {["🥇", "🥈", "🥉"][i] ?? `${i + 1}.`}
+                    {/* Podium : or, argent, bronze ; les autres rangs en simple chiffre */}
+                    <span className="flex w-7 justify-center">
+                      {i < 3 ? (
+                        <span
+                          className="grid h-6 w-6 place-items-center rounded-full font-body text-xs font-bold text-[#001c35]"
+                          style={{ background: ['#ffd06b', '#cfd8e3', '#d9945a'][i] }}
+                        >
+                          {i + 1}
+                        </span>
+                      ) : (
+                        <span className="font-body text-sm font-bold text-[#ffd9a8]/60">{i + 1}.</span>
+                      )}
                     </span>
                     <span className="flex-1 truncate text-sm font-semibold text-[#ffd9a8]">
                       {r.pseudo}

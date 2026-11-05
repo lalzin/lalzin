@@ -5,6 +5,7 @@ import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
+import { ArrowLeft } from 'lucide-react';
 
 /** Date de dernière mise à jour du texte (à changer si le texte change). */
 const UPDATED = '2026-10-27';
@@ -26,9 +27,10 @@ export default function PrivacyPage() {
       <div className="relative mx-auto max-w-3xl px-6">
         <Link
           href="/"
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-cream"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-cream"
         >
-          ← {content.artist.name}
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+          {content.artist.name}
         </Link>
 
         <div className="mt-8">

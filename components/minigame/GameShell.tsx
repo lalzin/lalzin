@@ -20,6 +20,7 @@ import DebugPanel from "./DebugPanel";
 import Cabin from "./Cabin";
 import HowTo from "./HowTo";
 import Leaderboard from "./Leaderboard";
+import { Gift, Loader2, Lock, LockOpen, Timer, TriangleAlert, Trophy } from 'lucide-react';
 
 type Screen = "loading" | "title" | "howto" | "playing" | "won" | "lost";
 
@@ -219,9 +220,10 @@ export default function GameShell({
               // v > 0 : bonus restant ; v ≤ 0 : secondes avant la fin du niveau.
               el.textContent =
                 v > 0
-                  ? `⏱ +${uiRef.current.num(v)}`
+                  ? `+${uiRef.current.num(v)}`
                   : uiRef.current.timeLeft(-v);
-              el.style.color =
+              // La couleur va sur le parent, pour que l'icône suive le texte.
+              (el.parentElement ?? el).style.color =
                 v > 2500 ? "#9cc2ff" : v > 0 ? "#ff8a6a" : "#ff4a4a";
               if (v <= 0)
                 el.animate(
@@ -541,11 +543,11 @@ export default function GameShell({
                     pts
                   </span>
                   {/* Bonus chrono : fond à vue, rouge quand il est presque vide */}
-                  <span
-                    ref={chronoRef}
-                    className="ml-3 inline-block font-body text-xs font-bold tabular-nums tracking-normal text-[#9cc2ff]"
-                  >
-                    ⏱ +0
+                  <span className="ml-3 inline-flex items-center gap-1 font-body text-xs font-bold text-[#9cc2ff]">
+                    <Timer className="h-3.5 w-3.5" aria-hidden />
+                    <span ref={chronoRef} className="inline-block tabular-nums tracking-normal">
+                      +0
+                    </span>
                   </span>
                 </span>
                 <div className="flex items-center gap-2">
@@ -849,7 +851,10 @@ export default function GameShell({
                   </p>
                   {giftLine && (
                     <p className="max-w-xs rounded-full bg-[#ff8a2a]/15 px-4 py-1.5 font-body text-xs font-semibold text-[#ffd06b] ring-1 ring-[#ffb24a]/40">
-                      {giftLine}
+                      <span className="inline-flex items-center gap-1.5">
+                        <Gift className="h-3.5 w-3.5 flex-none" aria-hidden />
+                        {giftLine}
+                      </span>
                     </p>
                   )}
                   <button
@@ -883,14 +888,20 @@ export default function GameShell({
                         onClick={() => setBoard({})}
                         className="rounded-full bg-white/10 px-4 py-2 text-[#ffd9a8] backdrop-blur-sm"
                       >
-                        🏆 Top 10
+                        <span className="inline-flex items-center gap-1.5">
+                          <Trophy className="h-4 w-4 flex-none" aria-hidden />
+                          Top 10
+                        </span>
                       </button>
                       {cfg.cabin && (
                         <button
                           onClick={() => cabinOpen && setCabinShown(true)}
                           className={`rounded-full px-4 py-2 backdrop-blur-sm ${cabinOpen ? "bg-[#ff8a2a]/25 text-[#ffd06b] ring-1 ring-[#ffb24a]/60" : "bg-white/10 text-[#ffd9a8]/60"}`}
                         >
-                          {cabinLabel(false)}
+                          <span className="inline-flex items-center gap-1.5">
+                            {cabinOpen ? <LockOpen className="h-4 w-4 flex-none" aria-hidden /> : <Lock className="h-4 w-4 flex-none" aria-hidden />}
+                            {cabinLabel(false)}
+                          </span>
                         </button>
                       )}
                     </div>
@@ -988,7 +999,10 @@ export default function GameShell({
                         : "bg-white/5 text-[#ffd9a8]/55"
                     }`}
                   >
-                    {cabinLabel(true)}
+                    <span className="inline-flex items-center justify-center gap-1.5">
+                      {cabinOpen ? <LockOpen className="h-4 w-4 flex-none" aria-hidden /> : <Lock className="h-4 w-4 flex-none" aria-hidden />}
+                      {cabinLabel(true)}
+                    </span>
                   </button>
                 )}
                 <button
@@ -1069,7 +1083,7 @@ export default function GameShell({
                     onClick={onShare}
                     className="rounded-full bg-gradient-to-r from-[#ffb24a] to-[#ff7a1a] py-3.5 text-sm font-bold uppercase tracking-[0.2em] text-[#001c35] shadow-[0_0_30px_rgba(255,138,42,0.45)] active:scale-[0.98]"
                   >
-                    {shareState === "busy" ? "…" : t.shareScore}
+                    {shareState === "busy" ? <Loader2 className="mx-auto h-4 w-4 animate-spin" aria-label="…" /> : t.shareScore}
                   </button>
                 )}
                 {isLast && (
@@ -1085,7 +1099,10 @@ export default function GameShell({
                     }
                     className="rounded-full border border-[#ffd06b] py-3 text-sm font-bold uppercase tracking-[0.2em] text-[#ffd06b]"
                   >
-                    {t.joinTop10}
+                    <span className="inline-flex items-center justify-center gap-2">
+                      <Trophy className="h-4 w-4 flex-none" aria-hidden />
+                      {t.joinTop10}
+                    </span>
                   </button>
                 )}
                 {isLast && cfg.cabin && (
@@ -1097,7 +1114,10 @@ export default function GameShell({
                         : "bg-white/5 text-[#ffd9a8]/55"
                     }`}
                   >
-                    {cabinLabel(true)}
+                    <span className="inline-flex items-center justify-center gap-1.5">
+                      {cabinOpen ? <LockOpen className="h-4 w-4 flex-none" aria-hidden /> : <Lock className="h-4 w-4 flex-none" aria-hidden />}
+                      {cabinLabel(true)}
+                    </span>
                   </button>
                 )}
                 <div className="grid grid-cols-2 gap-2.5">
@@ -1134,7 +1154,7 @@ export default function GameShell({
                     <button onClick={() => goLevel(0)}>{t.restart}</button>
                   ) : (
                     <button onClick={onShare}>
-                      {shareState === "busy" ? "…" : t.share}
+                      {shareState === "busy" ? <Loader2 className="inline h-4 w-4 animate-spin" aria-label="…" /> : t.share}
                     </button>
                   )}
                 </div>
@@ -1331,7 +1351,10 @@ function IntroCard(props: {
           }}
           className="mx-auto mt-3 inline-block rounded-full border border-[#ff7a5a]/60 bg-[#ff5f5f]/15 px-3 py-1 font-body text-xs font-bold text-[#ffb3a0]"
         >
-          ⚠ {props.warning}
+          <span className="inline-flex items-center gap-1.5">
+            <TriangleAlert className="h-3.5 w-3.5 flex-none" aria-hidden />
+            {props.warning}
+          </span>
         </motion.p>
       )}
       <p className="mt-2 font-body text-sm text-[#ffd9a8]/85">{props.hint}</p>
@@ -1346,7 +1369,7 @@ function EggCard({
   lang,
   font,
 }: {
-  special: { icon: string; name: Localized; story: Localized };
+  special: { name: Localized; story: Localized };
   icon?: string;
   lang: Lang;
   font: string;

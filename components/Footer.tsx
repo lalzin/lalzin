@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useContent } from '@/components/providers/ContentProvider';
 import { SocialIcon } from '@/components/ui/icons';
+import { ArrowUpRight } from 'lucide-react';
 
 export default function Footer() {
   const { content, t, ui } = useContent();
@@ -15,7 +16,7 @@ export default function Footer() {
           onClick={() => document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })}
           className="font-display text-3xl font-extrabold text-cream"
         >
-          LALZIN 🪩
+          LALZIN
         </button>
 
         <p className="max-w-md text-sm text-cream/60">{t(artist.tagline)}</p>
@@ -43,7 +44,10 @@ export default function Footer() {
         </a>
 
         <Link href="/links" className="text-xs font-semibold uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-cream">
-          {ui.nav.links} ↗
+          <span className="inline-flex items-center gap-1">
+            {ui.nav.links}
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+          </span>
         </Link>
 
         <p className="text-xs text-cream/35">

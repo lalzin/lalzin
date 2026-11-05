@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Card, ImageField, Toggle } from '@/components/admin/fields';
+import { ArrowUpRight, Gift, Globe, Lock } from 'lucide-react';
 
 type Settings = {
   access: 'private' | 'public';
@@ -76,7 +77,7 @@ export default function MinigamePanel() {
       });
       const j = await res.json().catch(() => ({}));
       if (res.ok) {
-        setFlash('Enregistré ✓');
+        setFlash('Enregistré');
         await load(slug);
       } else setFlash(j.error || 'Échec');
     } catch {
@@ -87,7 +88,7 @@ export default function MinigamePanel() {
   };
 
   const copy = (txt: string, what: string) => {
-    void navigator.clipboard?.writeText(txt).then(() => setFlash(`${what} copié ✓`));
+    void navigator.clipboard?.writeText(txt).then(() => setFlash(`${what} copié`));
   };
 
   const rows =
@@ -118,7 +119,17 @@ export default function MinigamePanel() {
                 data.settings.access === 'public' ? 'bg-teal/20 text-teal' : 'bg-gold/15 text-gold'
               }`}
             >
-              {data.settings.access === 'public' ? '● En ligne pour tous' : '🔒 Accès anticipé'}
+              {data.settings.access === 'public' ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Globe className="h-3.5 w-3.5" aria-hidden />
+                  En ligne pour tous
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5">
+                  <Lock className="h-3.5 w-3.5" aria-hidden />
+                  Accès anticipé
+                </span>
+              )}
             </span>
           </div>
           <div className="flex gap-2">
@@ -126,7 +137,10 @@ export default function MinigamePanel() {
               Copier le lien
             </button>
             <a href={`/play/${slug}`} target="_blank" className="rounded-full border border-cream/15 px-3 py-1.5 text-xs text-cream/80">
-              Ouvrir ↗
+              <span className="inline-flex items-center gap-1">
+                Ouvrir
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
             </a>
           </div>
         </div>
@@ -150,7 +164,10 @@ export default function MinigamePanel() {
                 draft.access === a ? 'border-gold bg-gold/10 text-cream' : 'border-cream/10 text-cream/60'
               }`}
             >
-              <span className="block font-semibold">{a === 'private' ? '🔒 Accès anticipé' : '🚀 Sortie publique'}</span>
+              <span className="flex items-center gap-1.5 font-semibold">
+                {a === 'private' ? <Lock className="h-4 w-4" aria-hidden /> : <Globe className="h-4 w-4" aria-hidden />}
+                {a === 'private' ? 'Accès anticipé' : 'Sortie publique'}
+              </span>
               <span className="mt-0.5 block text-xs text-cream/50">
                 {a === 'private'
                   ? 'Mot de passe demandé, page non référencée (noindex).'
@@ -193,7 +210,7 @@ export default function MinigamePanel() {
           <input type="date" value={draft.releaseDate} onChange={(e) => set({ releaseDate: e.target.value })} className={inputCls} />
         </label>
         <Toggle
-          label="🎁 Cadeau pour le n°1 du classement le jour de la sortie"
+          label="Cadeau pour le n°1 du classement le jour de la sortie"
           checked={draft.gift}
           onChange={(v) => set({ gift: v })}
         />
@@ -244,7 +261,14 @@ export default function MinigamePanel() {
             dirty ? 'bg-gradient-to-r from-magenta via-coral to-gold text-night' : 'cursor-default border border-cream/15 text-cream/40'
           }`}
         >
-          {saving ? 'Enregistrement…' : dirty ? '● Enregistrer le jeu' : 'Enregistré ✓'}
+          {saving ? 'Enregistrement…' : dirty ? (
+            <span className="inline-flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-current" aria-hidden />
+              Enregistrer le jeu
+            </span>
+          ) : (
+            'Enregistré'
+          )}
         </button>
         {flash && <span className="text-sm text-gold">{flash}</span>}
       </div>
@@ -273,12 +297,13 @@ export default function MinigamePanel() {
         </div>
         {data.boardError && (
           <p className="text-xs text-coral">
-            Lecture des scores impossible ({data.boardError}). Exécute <code>supabase/minigame.sql</code> dans Supabase → SQL Editor.
+            Lecture des scores impossible ({data.boardError}). Exécute <code>supabase/minigame.sql</code> dans Supabase &gt; SQL Editor.
           </p>
         )}
         {boardTab === 'release' && winner && (
           <p className="rounded-xl bg-gold/10 px-3 py-2 text-sm text-gold">
-            🎁 Gagnant du cadeau : <b>{winner.pseudo}</b> · {winner.score.toLocaleString('fr-FR')} pts ·{' '}
+            <Gift className="mr-1.5 inline h-4 w-4 -translate-y-px" aria-hidden />
+            Gagnant du cadeau : <b>{winner.pseudo}</b> · {winner.score.toLocaleString('fr-FR')} pts ·{' '}
             {winner.email ? <a className="underline" href={`mailto:${winner.email}`}>{winner.email}</a> : 'pas d’e-mail laissé'}
           </p>
         )}

@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { useContent } from '@/components/providers/ContentProvider';
 import PluginCard from '@/components/plugins/PluginCard';
 import SuiteCard from '@/components/plugins/SuiteCard';
-import DownloadForm from '@/components/plugins/DownloadForm';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
 import { suite, suiteImage, type Plugin } from '@/lib/plugins';
+import { SlidersHorizontal } from 'lucide-react';
 
 /** Largeur d'une carte : une, deux ou trois par rangée selon l'écran. */
 const CARTE = 'flex w-full sm:w-[calc(50%_-_0.75rem)] lg:w-[calc(33.333%_-_1rem)]';
@@ -17,12 +17,10 @@ const CARTE = 'flex w-full sm:w-[calc(50%_-_0.75rem)] lg:w-[calc(33.333%_-_1rem)
 export default function PluginsIndex({
   plugins,
   suiteDl,
-  turnstileSiteKey,
 }: {
   plugins: Plugin[];
   /** Installateur de toute la suite, s'il est publié dans /admin. */
   suiteDl: Plugin | null;
-  turnstileSiteKey: string;
 }) {
   const { t, ui } = useContent();
 
@@ -82,18 +80,11 @@ export default function PluginsIndex({
             as="article"
             className={`${CARTE} min-h-[18rem] flex-col items-center justify-center rounded-[2rem] border border-dashed border-cream/15 p-8 text-center`}
           >
-            <span className="text-4xl">🎛️</span>
+            <SlidersHorizontal className="h-9 w-9 text-cream/50" strokeWidth={1.5} aria-hidden />
             <p className="mt-4 font-display text-xl font-bold text-cream/80">{ui.plugins.soon}</p>
             <p className="mt-2 max-w-xs text-sm text-cream/55">{ui.plugins.soonOther}</p>
           </Reveal>
         </div>
-
-        {/* Téléchargement de toute la suite, en un seul installateur */}
-        {suiteDl && (
-          <div className="mt-20">
-            <DownloadForm plugin={suiteDl} turnstileSiteKey={turnstileSiteKey} title={ui.plugins.suiteFormTitle} />
-          </div>
-        )}
 
         <Reveal>
           <p className="mt-14 text-center text-sm text-cream/50">

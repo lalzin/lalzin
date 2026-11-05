@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { defaultContent } from '@/lib/content';
-import { getPublishedSlugs } from '@/lib/pluginConfig';
+import { getPublishedSlugs, getSuite } from '@/lib/pluginConfig';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = defaultContent.site.url;
@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     })),
+    ...((await getSuite()) ? [{ url: `${base}/plugins/suite`, lastModified: now, changeFrequency: 'weekly' as const, priority: 0.85 }] : []),
     { url: `${base}/plugins/installation`, lastModified: now, changeFrequency: 'monthly' as const, priority: 0.5 },
     { url: `${base}/links`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/confidentialite`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },

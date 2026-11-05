@@ -6,6 +6,7 @@ import { useContent } from '@/components/providers/ContentProvider';
 import Confetti from '@/components/Confetti';
 import BallLoader from '@/components/three/BallLoader';
 import { groovy } from '@/components/ui/motion';
+import { Play } from 'lucide-react';
 
 const HeroCanvas = dynamic(() => import('@/components/three/HeroCanvas'), {
   ssr: false,
@@ -90,7 +91,9 @@ export default function Hero() {
             href="#discography"
             className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-magenta via-coral to-gold px-7 py-3.5 text-sm font-bold text-night shadow-lg shadow-magenta/30 transition-transform hover:scale-105"
           >
-            <span className="grid h-5 w-5 place-items-center rounded-full bg-night/20 text-[10px]">▶</span>
+            <span className="grid h-5 w-5 place-items-center rounded-full bg-night/20">
+              <Play className="ml-px h-2.5 w-2.5 fill-current" strokeWidth={0} aria-hidden />
+            </span>
             {ui.hero.listen}
           </a>
           <a

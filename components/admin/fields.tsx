@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import type { L } from '@/lib/content';
+import { Loader2 } from 'lucide-react';
 
 const inputCls =
   'w-full rounded-xl border border-cream/15 bg-night-deep/60 px-3 py-2 text-sm text-cream placeholder-cream/30 outline-none transition-colors focus:border-gold';
@@ -85,7 +86,7 @@ export function ImageField({
             disabled={busy}
             className="rounded-lg bg-gradient-to-r from-magenta to-coral px-3 py-1.5 text-xs font-semibold text-night disabled:opacity-60"
           >
-            {busy ? '…' : 'Uploader'}
+            {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-label="Envoi en cours" /> : 'Uploader'}
           </button>
           {value && (
             <button

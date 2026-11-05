@@ -10,6 +10,7 @@ import Confetti from '@/components/Confetti';
 import Navbar from '@/components/Navbar';
 import { groovy } from '@/components/ui/motion';
 import type { Plugin } from '@/lib/plugins';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const AMOUNTS = [3, 5, 10];
 const RESEND_COOLDOWN_S = 60;
@@ -103,9 +104,10 @@ export default function ThanksPage({ paypalMe, plugins }: { paypalMe: string; pl
 
         <Link
           href="/plugins/installation"
-          className="mt-6 inline-block text-sm text-gold underline-offset-4 hover:underline"
+          className="mt-6 inline-flex items-center gap-1.5 text-sm text-gold underline-offset-4 hover:underline"
         >
-          {tx.installCta} →
+          {tx.installCta}
+          <ArrowRight className="h-4 w-4" aria-hidden />
         </Link>
 
         {/* ── Abonnement Instagram (facultatif) ──────────────────── */}
@@ -156,7 +158,8 @@ export default function ThanksPage({ paypalMe, plugins }: { paypalMe: string; pl
         )}
 
         <p className="mt-12 text-sm text-cream/45">
-          <Link href="/plugins" className="underline-offset-4 hover:text-cream hover:underline">
+          <Link href="/plugins" className="inline-flex items-center gap-1 underline-offset-4 hover:text-cream hover:underline">
+            <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
             {ui.plugins.backToPlugins}
           </Link>
           {' · '}

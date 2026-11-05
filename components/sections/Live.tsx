@@ -5,6 +5,7 @@ import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/ui/Reveal';
 import { stagger, fadeUp } from '@/components/ui/motion';
+import { CalendarDays } from 'lucide-react';
 
 export default function Live() {
   const { content, ui } = useContent();
@@ -68,7 +69,7 @@ export default function Live() {
             }}
           >
             <div className="glass-warm relative overflow-hidden rounded-[2.5rem] px-8 py-16 text-center">
-              <div className="mb-6 animate-float-slow text-6xl">🪩</div>
+              <CalendarDays className="mx-auto mb-6 h-14 w-14 animate-float-slow text-gold" strokeWidth={1.5} aria-hidden />
               <p className="font-display text-2xl font-bold text-cream sm:text-3xl">{ui.live.soon}</p>
               <p className="mx-auto mt-3 max-w-md text-cream/65">{ui.live.soonText}</p>
               <a

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/ui/Reveal';
+import { Play } from 'lucide-react';
 
 export default function VideoSection() {
   const { content, t, ui } = useContent();
@@ -58,7 +59,7 @@ export default function VideoSection() {
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(232,72,126,0.35),transparent_60%)]" />
                   )}
                   <span className="relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-cream text-3xl text-night shadow-xl shadow-magenta/30 transition-transform group-hover:scale-110">
-                    ▶
+                    <Play className="ml-1 h-8 w-8 fill-current" strokeWidth={0} aria-hidden />
                   </span>
                   <span className="relative z-10 text-sm font-semibold uppercase tracking-[0.2em] text-cream/90">
                     {video.youtubeId ? ui.video.watch : ui.video.youtube}

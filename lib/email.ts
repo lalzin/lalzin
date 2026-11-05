@@ -19,8 +19,8 @@ export const emailConfigured = Boolean(API_KEY);
 export const FROM = 'LALZIN <downloads@lalzin.com>';
 
 const SUBJECT: Record<Lang, string> = {
-  fr: 'Tes plugins Groove Knobs 🎛️',
-  en: 'Your Groove Knobs plugins 🎛️',
+  fr: 'Tes plugins Groove Knobs',
+  en: 'Your Groove Knobs plugins',
 };
 
 let cached: Resend | null = null;

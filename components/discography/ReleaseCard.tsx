@@ -6,6 +6,7 @@ import type { Release } from '@/lib/content';
 import { isExternal, resolveListenHref } from '@/lib/links';
 import { useContent } from '@/components/providers/ContentProvider';
 import GeneratedCover from './GeneratedCover';
+import { Play, Star } from 'lucide-react';
 
 export default function ReleaseCard({ release }: { release: Release }) {
   const { ui, content } = useContent();
@@ -71,8 +72,9 @@ export default function ReleaseCard({ release }: { release: Release }) {
             />
           )}
           {release.featured && (
-            <span className="absolute left-3 top-3 rounded-full bg-cream/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-night">
-              ★ {ui.discography.featured}
+            <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-cream/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-night">
+              <Star className="h-3 w-3 fill-current" strokeWidth={0} aria-hidden />
+              {ui.discography.featured}
             </span>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-night-soft via-transparent to-transparent" />
@@ -95,7 +97,7 @@ export default function ReleaseCard({ release }: { release: Release }) {
             className="flex h-10 w-10 flex-none items-center justify-center rounded-full text-night transition-transform group-hover:rotate-12 group-hover:scale-110"
             style={{ background: `linear-gradient(135deg, ${c1}, ${c2})` }}
           >
-            ▶
+            <Play className="ml-0.5 h-4 w-4 fill-current" strokeWidth={0} aria-hidden />
           </span>
         </div>
       </div>

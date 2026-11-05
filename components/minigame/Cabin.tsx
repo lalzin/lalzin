@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { UI, tx } from "@/lib/minigame/i18n";
 import type { GameConfig, Lang } from "@/lib/minigame/types";
+import { Lock, X } from 'lucide-react';
 
 /**
  * Cabine à secrets : collection des bonus spéciaux attrapés (avec leur
@@ -47,9 +48,10 @@ export default function Cabin({
         </p>
         <button
           onClick={onClose}
-          className="font-body text-xs uppercase tracking-[0.2em] text-[#ffd9a8]/70"
+          className="inline-flex items-center gap-1 font-body text-xs uppercase tracking-[0.2em] text-[#ffd9a8]/70"
         >
           {t.close}
+          <X className="h-3.5 w-3.5" aria-hidden />
         </button>
       </div>
       <h2
@@ -97,8 +99,8 @@ export default function Cabin({
           specials.find((sp) => sp.id === req)?.level;
         const Locked = ({ req }: { req?: string }) => (
           <div className="mt-3 flex items-center gap-4 rounded-2xl bg-white/[0.03] p-4">
-            <div className="grid h-24 w-24 shrink-0 place-items-center rounded bg-white/[0.04] text-4xl text-[#ffd9a8]/30">
-              🔒
+            <div className="grid h-24 w-24 shrink-0 place-items-center rounded bg-white/[0.04] text-[#ffd9a8]/30">
+              <Lock className="h-9 w-9" strokeWidth={1.5} aria-hidden />
             </div>
             <div>
               <p

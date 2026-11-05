@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { UI, tx } from "@/lib/minigame/i18n";
 import type { GameConfig, Lang, TutorialStep } from "@/lib/minigame/types";
+import { CircleDot, Music, Star, Timer } from 'lucide-react';
 
 /**
  * Tutoriel avant la partie (sans musique) : quelques cartes illustrées.
@@ -247,10 +248,10 @@ function Art({
           background: `radial-gradient(circle, ${amber}55 0%, transparent 70%)`,
         }}
       />
-      {(["♫", "◉", "✦"] as const).map((g, k) => (
+      {[Music, CircleDot, Star].map((Icone, k) => (
         <motion.span
-          key={g}
-          className="absolute text-2xl"
+          key={k}
+          className="absolute"
           style={{
             left: `${36 + k * 12}%`,
             color: k === 2 ? "#ff6fc0" : "#ffd27a",
@@ -263,7 +264,7 @@ function Art({
             times: [0, 0.85, 1],
           }}
         >
-          {g}
+          <Icone className="h-6 w-6" strokeWidth={2.25} aria-hidden />
         </motion.span>
       ))}
       <div className="absolute bottom-3 left-1/2 w-40 -translate-x-1/2">
@@ -275,7 +276,10 @@ function Art({
           />
         </div>
         <p className="mt-1 text-center font-body text-[10px] font-bold text-[#9cc2ff]">
-          ⏱ bonus chrono
+          <span className="inline-flex items-center gap-1">
+            <Timer className="h-3 w-3" aria-hidden />
+            bonus chrono
+          </span>
         </p>
       </div>
     </>

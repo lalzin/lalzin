@@ -6,6 +6,7 @@ import { useContent } from '@/components/providers/ContentProvider';
 import Confetti from '@/components/Confetti';
 import Navbar from '@/components/Navbar';
 import { groovy } from '@/components/ui/motion';
+import { Disc3 } from 'lucide-react';
 
 /** Page 404 — même habillage que le reste du site, avec des sorties utiles. */
 export default function NotFoundPage() {
@@ -31,7 +32,7 @@ export default function NotFoundPage() {
           className="mb-4 text-7xl"
           aria-hidden
         >
-          🪩
+          <Disc3 className="mx-auto h-16 w-16 text-gold" strokeWidth={1.5} />
         </motion.p>
 
         <p className="retro-title text-7xl leading-none sm:text-8xl">404</p>

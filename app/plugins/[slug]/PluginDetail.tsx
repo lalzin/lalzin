@@ -18,6 +18,7 @@ import {
   type OS,
   type Plugin,
 } from '@/lib/plugins';
+import { ArrowLeft, Info } from 'lucide-react';
 
 export default function PluginDetail({
   plugin,
@@ -64,8 +65,9 @@ export default function PluginDetail({
       <div className="relative mx-auto max-w-6xl px-6">
         <Link
           href="/plugins"
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-cream"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-cream"
         >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
           {tx.backToPlugins}
         </Link>
 
@@ -92,8 +94,8 @@ export default function PluginDetail({
             <p className="mt-5 leading-relaxed text-cream/65">{t(plugin.description)}</p>
 
             {usage && (
-              <p className="mt-4 rounded-2xl border border-cream/12 bg-cream/[0.04] px-4 py-3 text-sm text-cream/75">
-                <span aria-hidden>🎚️ </span>
+              <p className="mt-4 flex items-start gap-2.5 rounded-2xl border border-cream/12 bg-cream/[0.04] px-4 py-3 text-sm text-cream/75">
+                <Info className="mt-0.5 h-4 w-4 flex-none text-gold" aria-hidden />
                 {usage}
               </p>
             )}

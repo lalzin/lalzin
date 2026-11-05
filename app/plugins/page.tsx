@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { defaultContent } from '@/lib/content';
 import { suite, suiteImage } from '@/lib/plugins';
 import { getPlugins, getSuite } from '@/lib/pluginConfig';
-import { turnstileSiteKey } from '@/lib/publicConfig';
 import PluginsIndex from './PluginsIndex';
 
 const { site, artist } = defaultContent;
@@ -28,5 +27,5 @@ export const metadata: Metadata = {
 
 export default async function PluginsPage() {
   const [plugins, suiteDl] = await Promise.all([getPlugins(), getSuite()]);
-  return <PluginsIndex plugins={plugins} suiteDl={suiteDl} turnstileSiteKey={turnstileSiteKey} />;
+  return <PluginsIndex plugins={plugins} suiteDl={suiteDl} />;
 }

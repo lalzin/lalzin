@@ -5,6 +5,7 @@ import { useContent } from '@/components/providers/ContentProvider';
 import { SocialIcon } from '@/components/ui/icons';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { stagger, popIn } from '@/components/ui/motion';
+import { ArrowUpRight } from 'lucide-react';
 
 const accent: Record<string, string> = {
   spotify: '#15C7B8',
@@ -55,9 +56,10 @@ export default function Socials() {
                   <Icon className="h-6 w-6" />
                 </span>
                 <span className="relative font-semibold text-cream">{s.label}</span>
-                <span className="relative ml-auto text-cream/30 transition-transform group-hover:translate-x-1 group-hover:text-cream">
-                  ↗
-                </span>
+                <ArrowUpRight
+                  className="relative ml-auto h-4 w-4 text-cream/30 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-cream"
+                  aria-hidden
+                />
               </motion.a>
             );
           })}

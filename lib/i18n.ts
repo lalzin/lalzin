@@ -86,6 +86,14 @@ export const ui = {
       suiteText: 'Les {n} plugins en un seul installateur, à jour en {v}.',
       suiteCta: 'Télécharger la suite',
       suiteFormTitle: 'Reçois la suite par email',
+      suitePage: {
+        intro:
+          'Tous les plugins Groove Knobs en un seul installateur : un passage, et ils sont tous dans ton DAW. Gratuit, comme chaque plugin.',
+        contentsTitle: 'Ce que contient la suite',
+        withSend: 'avec Kick Lock Send',
+        viewPlugin: 'Voir le plugin',
+        alone: 'Tu peux aussi télécharger chaque plugin séparément depuis sa page.',
+      },
       tipLabel: 'Conseil',
       callouts: {
         slapper: [
@@ -147,7 +155,7 @@ export const ui = {
       size: 'Taille',
       osUnavailable: 'La version Windows arrive bientôt.',
       installGuide: 'Guide d’installation',
-      backToPlugins: '← Tous les plugins',
+      backToPlugins: 'Tous les plugins',
       /* Formulaire */
       form: {
         title: 'Reçois le plugin par email',
@@ -172,7 +180,7 @@ export const ui = {
       },
       /* Page merci */
       thanks: {
-        title: 'Regarde ta boîte mail 📬',
+        title: 'Regarde ta boîte mail',
         subtitle:
           'Le lien de téléchargement vient de partir. Il est valable 7 jours. Pense à regarder dans les spams.',
         nothing: 'Je n’ai rien reçu',
@@ -186,7 +194,7 @@ export const ui = {
         donateText:
           'Si celui-là te sert, un petit don aide à en sortir d’autres. C’est libre, et ça ne change rien à ton téléchargement.',
         donateFree: 'Montant libre',
-        donateThanks: 'Merci 🙏',
+        donateThanks: 'Merci.',
         installCta: 'Comment l’installer',
       },
       /* Guide d'installation */
@@ -200,12 +208,12 @@ export const ui = {
         winTitle: 'Windows',
         winSteps: [
           'Lance le fichier .exe téléchargé.',
-          'Si SmartScreen affiche un avertissement : « Informations complémentaires » → « Exécuter quand même ».',
+          'Si SmartScreen affiche un avertissement : « Informations complémentaires » > « Exécuter quand même ».',
         ],
         dawTitle: 'Dans ton DAW (exemple Ableton Live)',
         dawSteps: [
-          'Réglages → Plug-Ins → Rescan.',
-          'Les effets apparaissent dans VST3 / Audio Units → LALZIN.',
+          'Réglages > Plug-Ins > Rescan.',
+          'Les effets apparaissent dans VST3 / Audio Units > LALZIN.',
           'Pew Pew et Slapper sont des instruments : charge-les sur une piste MIDI, pas sur une piste audio.',
         ],
         noteTitle: 'Bon à savoir',
@@ -364,6 +372,14 @@ export const ui = {
       suiteText: 'All {n} plugins in a single installer, up to date at {v}.',
       suiteCta: 'Download the suite',
       suiteFormTitle: 'Get the suite by email',
+      suitePage: {
+        intro:
+          'Every Groove Knobs plugin in a single installer: one run, and they are all in your DAW. Free, like every plugin.',
+        contentsTitle: 'What is in the suite',
+        withSend: 'with Kick Lock Send',
+        viewPlugin: 'View plugin',
+        alone: 'You can also download each plugin on its own from its page.',
+      },
       tipLabel: 'Tip',
       callouts: {
         slapper: [
@@ -425,7 +441,7 @@ export const ui = {
       size: 'Size',
       osUnavailable: 'The Windows build is coming soon.',
       installGuide: 'Installation guide',
-      backToPlugins: '← All plugins',
+      backToPlugins: 'All plugins',
       /* Form */
       form: {
         title: 'Get the plugin by email',
@@ -449,7 +465,7 @@ export const ui = {
       },
       /* Thanks page */
       thanks: {
-        title: 'Check your inbox 📬',
+        title: 'Check your inbox',
         subtitle:
           'The download link is on its way. It stays valid for 7 days. Have a look in your spam folder too.',
         nothing: 'I got nothing',
@@ -463,7 +479,7 @@ export const ui = {
         donateText:
           'If this one earns its place, a small tip helps me make more. Entirely optional, and it changes nothing about your download.',
         donateFree: 'Any amount',
-        donateThanks: 'Thank you 🙏',
+        donateThanks: 'Thank you.',
         installCta: 'How to install it',
       },
       /* Install guide */
@@ -477,12 +493,12 @@ export const ui = {
         winTitle: 'Windows',
         winSteps: [
           'Run the downloaded .exe file.',
-          'If SmartScreen warns you: “More info” → “Run anyway”.',
+          'If SmartScreen warns you: “More info” > “Run anyway”.',
         ],
         dawTitle: 'In your DAW (Ableton Live example)',
         dawSteps: [
-          'Settings → Plug-Ins → Rescan.',
-          'The effects show up under VST3 / Audio Units → LALZIN.',
+          'Settings > Plug-Ins > Rescan.',
+          'The effects show up under VST3 / Audio Units > LALZIN.',
           'Pew Pew and Slapper are instruments: load them on a MIDI track, not an audio track.',
         ],
         noteTitle: 'Good to know',

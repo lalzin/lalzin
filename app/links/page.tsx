@@ -9,6 +9,7 @@ import LangSwitch from '@/components/ui/LangSwitch';
 import Confetti from '@/components/Confetti';
 import { groovy } from '@/components/ui/motion';
 import { resolveListenHref } from '@/lib/links';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Disc3, Mail, Play, SlidersHorizontal } from 'lucide-react';
 
 const accent: Record<string, string> = {
   spotify: '#15C7B8',
@@ -57,7 +58,7 @@ export default function LinksPage() {
             <Image src={artist.logo} alt={artist.name} fill className="object-contain p-5" sizes="112px" />
           </div>
           <div className="absolute -bottom-1 -right-1 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-gold to-coral text-lg shadow-lg transition-transform group-hover:rotate-12">
-            🪩
+            <Disc3 className="h-5 w-5 text-night" strokeWidth={2} aria-hidden />
           </div>
         </Link>
 
@@ -89,15 +90,16 @@ export default function LinksPage() {
                 className="group flex items-center gap-4 rounded-2xl border border-cream/12 bg-gradient-to-r from-magenta/20 to-coral/15 px-5 py-4 backdrop-blur-sm transition-colors hover:border-gold/50"
               >
                 <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-cream/90 text-night">
-                  ▶
+                  <Play className="ml-0.5 h-4 w-4 fill-current" strokeWidth={0} aria-hidden />
                 </span>
                 <span className="min-w-0">
                   <span className="block truncate font-semibold text-cream">{r.title}</span>
                   <span className="text-[11px] uppercase tracking-wider text-cream/50">{r.type}</span>
                 </span>
-                <span className="ml-auto text-cream/40 transition-transform group-hover:translate-x-1 group-hover:text-cream">
-                  ↗
-                </span>
+                <ArrowUpRight
+                  className="ml-auto h-4 w-4 flex-none text-cream/40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-cream"
+                  aria-hidden
+                />
               </motion.a>
             ))}
           </div>
@@ -114,8 +116,8 @@ export default function LinksPage() {
               href="/plugins"
               className="group flex items-center gap-4 rounded-2xl border border-gold/35 bg-gradient-to-r from-gold/20 to-coral/10 px-5 py-4 backdrop-blur-sm transition-colors hover:border-gold"
             >
-              <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gold/20 text-lg">
-                🎛️
+              <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gold/20 text-gold">
+                <SlidersHorizontal className="h-[18px] w-[18px]" aria-hidden />
               </span>
               <span className="min-w-0">
                 <span className="block truncate font-semibold text-cream">{ui.plugins.teaserTitle}</span>
@@ -123,9 +125,10 @@ export default function LinksPage() {
                   {ui.plugins.free} · VST3 · AU
                 </span>
               </span>
-              <span className="ml-auto text-cream/40 transition-transform group-hover:translate-x-1 group-hover:text-cream">
-                →
-              </span>
+              <ArrowRight
+                className="ml-auto h-4 w-4 flex-none text-cream/40 transition-transform group-hover:translate-x-1 group-hover:text-cream"
+                aria-hidden
+              />
             </Link>
           </motion.div>
         </div>
@@ -158,9 +161,10 @@ export default function LinksPage() {
                   <Icon className="h-5 w-5" />
                 </span>
                 <span className="relative font-semibold text-cream">{s.label}</span>
-                <span className="relative ml-auto text-cream/40 transition-transform group-hover:translate-x-1 group-hover:text-cream">
-                  ↗
-                </span>
+                <ArrowUpRight
+                  className="relative ml-auto h-4 w-4 flex-none text-cream/40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-cream"
+                  aria-hidden
+                />
               </motion.a>
             );
           })}
@@ -175,16 +179,18 @@ export default function LinksPage() {
             whileTap={{ scale: 0.98 }}
             className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-magenta via-coral to-gold px-5 py-4 font-bold text-night shadow-lg shadow-magenta/30"
           >
-            ✉ {ui.nav.contact} · {artist.bookingEmail}
+            <Mail className="h-4 w-4 flex-none" aria-hidden />
+            {ui.nav.contact} · {artist.bookingEmail}
           </motion.a>
         </div>
 
         {/* Retour au site */}
         <Link
           href="/"
-          className="mt-8 inline-block rounded-full border border-cream/20 bg-cream/5 px-6 py-2.5 text-sm font-semibold text-cream/80 transition-colors hover:text-cream"
+          className="mt-8 inline-flex items-center gap-1.5 rounded-full border border-cream/20 bg-cream/5 px-6 py-2.5 text-sm font-semibold text-cream/80 transition-colors hover:text-cream"
         >
-          ← {ui.links.back}
+          <ArrowLeft className="h-4 w-4" aria-hidden />
+          {ui.links.back}
         </Link>
 
         <p className="mb-2 mt-8 text-[11px] text-cream/35">

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useContent } from '@/components/providers/ContentProvider';
 import { UI, formatDay } from '@/lib/minigame/i18n';
 import type { Lang } from '@/lib/minigame/types';
+import { Loader2 } from 'lucide-react';
 
 /** Accès anticipé : la pochette + un champ mot de passe, rien d'autre du jeu. */
 export default function AccessGate({
@@ -108,7 +109,7 @@ export default function AccessGate({
             disabled={busy}
             className="mt-3 w-full rounded-full bg-gradient-to-r from-[#ffb24a] to-[#ff7a1a] py-3.5 text-sm font-bold uppercase tracking-[0.2em] text-[#001c35] disabled:opacity-50"
           >
-            {busy ? '…' : t.gateSubmit}
+            {busy ? <Loader2 className="mx-auto h-4 w-4 animate-spin" aria-label="…" /> : t.gateSubmit}
           </button>
         </form>
       </div>

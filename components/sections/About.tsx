@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import Reveal from '@/components/ui/Reveal';
 import { stagger, popIn } from '@/components/ui/motion';
+import { Disc3 } from 'lucide-react';
 
 export default function About() {
   const { content, t, ui } = useContent();
@@ -28,8 +29,8 @@ export default function About() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-magenta/30 via-transparent to-transparent mix-blend-overlay" />
           </div>
-          <div className="absolute -right-3 -top-3 flex h-20 w-20 animate-spin-slow items-center justify-center rounded-full bg-gradient-to-br from-gold to-coral text-3xl shadow-lg">
-            🪩
+          <div className="absolute -right-3 -top-3 flex h-20 w-20 animate-spin-slow items-center justify-center rounded-full bg-gradient-to-br from-gold to-coral shadow-lg">
+            <Disc3 className="h-9 w-9 text-night" strokeWidth={1.75} aria-hidden />
           </div>
         </Reveal>
 

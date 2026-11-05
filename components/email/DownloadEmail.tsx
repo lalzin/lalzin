@@ -45,8 +45,8 @@ const CORAL = '#EE6C3A';
 const T = {
   fr: {
     preview: 'Tes liens de téléchargement Groove Knobs.',
-    hello: 'Et voilà 🎛️',
-    intro: 'Tes plugins sont prêts. Les liens restent valables 7 jours.',
+    hello: 'Tes plugins Groove Knobs',
+    intro: 'Tes liens de téléchargement sont ci-dessous. Ils restent valables 7 jours.',
     on: 'pour',
     installTitle: 'Première installation ?',
     installText: 'Deux minutes, et le knob est dans ton DAW :',
@@ -62,8 +62,8 @@ const T = {
   },
   en: {
     preview: 'Your Groove Knobs download links.',
-    hello: 'Here you go 🎛️',
-    intro: 'Your plugins are ready. The links stay valid for 7 days.',
+    hello: 'Your Groove Knobs plugins',
+    intro: 'Your download links are below. They stay valid for 7 days.',
     on: 'for',
     installTitle: 'First install?',
     installText: 'Two minutes, and the knob is in your DAW:',
@@ -174,7 +174,7 @@ export default function DownloadEmail({
               <Text style={{ color: `${CREAM}b3`, fontSize: '14px', lineHeight: '22px', margin: '0 0 6px' }}>
                 {t.followText}{' '}
                 <Link href={instagramUrl} style={{ color: GOLD, fontWeight: 700 }}>
-                  {t.followCta} →
+                  {t.followCta}
                 </Link>
               </Text>
             </Section>
@@ -187,7 +187,7 @@ export default function DownloadEmail({
                 {t.donate}
               </Text>
               <Link href={paypalUrl} style={{ color: GOLD, fontSize: '13px', fontWeight: 700 }}>
-                {t.donateCta} →
+                {t.donateCta}
               </Link>
             </Section>
           )}

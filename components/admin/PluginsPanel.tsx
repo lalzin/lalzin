@@ -13,6 +13,7 @@ type Services = {
   dernierEchecEmail: { at: string; reason: string } | null;
 };
 import { ALL_PLUGINS, OS_LABEL, SUITE, type OS } from '@/lib/plugins';
+import { Check, X } from 'lucide-react';
 
 /** Éléments éditables : les plugins, puis l'installateur de toute la suite. */
 const EDITABLES = SUITE ? [...ALL_PLUGINS, SUITE] : ALL_PLUGINS;
@@ -95,7 +96,7 @@ export default function PluginsPanel() {
         body: JSON.stringify(config),
       });
       const data = (await res.json().catch(() => ({}))) as { error?: string };
-      setFlash(res.ok ? 'Configuration publiée ✓' : data.error || 'Échec de la sauvegarde');
+      setFlash(res.ok ? 'Configuration publiée' : data.error || 'Échec de la sauvegarde');
     } catch {
       setFlash('Échec de la sauvegarde');
     } finally {
@@ -158,7 +159,11 @@ export default function PluginsPanel() {
               ] as [string, boolean][]
             ).map(([label, ok]) => (
               <li key={label} className="flex items-center gap-2 text-cream/75">
-                <span className={ok ? 'text-teal-soft' : 'text-magenta-soft'}>{ok ? '✓' : '✗'}</span>
+                {ok ? (
+                  <Check className="h-4 w-4 text-teal-soft" aria-label="actif" />
+                ) : (
+                  <X className="h-4 w-4 text-magenta-soft" aria-label="inactif" />
+                )}
                 {label}
               </li>
             ))}

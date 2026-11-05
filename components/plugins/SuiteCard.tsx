@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import { suite, suiteImage, type Plugin } from '@/lib/plugins';
@@ -26,7 +27,7 @@ export default function SuiteCard({ suiteDl, index = 0 }: { suiteDl: Plugin; ind
       transition={{ duration: 0.6, ease: [0.34, 1.3, 0.5, 1], delay: index * 0.08 }}
       className="group relative flex w-full flex-col overflow-hidden rounded-[2rem] border border-gold/30 bg-gradient-to-b from-gold/[0.09] to-cream/[0.03] p-6 backdrop-blur-sm transition-colors hover:border-gold/60"
     >
-      <a href="#telecharger" className="relative">
+      <Link href="/plugins/suite" className="relative">
         <div className="pb-6">
           <div className="flex w-full items-center justify-center" style={{ aspectRatio: '840 / 645' }}>
             <Image
@@ -43,14 +44,14 @@ export default function SuiteCard({ suiteDl, index = 0 }: { suiteDl: Plugin; ind
         <h3 className="mt-2 font-display text-2xl font-bold text-cream">{ui.plugins.suiteTitle}</h3>
         <p className="mt-1 text-sm text-gold/80">{suite.name}</p>
         <p className="mt-3 min-h-[3rem] text-sm leading-relaxed text-cream/75">{texte}</p>
-      </a>
+      </Link>
 
-      <a
-        href="#telecharger"
+      <Link
+        href="/plugins/suite#telecharger"
         className="relative mt-5 rounded-full bg-gradient-to-r from-magenta via-coral to-gold px-5 py-3 text-center text-sm font-bold text-night shadow-lg transition-transform hover:scale-[1.03]"
       >
         {ui.plugins.suiteCta}
-      </a>
+      </Link>
 
       <p className="relative mt-3 text-center text-[11px] leading-relaxed text-cream/40">{noms.join(' · ')}</p>
     </motion.article>

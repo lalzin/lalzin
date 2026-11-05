@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/ui/Reveal';
+import { Send } from 'lucide-react';
 
 export default function Contact() {
   const { content, ui } = useContent();
@@ -82,7 +83,10 @@ export default function Contact() {
                 type="submit"
                 className="group relative w-full overflow-hidden rounded-full bg-gradient-to-r from-magenta via-coral to-gold py-4 text-base font-bold text-night shadow-xl shadow-magenta/30 transition-transform hover:scale-[1.02]"
               >
-                <span className="relative z-10">{ui.contact.send} ✉</span>
+                <span className="relative z-10 inline-flex items-center justify-center gap-2">
+                  {ui.contact.send}
+                  <Send className="h-4 w-4" aria-hidden />
+                </span>
                 <span className="absolute inset-0 -translate-x-full bg-cream/30 transition-transform duration-500 group-hover:translate-x-0" />
               </button>
             </form>

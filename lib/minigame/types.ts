@@ -125,7 +125,6 @@ export type LevelConfig = {
     kind: string;
     /** Image du bonus (PNG/WebP alpha) : sprite en jeu et vignette dans l'interface. */
     image?: string;
-    icon: string;
     name: Localized;
     story: Localized;
     points: number;

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { ArrowLeft, LockKeyhole } from 'lucide-react';
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -44,7 +45,9 @@ export default function AdminLogin() {
 
       <div className="glass-warm relative w-full max-w-sm rounded-[2rem] p-8">
         <div className="mb-6 text-center">
-          <div className="mb-3 text-4xl">🪩</div>
+          <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gold/15 text-gold">
+            <LockKeyhole className="h-6 w-6" aria-hidden />
+          </span>
           <h1 className="font-display text-2xl font-extrabold text-cream">Espace admin</h1>
           <p className="mt-1 text-sm text-cream/55">Connexion sécurisée · LALZIN</p>
         </div>
@@ -85,9 +88,10 @@ export default function AdminLogin() {
 
         <a
           href="/"
-          className="mt-6 block text-center text-xs text-cream/40 transition-colors hover:text-cream"
+          className="mt-6 flex items-center justify-center gap-1 text-xs text-cream/40 transition-colors hover:text-cream"
         >
-          ← Retour au site
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+          Retour au site
         </a>
       </div>
     </main>

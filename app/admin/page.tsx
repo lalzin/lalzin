@@ -8,19 +8,20 @@ import type { Content, LiveDate, MerchProduct, Release } from '@/lib/content';
 import { Area, Card, ColorPair, ImageField, LocalizedField, Select, Text, Toggle } from '@/components/admin/fields';
 import PluginsPanel from '@/components/admin/PluginsPanel';
 import MinigamePanel from '@/components/admin/MinigamePanel';
+import { ArrowUpRight, CalendarDays, ChevronDown, ChevronUp, Clapperboard, Disc3, Gamepad2, Link2, Loader2, Mic, Save, Settings, ShoppingBag, SlidersHorizontal, Trash2, type LucideIcon } from 'lucide-react';
 
 type Tab = 'artist' | 'socials' | 'releases' | 'video' | 'live' | 'merch' | 'plugins' | 'minigame' | 'seo';
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'artist', label: '🎤 Artiste' },
-  { id: 'socials', label: '🔗 Réseaux' },
-  { id: 'releases', label: '💿 Sorties' },
-  { id: 'video', label: '🎬 Vidéo' },
-  { id: 'live', label: '📅 Dates' },
-  { id: 'merch', label: '🛍️ Boutique' },
-  { id: 'plugins', label: '🎛️ Plugins' },
-  { id: 'minigame', label: '🎮 Mini-jeu' },
-  { id: 'seo', label: '⚙️ SEO' },
+const TABS: { id: Tab; label: string; icon: LucideIcon }[] = [
+  { id: 'artist', label: 'Artiste', icon: Mic },
+  { id: 'socials', label: 'Réseaux', icon: Link2 },
+  { id: 'releases', label: 'Sorties', icon: Disc3 },
+  { id: 'video', label: 'Vidéo', icon: Clapperboard },
+  { id: 'live', label: 'Dates', icon: CalendarDays },
+  { id: 'merch', label: 'Boutique', icon: ShoppingBag },
+  { id: 'plugins', label: 'Plugins', icon: SlidersHorizontal },
+  { id: 'minigame', label: 'Mini-jeu', icon: Gamepad2 },
+  { id: 'seo', label: 'SEO', icon: Settings },
 ];
 
 const ACCENTS = ['#FF2E92', '#FF6B35', '#FFC23C', '#15C7B8'];
@@ -78,7 +79,7 @@ export default function AdminPage() {
       const j = await res.json().catch(() => ({}));
       if (res.ok) {
         update(draft); // reflète en mémoire (dirty repasse à false)
-        notify('Publié en ligne ✓');
+        notify('Publié en ligne');
       } else {
         notify(j.error || 'Échec de la sauvegarde');
       }
@@ -102,7 +103,7 @@ export default function AdminPage() {
   const onImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    f.text().then((txt) => notify(importJSON(txt) ? 'Contenu importé ✓' : 'JSON invalide ✗'));
+    f.text().then((txt) => notify(importJSON(txt) ? 'Contenu importé' : 'JSON invalide'));
   };
 
   return (
@@ -113,7 +114,7 @@ export default function AdminPage() {
           <div>
             <h1 className="font-display text-3xl font-extrabold text-cream">Admin LALZIN</h1>
             <p className="text-sm text-cream/50">
-              Édite, puis <span className="font-semibold text-gold">Enregistrer</span> → publié en ligne pour tous les visiteurs.
+              Édite, puis <span className="font-semibold text-gold">Enregistrer</span> : publié en ligne pour tous les visiteurs.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -127,10 +128,20 @@ export default function AdminPage() {
                   : 'cursor-default border border-cream/15 text-cream/40'
               }`}
             >
-              {saving ? 'Publication…' : dirty ? '● Enregistrer' : 'Enregistré ✓'}
+              {saving ? 'Publication…' : dirty ? (
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-current" aria-hidden />
+                  Enregistrer
+                </span>
+              ) : (
+                'Enregistré'
+              )}
             </button>
             <Link href="/" className="rounded-full border border-cream/15 px-4 py-2 text-sm text-cream/80 hover:text-cream">
-              Voir le site ↗
+              <span className="inline-flex items-center gap-1">
+                Voir le site
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
             </Link>
             <button onClick={exportDraft} className="rounded-full border border-cream/15 px-4 py-2 text-sm text-cream/80 hover:text-cream">
               Exporter JSON
@@ -171,10 +182,11 @@ export default function AdminPage() {
             <button
               key={tb.id}
               onClick={() => setTab(tb.id)}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                 tab === tb.id ? 'bg-cream text-night' : 'bg-cream/5 text-cream/70 hover:bg-cream/10'
               }`}
             >
+              <tb.icon className="h-4 w-4" aria-hidden />
               {tb.label}
             </button>
           ))}
@@ -426,7 +438,17 @@ export default function AdminPage() {
           disabled={saving}
           className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-magenta via-coral to-gold px-6 py-3.5 text-sm font-bold text-night shadow-2xl shadow-magenta/40 transition-transform hover:scale-105 disabled:opacity-70"
         >
-          {saving ? '⏳ Publication…' : '💾 Enregistrer & publier'}
+          {saving ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+              Publication…
+            </>
+          ) : (
+            <>
+              <Save className="h-4 w-4" aria-hidden />
+              Enregistrer et publier
+            </>
+          )}
         </button>
       )}
     </main>
@@ -460,9 +482,15 @@ function move(c: Content, set: (p: Partial<Content>) => void, key: 'releases' | 
 function RowActions({ onUp, onDown, onDel }: { onUp: () => void; onDown: () => void; onDel: () => void }) {
   return (
     <div className="flex flex-none gap-1">
-      <button onClick={onUp} className="h-7 w-7 rounded-lg bg-cream/5 text-cream/60 hover:text-cream" aria-label="Monter">↑</button>
-      <button onClick={onDown} className="h-7 w-7 rounded-lg bg-cream/5 text-cream/60 hover:text-cream" aria-label="Descendre">↓</button>
-      <button onClick={onDel} className="h-7 w-7 rounded-lg bg-cream/5 text-coral/80 hover:text-coral" aria-label="Supprimer">✕</button>
+      <button onClick={onUp} className="flex h-7 w-7 items-center justify-center rounded-lg bg-cream/5 text-cream/60 hover:text-cream" aria-label="Monter">
+        <ChevronUp className="h-4 w-4" aria-hidden />
+      </button>
+      <button onClick={onDown} className="flex h-7 w-7 items-center justify-center rounded-lg bg-cream/5 text-cream/60 hover:text-cream" aria-label="Descendre">
+        <ChevronDown className="h-4 w-4" aria-hidden />
+      </button>
+      <button onClick={onDel} className="flex h-7 w-7 items-center justify-center rounded-lg bg-cream/5 text-coral/80 hover:text-coral" aria-label="Supprimer">
+        <Trash2 className="h-3.5 w-3.5" aria-hidden />
+      </button>
     </div>
   );
 }
