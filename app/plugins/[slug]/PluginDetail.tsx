@@ -14,7 +14,7 @@ import {
   heroIsLandscape,
   imageSize,
   pluginImage,
-  uiStates,
+  galleryOf,
   type OS,
   type Plugin,
 } from '@/lib/plugins';
@@ -33,7 +33,10 @@ export default function PluginDetail({
   const { t, ui, lang } = useContent();
   const tx = ui.plugins;
   const features = plugin.features[lang] ?? plugin.features.fr;
-  const states = uiStates(plugin.slug);
+  const states = galleryOf(plugin);
+  // Encadrés propres à un plugin (mode d'emploi, conseils), dans lib/i18n.ts.
+  type Encadre = { kind: string; title: string; body: string };
+  const encadres = (tx.callouts as Record<string, readonly Encadre[] | undefined>)[plugin.slug] ?? [];
   // Fenêtre paysage (Kick Lock) : la colonne de l'image s'élargit, sinon
   // elle ne fait qu'un bandeau de 250 px de haut à côté du texte.
   const paysage = heroIsLandscape(plugin.slug);
@@ -95,9 +98,12 @@ export default function PluginDetail({
               </p>
             )}
 
-            {plugin.latency_ms != null && (
+            {(plugin.latency_note || plugin.latency_ms != null) && (
               <p className="mt-2 text-xs text-cream/45">
-                {tx.latency} : {String(plugin.latency_ms).replace('.', ',')} ms
+                {tx.latency} :{' '}
+                {plugin.latency_note
+                  ? t(plugin.latency_note)
+                  : `${lang === 'fr' ? String(plugin.latency_ms).replace('.', ',') : plugin.latency_ms} ms`}
               </p>
             )}
 
@@ -150,6 +156,32 @@ export default function PluginDetail({
           </div>
         </section>
 
+        {/* ── ENCADRÉS (mode d'emploi, conseils) ───────────────── */}
+        {encadres.length > 0 && (
+          <section className="mt-16">
+            <div className={`grid gap-4 ${encadres.length > 1 ? 'md:grid-cols-2' : ''}`}>
+              {encadres.map((c, i) => (
+                <Reveal key={c.title} delay={i * 0.05}>
+                  <div
+                    className={`h-full rounded-[1.5rem] border p-6 ${
+                      c.kind === 'tip' ? 'border-gold/30 bg-gold/[0.07]' : 'bg-cream/[0.05]'
+                    }`}
+                    style={c.kind === 'tip' ? undefined : { borderColor: `${accent}66` }}
+                  >
+                    {c.kind === 'tip' && (
+                      <span className="text-xs font-bold uppercase tracking-[0.2em] text-gold">{tx.tipLabel}</span>
+                    )}
+                    <h3 className={`font-display text-xl font-bold text-cream ${c.kind === 'tip' ? 'mt-1' : ''}`}>
+                      {c.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-cream/75">{c.body}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ── PRESETS ──────────────────────────────────────────── */}
         <section className="mt-20">
           <Reveal>
@@ -180,9 +212,21 @@ export default function PluginDetail({
             {/* Toutes les cases ont le format de la fenêtre principale : une image
                 d'un autre format (Kick Lock Send, en portrait) y est contenue
                 plutôt que de casser l'alignement des rangées. */}
-            <div className={`mt-6 grid gap-6 ${paysage ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
+            {/* Rangées centrées : une dernière rangée incomplète ne laisse pas de
+                trou à droite. Quatre écrans portrait tiennent sur une seule ligne. */}
+            <div className="mt-6 flex flex-wrap justify-center gap-6">
               {states.map((s, i) => (
-                <Reveal key={s.file} delay={i * 0.05}>
+                <Reveal
+                  key={s.file}
+                  delay={i * 0.05}
+                  className={
+                    paysage
+                      ? 'w-full sm:w-[calc(50%_-_0.75rem)]'
+                      : states.length === 4
+                        ? 'w-full sm:w-[calc(50%_-_0.75rem)] lg:w-[calc(25%_-_1.125rem)]'
+                        : 'w-full sm:w-[calc(33.333%_-_1rem)]'
+                  }
+                >
                   <figure>
                     <div
                       className="flex items-center justify-center overflow-hidden rounded-2xl border border-cream/12 bg-night-deep/50"

@@ -57,6 +57,10 @@ export type Plugin = {
   features: { fr: string[]; en: string[] };
   presets: string[];
   downloads: Record<OS, PluginDownload>;
+  /** Galerie choisie par le projet groove-knobs : fichier + légende FR / EN. */
+  gallery?: { file: string; caption: L }[];
+  /** Précision sur la latence (modes), affichée à la place de `latency_ms`. */
+  latency_note?: L;
 };
 
 export type Suite = {
@@ -65,6 +69,11 @@ export type Suite = {
   signature: string;
   tagline: L;
   images: { og: string; banner: string };
+  /** Installateur de toute la suite (absent tant qu'il n'existe pas). */
+  version?: string;
+  downloads?: Record<OS, PluginDownload>;
+  /** Noms des plugins contenus dans l'installateur de la suite. */
+  includes?: string[];
 };
 
 /* ---------------------------------------------------------- PUBLICATION */
@@ -82,6 +91,33 @@ export const suite = data.suite as Suite;
 
 /** Tous les plugins connus, y compris ceux qui ne sont pas publiés. */
 export const ALL_PLUGINS = data.plugins as Plugin[];
+
+/**
+ * L'installateur de toute la suite, présenté comme un élément téléchargeable
+ * au même titre qu'un plugin : même jeton, même email, même route, et une
+ * clé R2 `suite/<version>/<fichier>`. Il se publie depuis /admin comme les
+ * plugins, sous le slug « suite ».
+ */
+export const SUITE_SLUG = 'suite';
+
+export const SUITE: Plugin | null =
+  suite.version && suite.downloads
+    ? {
+        slug: SUITE_SLUG,
+        name: suite.name,
+        version: suite.version,
+        mascot: '',
+        // Palette du site : la suite n'a pas de couleurs propres.
+        colors: { background: '#1F0E1A', accent: '#E8487E', accent2: '#EE6C3A', cream: '#F5E8CF' },
+        tagline: suite.tagline,
+        description: suite.tagline,
+        features: { fr: suite.includes ?? [], en: suite.includes ?? [] },
+        presets: [],
+        downloads: suite.downloads,
+      }
+    : null;
+
+export const isSuite = (slug: string) => slug === SUITE_SLUG;
 
 /* ------------------------------------------------------------- VISUELS */
 const BASE = '/images/plugins';
@@ -151,6 +187,21 @@ export const uiStates = (slug: string): UIState[] =>
     const [width, height] = imageSize(slug, file);
     return { file, label: labelFromFile(file), width, height };
   });
+
+/**
+ * Galerie d'un plugin : celle de `gallery` (fichiers et légendes choisis par
+ * le projet groove-knobs) quand elle existe, sinon les écrans `ui-*.webp`
+ * trouvés au build, avec des légendes dérivées du nom de fichier.
+ */
+export function galleryOf(plugin: Plugin): UIState[] {
+  if (!plugin.gallery?.length) return uiStates(plugin.slug);
+  return plugin.gallery
+    .filter((g) => VISUELS[plugin.slug]?.images?.[g.file]) // ignore un fichier absent
+    .map((g) => {
+      const [width, height] = imageSize(plugin.slug, g.file);
+      return { file: g.file, label: g.caption, width, height };
+    });
+}
 
 /* ------------------------------------------------------- DISPONIBILITÉ */
 /**

@@ -4,12 +4,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useContent } from '@/components/providers/ContentProvider';
 import PluginCard from '@/components/plugins/PluginCard';
+import SuiteCard from '@/components/plugins/SuiteCard';
+import DownloadForm from '@/components/plugins/DownloadForm';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
 import { suite, suiteImage, type Plugin } from '@/lib/plugins';
 
-export default function PluginsIndex({ plugins }: { plugins: Plugin[] }) {
+/** Largeur d'une carte : une, deux ou trois par rangée selon l'écran. */
+const CARTE = 'flex w-full sm:w-[calc(50%_-_0.75rem)] lg:w-[calc(33.333%_-_1rem)]';
+
+export default function PluginsIndex({
+  plugins,
+  suiteDl,
+  turnstileSiteKey,
+}: {
+  plugins: Plugin[];
+  /** Installateur de toute la suite, s'il est publié dans /admin. */
+  suiteDl: Plugin | null;
+  turnstileSiteKey: string;
+}) {
   const { t, ui } = useContent();
 
   return (
@@ -48,23 +62,38 @@ export default function PluginsIndex({ plugins }: { plugins: Plugin[] }) {
           </p>
         </Reveal>
 
-        {/* Les cartes restent centrées quelle que soit leur quantité :
-            une 5e carte seule ne laisse pas un trou en bout de ligne. */}
-        <div className="mx-auto grid max-w-md gap-6 sm:max-w-none sm:grid-cols-2 lg:grid-cols-3 [&>*]:h-full">
+        {/* Rangées centrées : quel que soit le nombre de plugins publiés, une
+            dernière rangée incomplète ne laisse pas de trou à droite. */}
+        <div className="mx-auto flex max-w-md flex-wrap justify-center gap-6 sm:max-w-none">
           {plugins.map((p, i) => (
-            <PluginCard key={p.slug} plugin={p} index={i} />
+            <div key={p.slug} className={CARTE}>
+              <PluginCard plugin={p} index={i} />
+            </div>
           ))}
 
-          {/* Les deux autres plugins de la suite arrivent */}
+          {suiteDl && (
+            <div className={CARTE}>
+              <SuiteCard suiteDl={suiteDl} index={plugins.length} />
+            </div>
+          )}
+
+          {/* D'autres plugins arrivent */}
           <Reveal
             as="article"
-            className="flex min-h-[18rem] flex-col items-center justify-center rounded-[2rem] border border-dashed border-cream/15 p-8 text-center"
+            className={`${CARTE} min-h-[18rem] flex-col items-center justify-center rounded-[2rem] border border-dashed border-cream/15 p-8 text-center`}
           >
             <span className="text-4xl">🎛️</span>
             <p className="mt-4 font-display text-xl font-bold text-cream/80">{ui.plugins.soon}</p>
             <p className="mt-2 max-w-xs text-sm text-cream/55">{ui.plugins.soonOther}</p>
           </Reveal>
         </div>
+
+        {/* Téléchargement de toute la suite, en un seul installateur */}
+        {suiteDl && (
+          <div className="mt-20">
+            <DownloadForm plugin={suiteDl} turnstileSiteKey={turnstileSiteKey} title={ui.plugins.suiteFormTitle} />
+          </div>
+        )}
 
         <Reveal>
           <p className="mt-14 text-center text-sm text-cream/50">

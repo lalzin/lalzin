@@ -13,7 +13,7 @@ import DownloadEmail, { downloadEmailText, type DownloadEmailProps } from '@/com
 import { defaultContent } from '@/lib/content';
 import { paypalUrl } from '@/lib/publicConfig';
 import { availableOS, formatBytes, pluginEmailImage } from '@/lib/plugins';
-import { getPlugin } from '@/lib/pluginConfig';
+import { getDownloadable } from '@/lib/pluginConfig';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -27,7 +27,7 @@ export async function GET(req: Request) {
   const lang = searchParams.get('lang') === 'en' ? 'en' : 'fr';
   const slug = searchParams.get('p') ?? 'french-filter';
 
-  const plugin = await getPlugin(slug);
+  const plugin = await getDownloadable(slug);
   if (!plugin) return new NextResponse('Plugin inconnu', { status: 404 });
 
   const token = 'APERCU-SANS-JETON-REEL';

@@ -47,6 +47,41 @@ for (const p of plugins ?? []) {
   }
 }
 
+// Installateur de la suite : même règle que pour un plugin.
+const s = lire('../lib/plugins.json').suite;
+if (s?.downloads) {
+  if (!s.version || !/^\d+\.\d+\.\d+$/.test(s.version)) {
+    erreurs.push(`suite : version « ${s.version} » attendue au format X.Y.Z`);
+  }
+  for (const os of ['macos', 'windows']) {
+    const f = s.downloads[os]?.file;
+    if (!f) erreurs.push(`suite : fichier d'installation ${os} manquant`);
+    else if (s.version && !f.includes(s.version)) {
+      erreurs.push(`suite : le fichier ${os} (${f}) ne porte pas la version ${s.version}`);
+    }
+  }
+}
+
+// Typographie : pas de tiret cadratin dans les textes affichés (choix
+// éditorial du site). Les exports de groove-knobs en réintroduisent : le
+// build le signale plutôt que de laisser passer en silence.
+const textes = (p) => [
+  ['tagline', p.tagline],
+  ['description', p.description],
+  ['latency_note', p.latency_note],
+  ...(p.features ? ['fr', 'en'].flatMap((l) => (p.features[l] ?? []).map((f, i) => [`features.${l}[${i}]`, { [l]: f }])) : []),
+  ...(p.gallery ?? []).map((g) => [`gallery ${g.file}`, g.caption]),
+];
+for (const p of plugins ?? []) {
+  for (const [champ, valeur] of textes(p)) {
+    for (const [lang, t] of Object.entries(valeur ?? {})) {
+      if (typeof t === 'string' && t.includes('—')) {
+        erreurs.push(`${p.slug} : tiret cadratin dans ${champ}${champ.includes('.') ? '' : `.${lang}`}, à reformuler (lib/plugins.json et ../groove-knobs/web-assets/plugins.json)`);
+      }
+    }
+  }
+}
+
 if (erreurs.length) {
   console.error('\x1b[31m✗ données plugins incohérentes :\x1b[0m');
   for (const e of erreurs) console.error(`  • ${e}`);

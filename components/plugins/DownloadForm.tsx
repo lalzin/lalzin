@@ -24,6 +24,8 @@ type Props = {
   turnstileSiteKey?: string;
   /** Autres plugins publiés, proposés en cases à cocher. */
   others?: Plugin[];
+  /** Titre du formulaire, à la place de « Reçois le plugin par email ». */
+  title?: string;
 };
 
 export default function DownloadForm({
@@ -31,6 +33,7 @@ export default function DownloadForm({
   expired = false,
   turnstileSiteKey = '',
   others: othersProp = [],
+  title,
 }: Props) {
   const { ui, lang, content } = useContent();
   const router = useRouter();
@@ -112,7 +115,7 @@ export default function DownloadForm({
           </p>
         )}
 
-        <h2 className="font-display text-2xl font-bold text-cream sm:text-3xl">{tx.title}</h2>
+        <h2 className="font-display text-2xl font-bold text-cream sm:text-3xl">{title ?? tx.title}</h2>
         <p className="mt-2 text-sm text-cream/65">{tx.subtitle}</p>
 
         <form onSubmit={submit} className="mt-6 space-y-5" noValidate>

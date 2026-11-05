@@ -82,6 +82,51 @@ export const ui = {
       discover: 'Voir le plugin',
       soon: 'Bientôt',
       soonOther: 'D’autres plugins arrivent.',
+      suiteTitle: 'Toute la suite',
+      suiteText: 'Les {n} plugins en un seul installateur, à jour en {v}.',
+      suiteCta: 'Télécharger la suite',
+      suiteFormTitle: 'Reçois la suite par email',
+      tipLabel: 'Conseil',
+      callouts: {
+        slapper: [
+          {
+            kind: 'box',
+            title: 'Jouer',
+            body: 'Charge Slapper sur une piste MIDI. En MONO, une note jouée par-dessus une autre glisse jusqu’à elle. Une vélocité très douce (moins de 20) donne une ghost note. Le choix du moteur, ENGINE, se trouve à gauche de Pluck.',
+          },
+        ],
+        crackle: [
+          {
+            kind: 'box',
+            title: 'GRAIN et AUTO',
+            body: 'GRAIN règle tout. Dans « ⋯ », chaque effet suit GRAIN tant que son voyant AUTO est allumé. Tourne-le et il devient indépendant ; un clic sur AUTO le rend à GRAIN. NOISE règle le niveau des bruits.',
+          },
+        ],
+        'head-spin': [
+          {
+            kind: 'box',
+            title: 'Dessine ta forme',
+            body: 'Clique sur le crayon, puis trace le chemin autour de Kiko d’un seul geste.',
+          },
+          {
+            kind: 'tip',
+            title: 'Enceintes ou casque',
+            body: 'Au casque, choisis le rendu casque (binaural) : le modèle de tête place le son autour de toi, devant comme derrière. Sur enceintes, garde le rendu enceintes. Dans les deux cas, 3D accentue l’avant, l’arrière et la distance.',
+          },
+        ],
+        ballroom: [
+          {
+            kind: 'box',
+            title: 'CLEAR, la réverbe qui s’efface',
+            body: 'Sur une voix ou une boucle, monte CLEAR : la queue recule pendant que la musique joue et fleurit dans les silences, bande par bande.',
+          },
+          {
+            kind: 'tip',
+            title: 'En insert ou en retour',
+            body: 'En insert, SPACE règle le dry / wet. Sur une piste de retour, mets SPACE à 100 %.',
+          },
+        ],
+      },
       instrument: 'Instrument',
       effect: 'Effet',
       styles: 'Styles',
@@ -161,7 +206,7 @@ export const ui = {
         dawSteps: [
           'Réglages → Plug-Ins → Rescan.',
           'Les effets apparaissent dans VST3 / Audio Units → LALZIN.',
-          'Pew Pew est un instrument : charge-le sur une piste MIDI, pas sur une piste audio.',
+          'Pew Pew et Slapper sont des instruments : charge-les sur une piste MIDI, pas sur une piste audio.',
         ],
         noteTitle: 'Bon à savoir',
         notes: [
@@ -315,6 +360,51 @@ export const ui = {
       discover: 'View plugin',
       soon: 'Soon',
       soonOther: 'More plugins on the way.',
+      suiteTitle: 'The whole suite',
+      suiteText: 'All {n} plugins in a single installer, up to date at {v}.',
+      suiteCta: 'Download the suite',
+      suiteFormTitle: 'Get the suite by email',
+      tipLabel: 'Tip',
+      callouts: {
+        slapper: [
+          {
+            kind: 'box',
+            title: 'Playing',
+            body: 'Load Slapper on a MIDI track. In MONO, a note played over another one slides into it. A very soft velocity (under 20) gives a ghost note. The engine selector, ENGINE, sits to the left of Pluck.',
+          },
+        ],
+        crackle: [
+          {
+            kind: 'box',
+            title: 'GRAIN and AUTO',
+            body: 'GRAIN sets everything. In “⋯”, each effect follows GRAIN as long as its AUTO light is on. Turn it and it goes its own way; one click on AUTO hands it back to GRAIN. NOISE sets the level of the noises.',
+          },
+        ],
+        'head-spin': [
+          {
+            kind: 'box',
+            title: 'Draw your shape',
+            body: 'Click the pencil, then trace the path around Kiko in a single stroke.',
+          },
+          {
+            kind: 'tip',
+            title: 'Speakers or headphones',
+            body: 'On headphones, pick the headphone (binaural) render: the head model places the sound around you, in front and behind. On speakers, keep the speaker render. Either way, 3D pushes front, back and distance.',
+          },
+        ],
+        ballroom: [
+          {
+            kind: 'box',
+            title: 'CLEAR, the reverb that steps aside',
+            body: 'On a vocal or a loop, raise CLEAR: the tail steps back while the music plays and blooms in the gaps, band by band.',
+          },
+          {
+            kind: 'tip',
+            title: 'Insert or return',
+            body: 'On an insert, SPACE sets the dry / wet. On a return track, set SPACE to 100 %.',
+          },
+        ],
+      },
       instrument: 'Instrument',
       effect: 'Effect',
       styles: 'Styles',
@@ -393,7 +483,7 @@ export const ui = {
         dawSteps: [
           'Settings → Plug-Ins → Rescan.',
           'The effects show up under VST3 / Audio Units → LALZIN.',
-          'Pew Pew is an instrument: load it on a MIDI track, not an audio track.',
+          'Pew Pew and Slapper are instruments: load them on a MIDI track, not an audio track.',
         ],
         noteTitle: 'Good to know',
         notes: [

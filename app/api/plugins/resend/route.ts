@@ -14,7 +14,7 @@ import { emailConfigured, sendDownloadEmail } from '@/lib/email';
 import { hashIP, signDownloadToken, verifyDownloadToken } from '@/lib/downloadToken';
 import { checkQuotas, createRequest, deleteRequest, getRequest } from '@/lib/pluginRequests';
 import { type OS } from '@/lib/plugins';
-import { getPlugins, keepPublished } from '@/lib/pluginConfig';
+import { getDownloadables, keepDownloadable } from '@/lib/pluginConfig';
 import { buildEmailProps, clientIP, siteOrigin } from '../shared';
 
 export const dynamic = 'force-dynamic';
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
 
   if (!emailConfigured) return NextResponse.json({ ok: false, error: 'server' }, { status: 503 });
 
-  const slugs = await keepPublished(claims.p);
+  const slugs = await keepDownloadable(claims.p);
   if (slugs.length === 0) return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 });
 
   // Un renvoi compte comme une demande (c'est ce qui fait tenir les quotas).
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
     original.email,
     defaultContent.artist.bookingEmail,
     buildEmailProps({
-      plugins: await getPlugins(),
+      plugins: await getDownloadables(),
       slugs,
       os: original.os as OS,
       lang: original.lang,

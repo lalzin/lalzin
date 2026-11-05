@@ -23,7 +23,7 @@ export default function PluginCard({ plugin, index = 0 }: { plugin: Plugin; inde
       whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6, ease: [0.34, 1.3, 0.5, 1], delay: index * 0.08 }}
-      className="group relative flex flex-col overflow-hidden rounded-[2rem] border border-cream/12 bg-cream/[0.04] p-6 backdrop-blur-sm transition-colors hover:border-cream/25"
+      className="group relative flex w-full flex-col overflow-hidden rounded-[2rem] border border-cream/12 bg-cream/[0.04] p-6 backdrop-blur-sm transition-colors hover:border-cream/25"
     >
       {/* Teinte du plugin */}
       <div

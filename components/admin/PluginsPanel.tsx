@@ -12,7 +12,10 @@ type Services = {
   supabase: boolean;
   dernierEchecEmail: { at: string; reason: string } | null;
 };
-import { ALL_PLUGINS, OS_LABEL, type OS } from '@/lib/plugins';
+import { ALL_PLUGINS, OS_LABEL, SUITE, type OS } from '@/lib/plugins';
+
+/** Éléments éditables : les plugins, puis l'installateur de toute la suite. */
+const EDITABLES = SUITE ? [...ALL_PLUGINS, SUITE] : ALL_PLUGINS;
 
 const OSES: OS[] = ['macos', 'windows'];
 
@@ -183,7 +186,7 @@ export default function PluginsPanel() {
           </p>
 
           <div className="space-y-4">
-            {ALL_PLUGINS.map((p) => {
+            {EDITABLES.map((p) => {
               const o = config.bySlug[p.slug] ?? {};
               const enLigne = config.published.includes(p.slug);
               return (
@@ -317,7 +320,7 @@ export default function PluginsPanel() {
                 .sort((a, b) => b[1] - a[1])
                 .map(([slug, n]) => (
                   <li key={slug} className="flex justify-between gap-3">
-                    <span>{ALL_PLUGINS.find((p) => p.slug === slug)?.name ?? slug}</span>
+                    <span>{EDITABLES.find((p) => p.slug === slug)?.name ?? slug}</span>
                     <span className="font-semibold text-cream">{n}</span>
                   </li>
                 ))}

@@ -11,7 +11,7 @@ import { NextResponse } from 'next/server';
 import { verifyDownloadToken } from '@/lib/downloadToken';
 import { logDownload } from '@/lib/pluginRequests';
 import { isOSAvailable, r2Key, type OS } from '@/lib/plugins';
-import { getPlugin } from '@/lib/pluginConfig';
+import { getDownloadable } from '@/lib/pluginConfig';
 import { presignDownload, r2Configured } from '@/lib/r2';
 
 export const dynamic = 'force-dynamic';
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
   const slug = searchParams.get('p');
   const os = searchParams.get('os') as OS | null;
 
-  const plugin = slug ? await getPlugin(slug) : undefined;
+  const plugin = slug ? await getDownloadable(slug) : undefined;
   if (!plugin || (os !== 'macos' && os !== 'windows') || !isOSAvailable(plugin, os)) {
     return expired(req, null);
   }

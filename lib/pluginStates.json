@@ -39,6 +39,51 @@
       ]
     }
   },
+  "ballroom": {
+    "states": [
+      "ui-late.webp",
+      "ui-mirror.webp",
+      "ui-room.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        538,
+        495
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-hero.webp": [
+        560,
+        693
+      ],
+      "ui-hero@3x.webp": [
+        840,
+        1040
+      ],
+      "ui-late.webp": [
+        560,
+        693
+      ],
+      "ui-mirror.webp": [
+        560,
+        693
+      ],
+      "ui-room.webp": [
+        560,
+        693
+      ]
+    }
+  },
   "boogie-trio": {
     "states": [
       "ui-25.webp",
@@ -76,6 +121,51 @@
       "ui-hero@3x.webp": [
         1260,
         1560
+      ]
+    }
+  },
+  "crackle": {
+    "states": [
+      "ui-crushed.webp",
+      "ui-effects.webp",
+      "ui-radio.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        322,
+        287
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-crushed.webp": [
+        840,
+        1040
+      ],
+      "ui-effects.webp": [
+        840,
+        1040
+      ],
+      "ui-hero.webp": [
+        840,
+        1040
+      ],
+      "ui-hero@3x.webp": [
+        1260,
+        1560
+      ],
+      "ui-radio.webp": [
+        840,
+        1040
       ]
     }
   },
@@ -121,6 +211,51 @@
       "ui-lp50.webp": [
         840,
         1040
+      ]
+    }
+  },
+  "head-spin": {
+    "states": [
+      "ui-behind.webp",
+      "ui-custom.webp",
+      "ui-eight.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        280,
+        316
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-behind.webp": [
+        1013,
+        640
+      ],
+      "ui-custom.webp": [
+        1013,
+        640
+      ],
+      "ui-eight.webp": [
+        1013,
+        640
+      ],
+      "ui-hero.webp": [
+        1013,
+        640
+      ],
+      "ui-hero@3x.webp": [
+        1520,
+        960
       ]
     }
   },
@@ -272,5 +407,54 @@
         1560
       ]
     }
+  },
+  "slapper": {
+    "states": [
+      "ui-analog.webp",
+      "ui-fm.webp",
+      "ui-pulse.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        403,
+        520
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-analog.webp": [
+        840,
+        1040
+      ],
+      "ui-fm.webp": [
+        840,
+        1040
+      ],
+      "ui-hero.webp": [
+        840,
+        1040
+      ],
+      "ui-hero@3x.webp": [
+        1260,
+        1560
+      ],
+      "ui-pulse.webp": [
+        840,
+        1040
+      ]
+    }
+  },
+  "suite": {
+    "states": [],
+    "images": {}
   }
 }

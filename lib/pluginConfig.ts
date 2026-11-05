@@ -17,6 +17,7 @@ import { supabaseServer } from './supabase';
 import {
   ALL_PLUGINS,
   DEFAULT_PUBLISHED,
+  SUITE,
   type OS,
   type Plugin,
   type PluginDownload,
@@ -97,6 +98,30 @@ export async function getPublishedSlugs(): Promise<string[]> {
 export async function keepPublished(slugs: string[]): Promise<string[]> {
   const published = await getPublishedSlugs();
   return published.filter((slug) => slugs.includes(slug));
+}
+
+/* ----------------------------------------------------- SUITE COMPLÈTE */
+/** L'installateur de la suite, s'il existe et s'il est publié dans /admin. */
+export async function getSuite(): Promise<Plugin | null> {
+  if (!SUITE) return null;
+  const config = await getPluginConfig();
+  if (!config.published.includes(SUITE.slug)) return null;
+  return merge(SUITE, config.bySlug[SUITE.slug]);
+}
+
+/** Tout ce qui se télécharge : les plugins publiés, plus la suite si elle l'est. */
+export async function getDownloadables(): Promise<Plugin[]> {
+  const [plugins, suiteEnLigne] = await Promise.all([getPlugins(), getSuite()]);
+  return suiteEnLigne ? [...plugins, suiteEnLigne] : plugins;
+}
+
+export async function getDownloadable(slug: string): Promise<Plugin | undefined> {
+  return (await getDownloadables()).find((p) => p.slug === slug);
+}
+
+/** Filtre des slugs reçus du client : plugins publiés et suite, sans doublon. */
+export async function keepDownloadable(slugs: string[]): Promise<string[]> {
+  return (await getDownloadables()).map((p) => p.slug).filter((slug) => slugs.includes(slug));
 }
 
 /* ------------------------------------------------------------ ÉCRITURE */

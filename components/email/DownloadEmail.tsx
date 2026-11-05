@@ -146,7 +146,8 @@ export default function DownloadEmail({
                     marginBottom: '8px',
                   }}
                 >
-                  {`${plugin.name} ${t.on} ${OS_LABEL[l.os]} · ${l.size}`}
+                  {/* La taille n'est affichée que si elle est connue. */}
+                  {`${plugin.name} ${t.on} ${OS_LABEL[l.os]}${l.size ? ` · ${l.size}` : ''}`}
                 </Button>
               ))}
             </Section>
@@ -223,7 +224,7 @@ export function downloadEmailText(props: DownloadEmailProps): string {
 
   for (const { plugin, links } of items) {
     lines.push(`${plugin.name} : ${plugin.tagline[lang]} (v${plugin.version})`);
-    for (const l of links) lines.push(`  ${OS_LABEL[l.os]} (${l.size}) : ${l.href}`);
+    for (const l of links) lines.push(`  ${OS_LABEL[l.os]}${l.size ? ` (${l.size})` : ''} : ${l.href}`);
     lines.push('');
   }
 

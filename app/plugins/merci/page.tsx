@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { paypalMe } from '@/lib/publicConfig';
-import { getPlugins } from '@/lib/pluginConfig';
+import { getDownloadables } from '@/lib/pluginConfig';
 import ThanksPage from './ThanksPage';
 
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <Suspense fallback={null}>
-      <ThanksPage paypalMe={paypalMe} plugins={await getPlugins()} />
+      <ThanksPage paypalMe={paypalMe} plugins={await getDownloadables()} />
     </Suspense>
   );
 }
