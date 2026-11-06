@@ -26,6 +26,7 @@ export const ui = {
       title: 'Sorties & Remixes',
       subtitle: 'Clique sur une pochette pour écouter.',
       featured: 'À la une',
+      presave: 'Bientôt',
     },
     video: { eyebrow: 'Vidéo', watch: 'Lancer le clip', youtube: 'Voir sur YouTube' },
     live: {
@@ -287,7 +288,9 @@ export const ui = {
     promo: {
       badge: 'Nouveau titre',
       out: 'Disponible maintenant',
+      soon: 'Bientôt disponible',
       listen: 'Écouter',
+      presave: 'Pré-enregistrer',
       later: 'Plus tard',
     },
   },
@@ -312,6 +315,7 @@ export const ui = {
       title: 'Releases & Remixes',
       subtitle: 'Tap a cover to listen.',
       featured: 'Featured',
+      presave: 'Soon',
     },
     video: { eyebrow: 'Video', watch: 'Play video', youtube: 'Watch on YouTube' },
     live: {
@@ -571,7 +575,9 @@ export const ui = {
     promo: {
       badge: 'New track',
       out: 'Out now',
+      soon: 'Coming soon',
       listen: 'Listen',
+      presave: 'Pre-save',
       later: 'Later',
     },
   },

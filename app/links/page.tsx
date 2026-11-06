@@ -9,7 +9,7 @@ import LangSwitch from '@/components/ui/LangSwitch';
 import Confetti from '@/components/Confetti';
 import { groovy } from '@/components/ui/motion';
 import { resolveListenHref } from '@/lib/links';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Disc3, Mail, Play, SlidersHorizontal } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookmarkPlus, Disc3, Mail, Play, SlidersHorizontal } from 'lucide-react';
 
 const accent: Record<string, string> = {
   spotify: '#15C7B8',
@@ -90,11 +90,18 @@ export default function LinksPage() {
                 className="group flex items-center gap-4 rounded-2xl border border-cream/12 bg-gradient-to-r from-magenta/20 to-coral/15 px-5 py-4 backdrop-blur-sm transition-colors hover:border-gold/50"
               >
                 <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-cream/90 text-night">
-                  <Play className="ml-0.5 h-4 w-4 fill-current" strokeWidth={0} aria-hidden />
+                  {r.presave ? (
+                    <BookmarkPlus className="h-4 w-4" strokeWidth={2.25} aria-hidden />
+                  ) : (
+                    <Play className="ml-0.5 h-4 w-4 fill-current" strokeWidth={0} aria-hidden />
+                  )}
                 </span>
                 <span className="min-w-0">
                   <span className="block truncate font-semibold text-cream">{r.title}</span>
-                  <span className="text-[11px] uppercase tracking-wider text-cream/50">{r.type}</span>
+                  <span className="text-[11px] uppercase tracking-wider text-cream/50">
+                    {r.type}
+                    {r.presave && ` · ${ui.promo.presave}`}
+                  </span>
                 </span>
                 <ArrowUpRight
                   className="ml-auto h-4 w-4 flex-none text-cream/40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-cream"

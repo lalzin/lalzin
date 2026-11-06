@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useContent } from '@/components/providers/ContentProvider';
 import { isExternal, resolveListenHref } from '@/lib/links';
 import { groovy } from '@/components/ui/motion';
-import { Play, Star, X } from 'lucide-react';
+import { BookmarkPlus, Play, Star, X } from 'lucide-react';
 
 const DISMISS_KEY = 'lalzin:promo-dismissed';
 
@@ -103,7 +103,7 @@ export default function NewReleasePopup() {
               {/* Infos */}
               <div className="px-6 pb-6 pt-1 text-center">
                 <span className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: c1 }}>
-                  {release.type} · {ui.promo.out}
+                  {release.type} · {release.presave ? ui.promo.soon : ui.promo.out}
                 </span>
                 <h3 className="mt-1 font-display text-2xl font-extrabold text-cream">{release.title}</h3>
 
@@ -114,10 +114,14 @@ export default function NewReleasePopup() {
                   onClick={close}
                   className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-magenta via-coral to-gold py-3.5 text-base font-bold text-night shadow-lg shadow-magenta/30 transition-transform hover:scale-[1.03]"
                 >
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-night/20">
-                    <Play className="ml-px h-2.5 w-2.5 fill-current" strokeWidth={0} aria-hidden />
-                  </span>
-                  {ui.promo.listen}
+                  {release.presave ? (
+                    <BookmarkPlus className="h-5 w-5" strokeWidth={2.25} aria-hidden />
+                  ) : (
+                    <span className="grid h-5 w-5 place-items-center rounded-full bg-night/20">
+                      <Play className="ml-px h-2.5 w-2.5 fill-current" strokeWidth={0} aria-hidden />
+                    </span>
+                  )}
+                  {release.presave ? ui.promo.presave : ui.promo.listen}
                 </a>
                 <button
                   onClick={close}

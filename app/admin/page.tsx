@@ -284,6 +284,7 @@ export default function AdminPage() {
                   <ColorPair value={r.accent} onChange={(accent) => updateRelease(content, set, i, { accent })} />
                   <div className="flex flex-col gap-2">
                     <Toggle label="À la une" checked={!!r.featured} onChange={(featured) => updateRelease(content, set, i, { featured })} />
+                    <Toggle label="Pre-save (pas encore sorti)" checked={!!r.presave} onChange={(presave) => updateRelease(content, set, i, { presave })} />
                     <Toggle
                       label="Popup « nouveau titre »"
                       checked={!!r.announce}
