@@ -159,17 +159,42 @@ function weekStart(iso: string): string {
   return d.toISOString().slice(0, 10);
 }
 
+/**
+ * Lit toutes les lignes d'une table, par pages : Supabase n'en renvoie
+ * que 1 000 par requête, ce qui faussait les totaux au-delà.
+ */
+async function selectAll<T>(table: string, columns: string): Promise<T[]> {
+  const sb = supabaseServer();
+  if (!sb) return [];
+  const PAGE = 1000;
+  const rows: T[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await sb
+      .from(table)
+      .select(columns)
+      .order('created_at', { ascending: false })
+      .range(from, from + PAGE - 1);
+    if (error || !data) break;
+    rows.push(...(data as T[]));
+    if (data.length < PAGE) break;
+  }
+  return rows;
+}
+
+/** Nombre de semaines affichées dans le graphique de l'admin. */
+const WEEKS_SHOWN = 12;
+
 export async function getStats(): Promise<PluginStats | null> {
   const sb = supabaseServer();
   if (!sb) return null;
 
-  const [{ data: requests }, { data: downloads }] = await Promise.all([
-    sb.from(REQUESTS_TABLE).select('email, plugins, os, newsletter, created_at').order('created_at', { ascending: false }),
-    sb.from(DOWNLOADS_TABLE).select('plugin, os, created_at'),
+  const [reqRows, dlRows] = await Promise.all([
+    selectAll<Pick<PluginRequestRow, 'email' | 'plugins' | 'os' | 'newsletter' | 'created_at'>>(
+      REQUESTS_TABLE,
+      'email, plugins, os, newsletter, created_at',
+    ),
+    selectAll<{ plugin: string; os: string; created_at: string }>(DOWNLOADS_TABLE, 'plugin, os, created_at'),
   ]);
-
-  const reqRows = (requests ?? []) as Pick<PluginRequestRow, 'email' | 'plugins' | 'os' | 'newsletter' | 'created_at'>[];
-  const dlRows = (downloads ?? []) as { plugin: string; os: string; created_at: string }[];
 
   const byPlugin: Record<string, number> = {};
   const byOS: Record<string, number> = {};
@@ -188,10 +213,13 @@ export async function getStats(): Promise<PluginStats | null> {
     downloads: dlRows.length,
     byPlugin,
     byOS,
-    byWeek: Object.entries(weeks)
-      .map(([week, d]) => ({ week, downloads: d }))
-      .sort((a, b) => a.week.localeCompare(b.week))
-      .slice(-12),
+    // Les 12 dernières semaines, y compris celles sans téléchargement.
+    byWeek: Array.from({ length: WEEKS_SHOWN }, (_, i) => {
+      const d = new Date(weekStart(new Date().toISOString()));
+      d.setUTCDate(d.getUTCDate() - 7 * (WEEKS_SHOWN - 1 - i));
+      const week = d.toISOString().slice(0, 10);
+      return { week, downloads: weeks[week] ?? 0 };
+    }),
     lastRequests: reqRows.slice(0, 20).map((r) => ({
       email: r.email,
       plugins: r.plugins,

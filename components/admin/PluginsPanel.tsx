@@ -366,18 +366,26 @@ export default function PluginsPanel() {
         <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-gold">
           Téléchargements par semaine
         </p>
-        {stats.byWeek.length === 0 ? (
-          <p className="text-sm text-cream/45">Aucune donnée</p>
+        {stats.byWeek.every((w) => w.downloads === 0) ? (
+          <p className="text-sm text-cream/45">Aucun téléchargement sur les 12 dernières semaines</p>
         ) : (
-          <div className="flex h-32 items-end gap-2">
+          <div className="flex h-40 gap-2">
             {stats.byWeek.map((w) => (
-              <div key={w.week} className="flex flex-1 flex-col items-center gap-2">
-                <div
-                  className="w-full rounded-t bg-gradient-to-t from-magenta to-coral"
-                  style={{ height: `${Math.max(4, (w.downloads / maxWeek) * 100)}%` }}
-                  title={`${w.week} : ${w.downloads}`}
-                />
-                <span className="text-[10px] text-cream/40">{w.week.slice(5)}</span>
+              <div key={w.week} className="flex h-full min-w-0 flex-1 flex-col items-center gap-1.5">
+                <span className="text-[10px] font-semibold tabular-nums text-cream/70">
+                  {w.downloads > 0 ? w.downloads : ''}
+                </span>
+                {/* Zone de hauteur fixe : la barre y prend un pourcentage réel */}
+                <div className="relative w-full flex-1 border-b border-cream/15">
+                  <div
+                    className="absolute inset-x-0 bottom-0 rounded-t bg-gradient-to-t from-magenta to-coral"
+                    style={{ height: w.downloads > 0 ? `${Math.max(3, (w.downloads / maxWeek) * 100)}%` : 0 }}
+                    title={`Semaine du ${new Date(w.week).toLocaleDateString('fr-FR')} : ${w.downloads}`}
+                  />
+                </div>
+                <span className="text-[10px] tabular-nums text-cream/40">
+                  {w.week.slice(8)}/{w.week.slice(5, 7)}
+                </span>
               </div>
             ))}
           </div>
