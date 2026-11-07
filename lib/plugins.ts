@@ -101,6 +101,7 @@ export const ALL_PLUGINS = data.plugins as Plugin[];
  * plugins, sous le slug « suite ».
  */
 export const SUITE_SLUG = 'suite';
+export const SUITE_R2_FOLDER = 'groove-knobs';
 
 export const SUITE: Plugin | null =
   suite.version && suite.downloads
@@ -108,6 +109,8 @@ export const SUITE: Plugin | null =
         slug: SUITE_SLUG,
         name: suite.name,
         version: suite.version,
+        // Rangée dans R2 sous groove-knobs/<version>/ (et non suite/).
+        r2Folder: SUITE_R2_FOLDER,
         mascot: '',
         // Palette du site : la suite n'a pas de couleurs propres.
         colors: { background: '#1F0E1A', accent: '#E8487E', accent2: '#EE6C3A', cream: '#F5E8CF' },

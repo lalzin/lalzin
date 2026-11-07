@@ -45,9 +45,9 @@ const data = JSON.parse(readFileSync(new URL('../lib/plugins.json', import.meta.
 // Par défaut tous les plugins connus ; sinon ceux passés en argument :
 //   npm run check-r2 -- pew-pew sing-it-back
 const demandes = process.argv.slice(2).filter((a) => !a.startsWith('-'));
-// L'installateur de la suite se range sous suite/<version>/, comme un plugin.
+// L’installateur de la suite se range sous groove-knobs/<version>/.
 const suite = data.suite?.version && data.suite?.downloads
-  ? [{ slug: 'suite', name: data.suite.name, version: data.suite.version, downloads: data.suite.downloads }]
+  ? [{ slug: 'groove-knobs', name: data.suite.name, version: data.suite.version, downloads: data.suite.downloads }]
   : [];
 const attendus = [...data.plugins, ...suite]
   .filter((p) => demandes.length === 0 || demandes.includes(p.slug))
