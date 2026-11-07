@@ -76,6 +76,13 @@ const configSchema = z.object({
     z.string(),
     z.object({
       version: z.string().trim().max(30).optional(),
+      // Dossier R2 : lettres, chiffres, tirets, points, soulignés et « / ».
+      folder: z
+        .string()
+        .trim()
+        .max(120)
+        .regex(/^[A-Za-z0-9._\/-]*$/)
+        .optional(),
       downloads: z
         .object({ macos: downloadSchema.optional(), windows: downloadSchema.optional() })
         .optional(),

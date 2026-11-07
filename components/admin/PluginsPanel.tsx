@@ -186,8 +186,9 @@ export default function PluginsPanel() {
           </p>
           <p className="mb-4 text-xs text-cream/45">
             Les champs vides reprennent les valeurs par défaut du projet groove-knobs.
-            La version sert aussi à construire le chemin du fichier dans R2
-            (<code className="text-cream/60">slug/version/fichier</code>).
+            Le chemin du fichier dans R2 est{' '}
+            <code className="text-cream/60">dossier/version/fichier</code> ; le dossier vaut
+            le slug si le champ est vide.
           </p>
 
           <div className="space-y-4">
@@ -219,7 +220,17 @@ export default function PluginsPanel() {
                       placeholder={p.version}
                       onChange={(v) => patch(p.slug, (e) => { e.version = v || undefined; })}
                     />
+                    <Field
+                      label="Dossier R2"
+                      value={o.folder ?? ''}
+                      placeholder={p.slug}
+                      onChange={(v) => patch(p.slug, (e) => { e.folder = v.trim() || undefined; })}
+                    />
                   </div>
+                  <p className="mt-2 font-mono text-[11px] text-cream/40">
+                    {(o.folder || p.slug).replace(/^\/+|\/+$/g, '')}/{o.version || p.version}/
+                    {o.downloads?.macos?.file || p.downloads.macos.file}
+                  </p>
 
                   {OSES.map((os) => {
                     const d = o.downloads?.[os] ?? {};

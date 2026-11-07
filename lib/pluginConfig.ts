@@ -30,6 +30,8 @@ export type DownloadOverride = Partial<Pick<PluginDownload, 'file' | 'bytes' | '
 
 export type PluginOverride = {
   version?: string;
+  /** Dossier R2 ; vide = le slug. */
+  folder?: string;
   downloads?: Partial<Record<OS, DownloadOverride>>;
 };
 
@@ -72,7 +74,12 @@ export function merge(base: Plugin, override?: PluginOverride): Plugin {
     const patch = override.downloads?.[os];
     if (patch) downloads[os] = { ...downloads[os], ...patch };
   }
-  return { ...base, version: override.version || base.version, downloads };
+  return {
+    ...base,
+    version: override.version || base.version,
+    r2Folder: override.folder || base.r2Folder,
+    downloads,
+  };
 }
 
 /** Plugins publiés, surcharges appliquées, dans l'ordre de `published`. */

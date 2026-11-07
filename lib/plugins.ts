@@ -46,6 +46,8 @@ export type Plugin = {
   slug: string;
   name: string;
   version: string;
+  /** Dossier R2 (réglable dans /admin). Absent = le slug. */
+  r2Folder?: string;
   mascot: string;
   /** Absent = effet (compatibilité avec les premiers plugins). */
   type?: PluginType;
@@ -228,9 +230,14 @@ export const OS_LABEL: Record<OS, string> = {
   windows: 'Windows',
 };
 
+/** Dossier R2 du plugin : celui réglé dans /admin, sinon le slug. */
+export const r2Folder = (plugin: Plugin): string =>
+  (plugin.r2Folder ?? '').replace(/^\/+|\/+$/g, '') || plugin.slug;
+
 /**
  * Clé du fichier dans le bucket R2, telle qu'elle est rangée :
- * `french-filter/0.1.0/FrenchFilter-0.1.0-macOS.pkg`.
+ * `french-filter/0.1.0/FrenchFilter-0.1.0-macOS.pkg`
+ * (`<dossier>/<version>/<fichier>`, le dossier valant le slug par défaut).
  */
 export const r2Key = (plugin: Plugin, os: OS): string =>
-  `${plugin.slug}/${plugin.version}/${plugin.downloads[os].file}`;
+  `${r2Folder(plugin)}/${plugin.version}/${plugin.downloads[os].file}`;
