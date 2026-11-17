@@ -201,7 +201,9 @@ export default function LinksPage() {
         </Link>
 
         <p className="mb-2 mt-8 text-[11px] text-cream/35">
-          © {new Date().getFullYear()} {artist.name}
+          © {new Date().getFullYear()} {artist.name} ·{' '}
+          <Link href="/mentions-legales" className="hover:text-cream">{ui.legalNav.legal}</Link> ·{' '}
+          <Link href="/confidentialite" className="hover:text-cream">{ui.legalNav.privacy}</Link>
         </p>
       </motion.div>
     </main>

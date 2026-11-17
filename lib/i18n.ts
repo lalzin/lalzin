@@ -28,7 +28,7 @@ export const ui = {
       featured: 'À la une',
       presave: 'Bientôt',
     },
-    video: { eyebrow: 'Vidéo', watch: 'Lancer le clip', youtube: 'Voir sur YouTube' },
+    video: { eyebrow: 'Vidéo', watch: 'Lancer le clip', youtube: 'Voir sur YouTube', notice: 'La vidéo est lue depuis YouTube' },
     live: {
       eyebrow: 'Live',
       title: 'Prochaines dates',
@@ -256,12 +256,21 @@ export const ui = {
         'Ce site collecte le minimum : voici exactement quoi, pourquoi, et comment t’en débarrasser.',
       sections: [
         {
-          title: 'Ce qui est collecté',
-          body: 'Quand tu demandes un plugin : ton adresse email, le système choisi (macOS ou Windows), les plugins demandés, la langue du site, ton choix concernant la newsletter, une empreinte de ton adresse IP (hachée, non réversible) et ton navigateur. Le formulaire de contact envoie simplement un email.',
+          title: 'Responsable du traitement',
+          body: '{editeur}, éditeur de ce site (voir les mentions légales). Pour toute question sur tes données, écris à {email}.',
         },
         {
-          title: 'À quoi ça sert',
-          body: 'À t’envoyer tes liens de téléchargement, à compter les téléchargements par plugin et par système, et à limiter les abus (robots, envois en masse). Rien d’autre.',
+          title: 'Ce qui est collecté',
+          body: 'Quand tu demandes un plugin : ton adresse email, le système choisi (macOS ou Windows), les plugins demandés, la langue du site, ton choix concernant la newsletter, une empreinte de ton adresse IP (hachée, non réversible) et ton navigateur. Le formulaire de contact ouvre simplement ta messagerie : rien n’est enregistré par le site.',
+        },
+        {
+          title: 'À quoi ça sert, et sur quelle base',
+          body: 'Rien d’autre que ce qui suit.',
+          items: [
+            'Envoyer tes liens de téléchargement : c’est le service que tu demandes (exécution de ta demande).',
+            'Compter les téléchargements par plugin et par système, et limiter les abus (robots, envois en masse) : intérêt légitime à faire fonctionner et protéger le service.',
+            'Newsletter : uniquement si tu as coché la case (consentement, retirable à tout moment).',
+          ],
         },
         {
           title: 'Emails',
@@ -273,22 +282,80 @@ export const ui = {
         },
         {
           title: 'Mini-jeux',
-          body: 'Le tableau des scores enregistre le pseudo que tu choisis, ton score, ton nombre de niveaux, la durée de ta partie et une empreinte hachée de ton adresse IP (anti-triche). Si tu es dans le Top 10, tu peux laisser ton email : il sert uniquement à te contacter si tu gagnes le cadeau du jour de sortie, n’est jamais affiché ni transmis, et il est supprimé au plus tard 3 mois après la sortie du jeu. Le jeu mémorise dans ton navigateur ta progression, ta langue et le réglage du son.',
+          body: 'Le tableau des scores enregistre le pseudo que tu choisis, ton score, ton nombre de niveaux, la durée de ta partie et une empreinte hachée de ton adresse IP (anti-triche). Si tu es dans le Top 10, tu peux laisser ton email : il sert uniquement à te contacter si tu gagnes le cadeau du jour de sortie, n’est jamais affiché ni transmis, et il est supprimé au plus tard 3 mois après la sortie du jeu.',
+        },
+        {
+          id: 'cookies',
+          title: 'Cookies et stockage dans ton navigateur',
+          body: 'Aucun cookie publicitaire, aucune mesure d’audience, aucun pistage. Le site n’utilise que ce qui est nécessaire à son fonctionnement ou à tes réglages, ce qui ne demande pas de consentement (article 82 de la loi Informatique et Libertés) : c’est pour ça qu’il n’y a pas de bandeau.',
+          items: [
+            'Langue choisie, popup « nouveau titre » déjà fermée : stockage local du navigateur, jusqu’à ce que tu le vides.',
+            'Mini-jeu : progression, réglage du son, tutoriel déjà vu, pseudo et meilleurs scores, en stockage local ; un cookie d’accès quand le jeu est en accès anticipé.',
+            'Formulaire de téléchargement : Cloudflare Turnstile vérifie que tu n’es pas un robot. Il ne sert ni à la publicité ni au suivi.',
+            'Clip vidéo : rien n’est chargé depuis YouTube tant que tu n’appuies pas sur lecture. La lecture passe ensuite par youtube-nocookie.com, le mode de YouTube qui ne dépose pas de cookie avant la lecture.',
+            'Administration du site : un cookie de session, réservé à l’éditeur.',
+          ],
         },
         {
           title: 'Durée de conservation',
-          body: 'Les demandes et les statistiques de téléchargement sont conservées 24 mois, puis supprimées.',
+          body: 'Les demandes et les statistiques de téléchargement sont conservées 24 mois, puis supprimées. Les journaux techniques de l’hébergeur sont conservés quelques jours.',
         },
         {
-          title: 'Sous-traitants',
-          body: 'Resend (envoi des emails), Supabase (base de données), Cloudflare (protection anti-robot et stockage des fichiers), Vercel (hébergement du site).',
+          title: 'Sous-traitants et transferts hors de l’Union européenne',
+          body: 'Resend (envoi des emails), Supabase (base de données), Cloudflare (protection anti-robot et stockage des fichiers) et Vercel (hébergement du site). Certains sont établis aux États-Unis : ces transferts sont encadrés par le Data Privacy Framework entre l’UE et les États-Unis ou par les clauses contractuelles types de la Commission européenne. Tes données ne sont jamais vendues ni louées.',
         },
         {
           title: 'Tes droits',
-          body: 'Tu peux demander l’accès, la correction ou la suppression de tes données à tout moment, par email. La suppression est faite sous 30 jours.',
+          body: 'Tu peux demander l’accès à tes données, leur correction, leur suppression, leur portabilité, la limitation de leur traitement ou t’y opposer, et retirer ton consentement à la newsletter, à tout moment, par email. Réponse sous 30 jours. Si tu estimes que tes droits ne sont pas respectés, tu peux saisir la CNIL (cnil.fr).',
         },
       ],
       contact: 'Contact :',
+    },
+    legalNav: { legal: 'Mentions légales', privacy: 'Confidentialité', cookies: 'Cookies' },
+    legalPage: {
+      title: 'Mentions légales',
+      intro: 'Qui édite ce site, qui l’héberge, et les règles qui s’y appliquent.',
+      publisher: 'Éditeur',
+      labels: {
+        name: 'Nom',
+        stage: 'Nom d’artiste',
+        status: 'Statut',
+        address: 'Adresse',
+        siret: 'SIRET',
+        phone: 'Téléphone',
+        email: 'Email',
+        director: 'Directeur de la publication',
+      },
+      host: 'Hébergement',
+      hostBody: 'Le site est hébergé par :',
+      sections: [
+        {
+          title: 'Propriété intellectuelle',
+          body: 'La musique, les visuels, les logos, les mascottes, les textes et le code de ce site appartiennent à LALZIN, sauf mention contraire. Toute reproduction ou réutilisation sans autorisation écrite est interdite. Les marques et logos des plateformes citées (Spotify, Apple Music, YouTube, Instagram…) appartiennent à leurs propriétaires.',
+        },
+        {
+          title: 'Plugins Groove Knobs',
+          body: 'Les plugins sont gratuits et distribués sous licence freeware, jointe à chaque installateur.',
+          items: [
+            'Tu peux les installer et les utiliser sur tous tes ordinateurs, pour un usage personnel ou commercial (production, live, diffusion). La musique que tu crées avec t’appartient, sans redevance ni crédit obligatoire.',
+            'Tu ne peux pas les vendre, les louer, les intégrer à un autre produit ou les redistribuer en dehors de ce site sans autorisation écrite.',
+            'Ils sont fournis « en l’état », sans garantie. Pense à sauvegarder tes projets.',
+          ],
+        },
+        {
+          title: 'Liens externes',
+          body: 'Le site renvoie vers des plateformes tierces (streaming, réseaux sociaux, boutique). Leur contenu et leurs conditions relèvent de leurs éditeurs. Les achats de merch se font sur la boutique en ligne, qui a ses propres conditions de vente.',
+        },
+        {
+          title: 'Données personnelles et cookies',
+          body: 'Voir la politique de confidentialité : ce qui est collecté, pourquoi, combien de temps, et comment exercer tes droits.',
+        },
+        {
+          title: 'Droit applicable',
+          body: 'Ces mentions sont soumises au droit français.',
+        },
+      ],
+      seePrivacy: 'Politique de confidentialité',
     },
     promo: {
       badge: 'Nouveau titre',
@@ -322,7 +389,7 @@ export const ui = {
       featured: 'Featured',
       presave: 'Soon',
     },
-    video: { eyebrow: 'Video', watch: 'Play video', youtube: 'Watch on YouTube' },
+    video: { eyebrow: 'Video', watch: 'Play video', youtube: 'Watch on YouTube', notice: 'The video plays from YouTube' },
     live: {
       eyebrow: 'Live',
       title: 'Upcoming shows',
@@ -548,12 +615,21 @@ export const ui = {
       intro: 'This site collects the bare minimum: here is exactly what, why, and how to get rid of it.',
       sections: [
         {
-          title: 'What is collected',
-          body: 'When you request a plugin: your email address, the system you picked (macOS or Windows), the plugins requested, the site language, your newsletter choice, a fingerprint of your IP address (hashed, not reversible) and your browser. The contact form simply sends an email.',
+          title: 'Data controller',
+          body: '{editeur}, publisher of this site (see the legal notice). For any question about your data, write to {email}.',
         },
         {
-          title: 'What it is used for',
-          body: 'To send you your download links, to count downloads per plugin and per system, and to limit abuse (bots, bulk sign-ups). Nothing else.',
+          title: 'What is collected',
+          body: 'When you request a plugin: your email address, the system you picked (macOS or Windows), the plugins requested, the site language, your newsletter choice, a fingerprint of your IP address (hashed, not reversible) and your browser. The contact form simply opens your email app: the site stores nothing.',
+        },
+        {
+          title: 'What it is used for, and on what basis',
+          body: 'Nothing beyond the following.',
+          items: [
+            'Sending your download links: the service you ask for (performance of your request).',
+            'Counting downloads per plugin and per system, and limiting abuse (bots, bulk sign-ups): legitimate interest in running and protecting the service.',
+            'Newsletter: only if you ticked the box (consent, which you can withdraw at any time).',
+          ],
         },
         {
           title: 'Emails',
@@ -565,22 +641,80 @@ export const ui = {
         },
         {
           title: 'Mini-games',
-          body: 'The leaderboard stores the nickname you choose, your score, the number of levels, how long your run took and a hashed fingerprint of your IP address (anti-cheat). If you make the Top 10, you can leave your email: it is only used to contact you if you win the release-day gift, it is never shown or shared, and it is deleted at the latest 3 months after the game’s release. The game remembers your progress, language and sound setting in your browser.',
+          body: 'The leaderboard stores the nickname you choose, your score, the number of levels, how long your run took and a hashed fingerprint of your IP address (anti-cheat). If you make the Top 10, you can leave your email: it is only used to contact you if you win the release-day gift, it is never shown or shared, and it is deleted at the latest 3 months after the game’s release.',
+        },
+        {
+          id: 'cookies',
+          title: 'Cookies and browser storage',
+          body: 'No advertising cookies, no audience measurement, no tracking. The site only uses what it needs to work or to remember your settings, which requires no consent under French and EU rules: that is why there is no banner.',
+          items: [
+            'Chosen language, “new track” popup already closed: browser local storage, until you clear it.',
+            'Mini-game: progress, sound setting, tutorial already seen, nickname and best scores in local storage; an access cookie while the game is in early access.',
+            'Download form: Cloudflare Turnstile checks that you are not a bot. It is not used for advertising or tracking.',
+            'Music video: nothing is loaded from YouTube until you press play. Playback then goes through youtube-nocookie.com, the YouTube mode that sets no cookie before playback.',
+            'Site administration: a session cookie, for the publisher only.',
+          ],
         },
         {
           title: 'How long it is kept',
-          body: 'Requests and download statistics are kept for 24 months, then deleted.',
+          body: 'Requests and download statistics are kept for 24 months, then deleted. The host’s technical logs are kept for a few days.',
         },
         {
-          title: 'Processors',
-          body: 'Resend (sending emails), Supabase (database), Cloudflare (anti-bot protection and file storage), Vercel (website hosting).',
+          title: 'Processors and transfers outside the EU',
+          body: 'Resend (sending emails), Supabase (database), Cloudflare (anti-bot protection and file storage) and Vercel (website hosting). Some are based in the United States: these transfers rely on the EU-US Data Privacy Framework or the European Commission’s standard contractual clauses. Your data is never sold or rented.',
         },
         {
           title: 'Your rights',
-          body: 'You can ask for access, correction or deletion of your data at any time, by email. Deletion is done within 30 days.',
+          body: 'You can ask for access to your data, its correction, deletion or portability, restrict or object to its processing, and withdraw your newsletter consent, at any time, by email. Answer within 30 days. If you believe your rights are not respected, you can lodge a complaint with the CNIL, the French data protection authority (cnil.fr).',
         },
       ],
       contact: 'Contact:',
+    },
+    legalNav: { legal: 'Legal notice', privacy: 'Privacy', cookies: 'Cookies' },
+    legalPage: {
+      title: 'Legal notice',
+      intro: 'Who publishes this site, who hosts it, and the rules that apply.',
+      publisher: 'Publisher',
+      labels: {
+        name: 'Name',
+        stage: 'Artist name',
+        status: 'Status',
+        address: 'Address',
+        siret: 'SIRET (French business ID)',
+        phone: 'Phone',
+        email: 'Email',
+        director: 'Publication director',
+      },
+      host: 'Hosting',
+      hostBody: 'The site is hosted by:',
+      sections: [
+        {
+          title: 'Intellectual property',
+          body: 'The music, artwork, logos, mascots, texts and code of this site belong to LALZIN unless stated otherwise. Any reproduction or reuse without written permission is prohibited. The names and logos of the platforms mentioned (Spotify, Apple Music, YouTube, Instagram…) belong to their owners.',
+        },
+        {
+          title: 'Groove Knobs plugins',
+          body: 'The plugins are free and distributed under a freeware licence, included with every installer.',
+          items: [
+            'You can install and use them on all your computers, for personal or commercial use (production, live, broadcast). The music you make with them is yours, with no royalty or credit required.',
+            'You may not sell, rent, bundle them into another product or redistribute them outside this site without written permission.',
+            'They are provided “as is”, without warranty. Back up your projects.',
+          ],
+        },
+        {
+          title: 'External links',
+          body: 'The site links to third-party platforms (streaming, social networks, shop). Their content and terms are their publishers’ responsibility. Merch is bought on the online shop, which has its own terms of sale.',
+        },
+        {
+          title: 'Personal data and cookies',
+          body: 'See the privacy policy: what is collected, why, for how long, and how to exercise your rights.',
+        },
+        {
+          title: 'Governing law',
+          body: 'This notice is governed by French law.',
+        },
+      ],
+      seePrivacy: 'Privacy policy',
     },
     promo: {
       badge: 'New track',

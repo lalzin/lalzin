@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useContent } from '@/components/providers/ContentProvider';
 import SectionHeading from '@/components/ui/SectionHeading';
 import Reveal from '@/components/ui/Reveal';
@@ -10,6 +11,7 @@ export default function VideoSection() {
   const { content, t, ui } = useContent();
   const { video, socials } = content;
   const [play, setPlay] = useState(false);
+  const [thumb, setThumb] = useState<'maxresdefault' | 'hqdefault'>('maxresdefault');
   const youtubeHref = socials.find((s) => s.key === 'youtube')?.href ?? 'https://youtube.com';
 
   return (
@@ -29,7 +31,7 @@ export default function VideoSection() {
               {video.youtubeId && play ? (
                 <iframe
                   className="absolute inset-0 h-full w-full"
-                  src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&rel=0`}
+                  src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?autoplay=1&rel=0`}
                   title={video.title}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -44,14 +46,14 @@ export default function VideoSection() {
                 >
                   {video.youtubeId ? (
                     <>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={`https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
+                      {/* Servie par le site (next/image) : aucun contact avec Google avant la lecture */}
+                      <Image
+                        src={`https://img.youtube.com/vi/${video.youtubeId}/${thumb}.jpg`}
                         alt={video.title}
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        onError={(e) => {
-                          (e.currentTarget as HTMLImageElement).src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
-                        }}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 1000px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={() => setThumb('hqdefault')}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-night-deep/85 via-night-deep/30 to-night-deep/40" />
                     </>
@@ -64,6 +66,9 @@ export default function VideoSection() {
                   <span className="relative z-10 text-sm font-semibold uppercase tracking-[0.2em] text-cream/90">
                     {video.youtubeId ? ui.video.watch : ui.video.youtube}
                   </span>
+                  {video.youtubeId && (
+                    <span className="absolute bottom-4 z-10 text-[11px] text-cream/55">{ui.video.notice}</span>
+                  )}
                 </button>
               )}
             </div>

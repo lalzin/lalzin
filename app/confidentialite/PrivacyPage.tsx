@@ -6,14 +6,12 @@ import SectionHeading from '@/components/ui/SectionHeading';
 import Navbar from '@/components/Navbar';
 import Reveal from '@/components/ui/Reveal';
 import { ArrowLeft } from 'lucide-react';
-
-/** Date de dernière mise à jour du texte (à changer si le texte change). */
-const UPDATED = '2026-10-27';
+import { legal } from '@/lib/legal';
 
 export default function PrivacyPage() {
   const { ui, lang, content } = useContent();
   const tx = ui.privacy;
-  const updated = new Date(UPDATED).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', {
+  const updated = new Date(legal.misAJour).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -44,9 +42,24 @@ export default function PrivacyPage() {
         <div className="space-y-5">
           {tx.sections.map((s, i) => (
             <Reveal key={s.title} delay={i * 0.04}>
-              <section className="rounded-[1.5rem] border border-cream/12 bg-cream/[0.04] p-6">
+              <section
+                id={'id' in s ? s.id : undefined}
+                className="scroll-mt-28 rounded-[1.5rem] border border-cream/12 bg-cream/[0.04] p-6"
+              >
                 <h2 className="font-display text-xl font-bold text-cream">{s.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-cream/75">{s.body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-cream/75">
+                  {s.body.replace('{editeur}', `${legal.editeur.nom} (${legal.editeur.nomDeScene})`).replace('{email}', legal.editeur.email)}
+                </p>
+                {'items' in s && (
+                  <ul className="mt-3 space-y-2">
+                    {s.items.map((item) => (
+                      <li key={item} className="flex gap-3 text-sm leading-relaxed text-cream/75">
+                        <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-gold" aria-hidden />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </section>
             </Reveal>
           ))}
@@ -55,12 +68,13 @@ export default function PrivacyPage() {
         <Reveal>
           <p className="mt-10 text-sm text-cream/60">
             {tx.contact}{' '}
-            <a
-              href={`mailto:${content.artist.bookingEmail}`}
-              className="text-gold underline-offset-4 hover:underline"
-            >
-              {content.artist.bookingEmail}
+            <a href={`mailto:${legal.editeur.email}`} className="text-gold underline-offset-4 hover:underline">
+              {legal.editeur.email}
             </a>
+            {' · '}
+            <Link href="/mentions-legales" className="underline-offset-4 hover:text-cream hover:underline">
+              {ui.legalNav.legal}
+            </Link>
           </p>
         </Reveal>
       </div>

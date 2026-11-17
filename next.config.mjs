@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     formats: ['image/avif', 'image/webp'],
+    // Miniature du clip : récupérée par le serveur, pas par le visiteur.
+    remotePatterns: [{ protocol: 'https', hostname: 'img.youtube.com', pathname: '/vi/**' }],
   },
   // react-three-fiber / three transpile safety
   transpilePackages: ['three'],

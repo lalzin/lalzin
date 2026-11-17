@@ -50,6 +50,12 @@ export default function Footer() {
           </span>
         </Link>
 
+        <nav aria-label={ui.legalNav.legal} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-cream/45">
+          <Link href="/mentions-legales" className="transition-colors hover:text-cream">{ui.legalNav.legal}</Link>
+          <Link href="/confidentialite" className="transition-colors hover:text-cream">{ui.legalNav.privacy}</Link>
+          <Link href="/confidentialite#cookies" className="transition-colors hover:text-cream">{ui.legalNav.cookies}</Link>
+        </nav>
+
         <p className="text-xs text-cream/35">
           © {new Date().getFullYear()} {artist.name}. {ui.footer.rights}
         </p>
