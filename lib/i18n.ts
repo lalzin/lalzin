@@ -87,6 +87,11 @@ export const ui = {
       suiteText: 'Les {n} plugins en un seul installateur, à jour en {v}.',
       suiteCta: 'Télécharger la suite',
       suiteFormTitle: 'Reçois la suite par email',
+      suiteDetails: 'Ce qu’elle contient',
+      filterAll: 'Tous',
+      filterEffects: 'Effets',
+      filterInstruments: 'Instruments',
+      filterLabel: 'Filtrer les plugins',
       suitePage: {
         intro:
           'Tous les plugins Groove Knobs en un seul installateur : un passage, et ils sont tous dans ton DAW. Gratuit, comme chaque plugin.',
@@ -376,6 +381,11 @@ export const ui = {
       suiteText: 'All {n} plugins in a single installer, up to date at {v}.',
       suiteCta: 'Download the suite',
       suiteFormTitle: 'Get the suite by email',
+      suiteDetails: 'What’s inside',
+      filterAll: 'All',
+      filterEffects: 'Effects',
+      filterInstruments: 'Instruments',
+      filterLabel: 'Filter plugins',
       suitePage: {
         intro:
           'Every Groove Knobs plugin in a single installer: one run, and they are all in your DAW. Free, like every plugin.',

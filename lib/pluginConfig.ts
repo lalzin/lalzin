@@ -14,26 +14,14 @@
  */
 import { unstable_noStore as noStore } from 'next/cache';
 import { supabaseServer } from './supabase';
-import {
-  ALL_PLUGINS,
-  DEFAULT_PUBLISHED,
-  SUITE,
-  type OS,
-  type Plugin,
-  type PluginDownload,
-} from './plugins';
+import { ALL_PLUGINS, DEFAULT_PUBLISHED, SUITE, type Plugin } from './plugins';
+import { merge, type PluginOverride } from './pluginMerge';
 
 const TABLE = 'site_content';
 const ROW_ID = 'plugins';
 
-export type DownloadOverride = Partial<Pick<PluginDownload, 'file' | 'bytes' | 'requirements' | 'formats'>>;
-
-export type PluginOverride = {
-  version?: string;
-  /** Dossier R2 ; vide = le slug. */
-  folder?: string;
-  downloads?: Partial<Record<OS, DownloadOverride>>;
-};
+export type { DownloadOverride, PluginOverride } from './pluginMerge';
+export { merge } from './pluginMerge';
 
 export type PluginConfig = {
   /** Slugs réellement en ligne, dans l'ordre d'affichage. */
@@ -64,22 +52,6 @@ export async function getPluginConfig(): Promise<PluginConfig> {
   } catch {
     return defaultConfig;
   }
-}
-
-/** Applique les surcharges d'un plugin sur ses valeurs par défaut. */
-export function merge(base: Plugin, override?: PluginOverride): Plugin {
-  if (!override) return base;
-  const downloads = { ...base.downloads };
-  for (const os of ['macos', 'windows'] as OS[]) {
-    const patch = override.downloads?.[os];
-    if (patch) downloads[os] = { ...downloads[os], ...patch };
-  }
-  return {
-    ...base,
-    version: override.version || base.version,
-    r2Folder: override.folder || base.r2Folder,
-    downloads,
-  };
 }
 
 /** Plugins publiés, surcharges appliquées, dans l'ordre de `published`. */
