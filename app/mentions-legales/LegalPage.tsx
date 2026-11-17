@@ -37,8 +37,7 @@ export default function LegalPage() {
         {e.email}
       </a>,
     ],
-    // Le directeur de la publication est la personne, sans la mention EI.
-    [tx.labels.director, e.nom.replace(/\s+EI$/, '')],
+    [tx.labels.director, e.nom],
   ];
 
   return (
