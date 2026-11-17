@@ -28,14 +28,17 @@ export default function LegalPage() {
     [tx.labels.status, e.statut[lang]],
     [tx.labels.address, e.adresse],
     [tx.labels.siret, e.siret],
-    [tx.labels.phone, <a key="tel" href={`tel:${e.telephone.replace(/\s/g, '')}`} className="hover:text-gold">{e.telephone}</a>],
+    ...(e.telephone
+      ? ([[tx.labels.phone, <a key="tel" href={`tel:${e.telephone.replace(/\s/g, '')}`} className="hover:text-gold">{e.telephone}</a>]] as [string, React.ReactNode][])
+      : []),
     [
       tx.labels.email,
       <a key="mail" href={`mailto:${e.email}`} className="text-gold underline-offset-4 hover:underline">
         {e.email}
       </a>,
     ],
-    [tx.labels.director, e.nom],
+    // Le directeur de la publication est la personne, sans la mention EI.
+    [tx.labels.director, e.nom.replace(/\s+EI$/, '')],
   ];
 
   return (
