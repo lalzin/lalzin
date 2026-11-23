@@ -169,6 +169,51 @@
       ]
     }
   },
+  "daft-chunk": {
+    "states": [
+      "ui-fx.webp",
+      "ui-slice.webp",
+      "ui-sound.webp"
+    ],
+    "images": {
+      "card-square.webp": [
+        1080,
+        1080
+      ],
+      "icon-512.webp": [
+        512,
+        512
+      ],
+      "mascot.webp": [
+        314,
+        313
+      ],
+      "og.webp": [
+        1200,
+        630
+      ],
+      "ui-fx.webp": [
+        1146,
+        880
+      ],
+      "ui-hero.webp": [
+        1146,
+        880
+      ],
+      "ui-hero@3x.webp": [
+        1720,
+        1320
+      ],
+      "ui-slice.webp": [
+        1146,
+        880
+      ],
+      "ui-sound.webp": [
+        1146,
+        880
+      ]
+    }
+  },
   "french-filter": {
     "states": [
       "ui-centre.webp",
@@ -452,6 +497,10 @@
         1040
       ]
     }
+  },
+  "social": {
+    "states": [],
+    "images": {}
   },
   "suite": {
     "states": [],

@@ -140,6 +140,30 @@ export const ui = {
             body: 'En insert, SPACE règle le dry / wet. Sur une piste de retour, mets SPACE à 100 %.',
           },
         ],
+        'kick-lock': [
+          {
+            kind: 'tip',
+            title: 'PRECISION',
+            body: 'Sous PRECISE, choisis la latence : 35 ms le plus léger, 50 ms par défaut, 65 ms pour la rotation en place avant le kick, 340 ms pour voir toute la collision. Le DAW compense cette latence au mixage ; pour jouer en direct, passe en LIVE (32 ms).',
+          },
+        ],
+        'daft-chunk': [
+          {
+            kind: 'box',
+            title: 'LOOP CREATOR',
+            body: 'Choisis un style, tourne CHOP de ORDER (l’ordre du sample) à WILD (la découpe sauvage), puis clique sur LOOP CREATOR : une boucle naît, jouée au tempo d’Ableton. ENCORE en fait 4 variantes ; l’étoile garde une boucle.',
+          },
+          {
+            kind: 'box',
+            title: 'Glisse dans Ableton',
+            body: 'Sous chaque boucle, glisse sur une piste WAV (l’audio, un nombre exact de mesures), MIDI (les notes, à rejouer dans Daft Chunk) ou KIT (les tranches, pour un Drum Rack).',
+          },
+          {
+            kind: 'tip',
+            title: 'Instrument',
+            body: 'Charge Daft Chunk sur une piste MIDI : les tranches se jouent à partir de Do1 (C1).',
+          },
+        ],
       },
       instrument: 'Instrument',
       effect: 'Effet',
@@ -220,7 +244,7 @@ export const ui = {
         dawSteps: [
           'Réglages > Plug-Ins > Rescan.',
           'Les effets apparaissent dans VST3 / Audio Units > LALZIN.',
-          'Pew Pew et Slapper sont des instruments : charge-les sur une piste MIDI, pas sur une piste audio.',
+          'Pew Pew, Slapper et Daft Chunk sont des instruments : charge-les sur une piste MIDI, pas sur une piste audio.',
         ],
         noteTitle: 'Bon à savoir',
         notes: [
@@ -501,6 +525,30 @@ export const ui = {
             body: 'On an insert, SPACE sets the dry / wet. On a return track, set SPACE to 100 %.',
           },
         ],
+        'kick-lock': [
+          {
+            kind: 'tip',
+            title: 'PRECISION',
+            body: 'Under PRECISE, pick the latency: 35 ms the lightest, 50 ms by default, 65 ms for the in-place rotation before the kick, 340 ms to see the whole collision. Your DAW compensates for it when mixing; to play live, switch to LIVE (32 ms).',
+          },
+        ],
+        'daft-chunk': [
+          {
+            kind: 'box',
+            title: 'LOOP CREATOR',
+            body: 'Pick a style, turn CHOP from ORDER (the sample’s order) to WILD (the wild chop), then click LOOP CREATOR: a loop is born, played at Ableton’s tempo. ENCORE makes 4 variants; the star keeps a loop.',
+          },
+          {
+            kind: 'box',
+            title: 'Drag into Ableton',
+            body: 'Under each loop, drag onto a track as WAV (the audio, an exact number of bars), MIDI (the notes, to replay in Daft Chunk) or KIT (the slices, for a Drum Rack).',
+          },
+          {
+            kind: 'tip',
+            title: 'Instrument',
+            body: 'Load Daft Chunk on a MIDI track: the slices play from C1.',
+          },
+        ],
       },
       instrument: 'Instrument',
       effect: 'Effect',
@@ -580,7 +628,7 @@ export const ui = {
         dawSteps: [
           'Settings > Plug-Ins > Rescan.',
           'The effects show up under VST3 / Audio Units > LALZIN.',
-          'Pew Pew and Slapper are instruments: load them on a MIDI track, not an audio track.',
+          'Pew Pew, Slapper and Daft Chunk are instruments: load them on a MIDI track, not an audio track.',
         ],
         noteTitle: 'Good to know',
         notes: [
