@@ -74,6 +74,7 @@ export const ui = {
       suiteIntro:
         'Des plugins pensés pour le dancefloor : un seul knob, une seule idée, zéro mode d’emploi. Gratuits, VST3 / AU / Standalone.',
       teaserTitle: 'Groove Knobs',
+      linksTitle: 'Plugins gratuits',
       teaserCta: 'Découvrir les plugins',
       free: 'Gratuit',
       download: 'Télécharger gratuitement',
@@ -459,6 +460,7 @@ export const ui = {
       suiteIntro:
         'Plugins made for the dancefloor: one knob, one idea, no manual. Free, VST3 / AU / Standalone.',
       teaserTitle: 'Groove Knobs',
+      linksTitle: 'Free plugins',
       teaserCta: 'See the plugins',
       free: 'Free',
       download: 'Download for free',

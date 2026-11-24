@@ -127,9 +127,9 @@ export default function LinksPage() {
                 <SlidersHorizontal className="h-[18px] w-[18px]" aria-hidden />
               </span>
               <span className="min-w-0">
-                <span className="block truncate font-semibold text-cream">{ui.plugins.teaserTitle}</span>
+                <span className="block truncate font-semibold text-cream">{ui.plugins.linksTitle}</span>
                 <span className="text-[11px] uppercase tracking-wider text-cream/50">
-                  {ui.plugins.free} · VST3 · AU
+                  Groove Knobs · VST3 · AU
                 </span>
               </span>
               <ArrowRight
